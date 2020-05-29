@@ -34,7 +34,7 @@ class ContentUsage extends AbstractTab
 
     public function getName(): string
     {
-        return "Content Usage";
+        return "Content usage";
         return /** @Desc("Content Usage Tab") */
             $this->translator->trans('custom.content.usage', [], 'some_translation_domain');
     }
