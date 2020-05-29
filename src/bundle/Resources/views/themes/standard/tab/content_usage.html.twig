@@ -1,5 +1,5 @@
 <div>
-    {{ global_content_count }}&nbsp;contents of {{ used_content_type_count }}&nbsp;content types
+    {{ global_content_count }}&nbsp;contents in {{ used_content_type_count }}&nbsp;content types
     {%- if content_count_list|length > used_content_type_count %}
     (among {{ content_count_list|length }} available content types)
     {%- endif -%}.
@@ -23,7 +23,7 @@
                     'contentTypeGroupId': content_count.content_type_group.id,
                     'contentTypeId': content_count.content_type.id
                 }) }}"
-                   title="{{ content_count.content_type_group.name }} / {{ content_count.content_type.name }}">
+                   title="{{ content_count.content_type_group.identifier }} / {{ content_count.content_type.name }}">
                     {{ content_count.content_type.name }}
                 </a>
             </td>
