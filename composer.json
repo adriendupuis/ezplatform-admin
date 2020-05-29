@@ -1,0 +1,12 @@
+{
+  "name": "adriendupuis/ezplatform-admin",
+  "description": "eZ Platform Administration Tools",
+  "autoload": {
+    "psr-4": {
+      "AdrienDupuis\\EzPlatformAdminBundle\\": "src/bundle/"
+    }
+  },
+  "require": {
+    "ezsystems/ezplatform-admin-ui": "~2.0.0"
+  }
+}

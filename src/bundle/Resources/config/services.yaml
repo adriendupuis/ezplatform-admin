@@ -1,0 +1,13 @@
+services:
+    AdrienDupuis\EzPlatformAdminBundle\Tab\ContentUsage:
+        parent: EzSystems\EzPlatformAdminUi\Tab\AbstractTab
+        autowire: true
+        autoconfigure: false
+        public: false
+        tags:
+            -
+                name: ezplatform.tab
+                group: dashboard-everyone
+                #group: dashboard-my
+                #group: location-view
+                #group: content-type
