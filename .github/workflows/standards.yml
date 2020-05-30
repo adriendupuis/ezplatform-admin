@@ -23,5 +23,5 @@ jobs:
       - name: Validate coding standards in source
         run: vendor/bin/php-cs-fixer fix --dry-run --rules=@Symfony src/
 
-      - name: Validate coding standards in test suite
-        run: vendor/bin/php-cs-fixer fix --dry-run --rules=@Symfony tests/
+#      - name: Validate coding standards in test suite
+#        run: vendor/bin/php-cs-fixer fix --dry-run --rules=@Symfony tests/
