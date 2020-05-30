@@ -1,0 +1,27 @@
+name: Coding Standards
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master, develop ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Validate coding standards in source
+        run: vendor/bin/php-cs-fixer fix --dry-run --rules=@Symfony src/
+
+      - name: Validate coding standards in test suite
+        run: vendor/bin/php-cs-fixer fix --dry-run --rules=@Symfony tests/

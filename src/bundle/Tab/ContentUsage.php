@@ -2,11 +2,11 @@
 
 namespace AdrienDupuis\EzPlatformAdminBundle\Tab;
 
+use Doctrine\DBAL\Driver\Connection;
 use eZ\Publish\API\Repository\ContentTypeService;
 use EzSystems\EzPlatformAdminUi\Tab\AbstractTab;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
-use Doctrine\DBAL\Driver\Connection;
 
 class ContentUsage extends AbstractTab
 {
@@ -27,6 +27,7 @@ class ContentUsage extends AbstractTab
         $this->dbalConnection = $connection;
         $this->contentTypeService = $contentTypeService;
     }
+
     public function getIdentifier(): string
     {
         return 'custom-content-usage-tab';
@@ -34,8 +35,9 @@ class ContentUsage extends AbstractTab
 
     public function getName(): string
     {
-        return "Content usage";
-        return /** @Desc("Content Usage Tab") */
+        return 'Content usage';
+
+        return /* @Desc("Content Usage Tab") */
             $this->translator->trans('custom.content.usage', [], 'some_translation_domain');
     }
 
@@ -60,7 +62,7 @@ SQL)->fetchAll();
             $contentCount['content_type_group'] = $contentCount['content_type']->getContentTypeGroups()[0];
             if ($contentCount['content_count']) {
                 $globalContentCount += $contentCount['content_count'];
-                $usedContentTypeCount++;
+                ++$usedContentTypeCount;
             }
         }
 
