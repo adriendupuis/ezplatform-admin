@@ -1,0 +1,4 @@
+ad_admin.content_usage.main:
+    path: /content_usage/main
+    defaults:
+        _controller: AdrienDupuis\EzPlatformAdminBundle\Controller\ContentUsageController::mainAction

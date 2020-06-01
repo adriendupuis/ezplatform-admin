@@ -1,4 +1,17 @@
 services:
+
+    AdrienDupuis\EzPlatformAdminBundle\Controller\:
+        resource: '../../Controller'
+        tags: ['controller.service_arguments']
+        calls:
+            - [setContainer, ['@service_container']]
+
+    AdrienDupuis\EzPlatformAdminBundle\EventListener\:
+        resource: '../../EventListener/*'
+        public: true
+        tags:
+            - { name: kernel.event_subscriber }
+
     AdrienDupuis\EzPlatformAdminBundle\Tab\ContentUsage:
         parent: EzSystems\EzPlatformAdminUi\Tab\AbstractTab
         autowire: true

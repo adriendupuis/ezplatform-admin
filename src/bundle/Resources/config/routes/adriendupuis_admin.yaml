@@ -1,0 +1,2 @@
+adriendupuis_admin:
+    resource: '@AdrienDupuisEzPlatformAdminBundle/Resources/config/routing.yaml'
