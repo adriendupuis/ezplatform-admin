@@ -1,1 +1,13 @@
-tab/example_finder.html.twig
+<fieldset>
+    <legend>Content Type</legend>
+    <select>
+        {% for content_type_group in content_type_list %}
+            <option disabled>{{ content_type_group.itself.identifier }}</option>
+            {% for content_type in content_type_group.content_types %}
+                <option>
+                    {{ content_type.name }}
+                </option>
+            {% endfor %}
+        {% endfor %}
+    </select>
+</fieldset>

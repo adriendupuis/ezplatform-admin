@@ -3,7 +3,6 @@
 namespace AdrienDupuis\EzPlatformAdminBundle\Controller;
 
 use EzSystems\EzPlatformAdminUiBundle\Controller\Controller;
-use Psr\Container\ContainerInterface;
 
 class ContentUsageController extends Controller
 {

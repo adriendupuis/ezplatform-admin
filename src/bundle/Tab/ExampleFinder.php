@@ -2,7 +2,6 @@
 
 namespace AdrienDupuis\EzPlatformAdminBundle\Tab;
 
-use Doctrine\DBAL\Driver\Connection;
 use eZ\Publish\API\Repository\ContentTypeService;
 use EzSystems\EzPlatformAdminUi\Tab\AbstractTab;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -36,6 +35,16 @@ class ExampleFinder extends AbstractTab
 
     public function renderView(array $parameters): string
     {
-        return '\AdrienDupuis\EzPlatformAdminBundle\Tab\ContentUsage::renderView';
+        $contentTypeGroups = $this->contentTypeService->loadContentTypeGroups();
+        foreach ($contentTypeGroups as $contentTypeGroup) {
+            $contentTypeList[$contentTypeGroup->id] = [
+                'itself' => $contentTypeGroup,
+                'content_types' => $this->contentTypeService->loadContentTypes($contentTypeGroup),
+            ];
+        }
+
+        return $this->twig->render('@ezdesign/tab/example_finder.html.twig', [
+            'content_type_list' => $contentTypeList ?? [],
+        ]);
     }
 }
