@@ -30,15 +30,13 @@ class ContentUsage extends AbstractTab
 
     public function getIdentifier(): string
     {
-        return 'custom-content-usage-tab';
+        return 'ad-admin-content-usage-tab';
     }
 
     public function getName(): string
     {
-        return 'Content usage';
-
         return /* @Desc("Content Usage Tab") */
-            $this->translator->trans('custom.content.usage', [], 'some_translation_domain');
+            $this->translator->trans('content_usage', [], 'ad_admin.content_usage');
     }
 
     public function renderView(array $parameters): string
