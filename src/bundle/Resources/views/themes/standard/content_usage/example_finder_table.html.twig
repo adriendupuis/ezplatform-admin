@@ -23,7 +23,9 @@
                     <small title="No good example found.">(none)</small>
                 {% endif %}
             <td class="bad-examples">
-                {% if field_definition.isRequired %}
+                {% if field_definition.fieldTypeIdentifier in never_empty_field_types %}
+                    <small title="Field of this field type can't be empty">(irrelevant)</small>
+                {% elseif field_definition.isRequired %}
                     <ul>
                         <li>
                             <small title="No bad example found.">(none)</small>
