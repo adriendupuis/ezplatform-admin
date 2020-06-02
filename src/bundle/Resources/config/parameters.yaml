@@ -1,0 +1,8 @@
+parameters:
+    # http://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
+    ezsettings.default.user_preferences.allowed_full_date_formats:
+        # Inherited from https://github.com/ezsystems/ezplatform-user/blob/v2.0.1/src/bundle/Resources/config/ezplatform_default_settings.yaml#L50
+        'M dd, yyyy': 'LLLL dd, yyyy'
+        'dd M yyyy': 'dd LLLL yyyy'
+        # Custom
+        'D d M yyyy': 'EEEE d LLLL yyyy'
