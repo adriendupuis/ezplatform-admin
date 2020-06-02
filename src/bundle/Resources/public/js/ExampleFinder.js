@@ -1,17 +1,47 @@
 class ExampleFinder {
     /**
+     * @param {(string|Element|jQuery)} contentTypeSelect
+     * @param {string} tableBaseUrl
      * @param {string} searchBaseUrl
      * @param {(string|Element|jQuery)} resultContainer
      * @param {string} contentBaseUrl
      * @param {(string|Element|jQuery)} statusContainer
-     * @param {number} limit
+     * @param {number} [limit=25]
      */
-    constructor(searchBaseUrl, resultContainer, contentBaseUrl, statusContainer, limit = 1/*TODO: 25*/) {
+    constructor(contentTypeSelect, tableBaseUrl, searchBaseUrl, resultContainer, contentBaseUrl, statusContainer, limit = 25) {
+        this.contentTypeSelect = $(contentTypeSelect);
+        this.tableBaseUrl = tableBaseUrl;
         this.searchBaseUrl = searchBaseUrl;
-        this.resultContainer = resultContainer;
+        this.resultContainer = $(resultContainer);
         this.contentBaseUrl = contentBaseUrl;
-        this.statusContainer = statusContainer;
-        this.setLimit(limit).resetSearch();
+        this.statusContainer = $(statusContainer);
+        this
+            .setLimit(limit)
+            .resetSearch()
+            .setEventHandler()
+        ;
+    }
+
+    setEventHandler() {
+        this.contentTypeSelect.val('').change(function () {
+            if (this.contentTypeSelect.val()) {
+                let contentType = this.contentTypeSelect.val();
+                this.displayStatus('Initializing field table…');
+                this.resultContainer.load(
+                    this.tableBaseUrl + contentType,
+                    function (response, status, xhr) {
+                        if ('error' === status) {
+                            this.displayStatus(xhr.statusText);
+                            this.resultContainer.html('');
+                        } else {
+                            this.displayStatus('Ready to search…');
+                            this.setContentType(contentType).search();
+                        }
+                    }.bind(this)
+                );
+            }
+        }.bind(this));
+        return this;
     }
 
     setContentType(contentType) {
@@ -58,7 +88,6 @@ class ExampleFinder {
                 this.examples[fieldDefIdentifier].bads.concat(fieldExamples.bads)
             }
         }
-        console.log(this.examples);
         return this;
     }
 
@@ -111,7 +140,7 @@ class ExampleFinder {
         if (progress && this.totalCount) {
             statusText = statusText + ' (' + Math.floor(100 * this.offset / this.totalCount) + '%)';
         }
-        $(this.statusContainer).text(statusText);
+        this.statusContainer.text(statusText);
     }
 }
 // Expose the class
