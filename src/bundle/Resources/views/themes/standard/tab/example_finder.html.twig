@@ -93,7 +93,7 @@
                     this.examples[fieldDefIdentifier] = {};
                 }
                 if (fieldExamples.good) {
-                    if (!this.examples[fieldDefIdentifier].best || this.examples[fieldDefIdentifier].good < fieldExamples.good.score) {
+                    if (!this.examples[fieldDefIdentifier].best || this.examples[fieldDefIdentifier].best.score < fieldExamples.good.score) {
                         this.examples[fieldDefIdentifier].best = fieldExamples.good;
                     }
                 }
