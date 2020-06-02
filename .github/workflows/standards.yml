@@ -17,8 +17,8 @@ jobs:
       - name: Validate composer.json
         run: composer validate
 
-      - name: Install dependencies
-        run: composer require friendsofphp/php-cs-fixer --dev --no-scripts --no-interaction --update-with-dependencies
+      - name: Install PHP CS Fixer
+        run: composer remove ezsystems/ezplatform-admin-ui --no-interaction && composer require friendsofphp/php-cs-fixer --dev --no-interaction
 
       - name: Validate coding standards in source
         run: vendor/bin/php-cs-fixer fix --dry-run --rules=@Symfony src/
