@@ -28,23 +28,11 @@
     </select>
 </fieldset>
 <script>
-    {# TODO: Move to a .js file #}
+    {# TODO: Cleaner URLs; Test on dedicated domain;… #}
     {% set content_type_placeholder = '+content_type+' %}
     let tableBaseUrl = '{{ path('ad_admin.content_usage.example_finder.table', {content_type: content_type_placeholder}) }}'.replace('{{ content_type_placeholder }}', ''),
         contentBaseUrl = '{{ path('ez_urlalias', {'locationId': 2} ) }}/view/content/',
         searchBaseUrl = '{{ path('ad_admin.content_usage.example_finder.search', {content_type: content_type_placeholder}) }}'.replace('{{ content_type_placeholder }}', '');
-
-    window.onload = function () {
-        let exampleFinder = new ExampleFinder(
-            '#example_finder_content_type',
-            tableBaseUrl,
-            searchBaseUrl,
-            '#example_finder_result',
-            contentBaseUrl,
-            '#example_finder_status'
-        );
-    };
-
 </script>
 <div>Example Finder status: <em id="example_finder_status">Waiting for Content Type selection…</em></div>
 <div id="example_finder_result"></div>
