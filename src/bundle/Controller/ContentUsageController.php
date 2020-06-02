@@ -97,13 +97,10 @@ class ContentUsageController extends Controller
     {
         $contentType = $this->getContentType($request);
 
-        $criterion = new Query\Criterion\ContentTypeId($contentType->id);
-        $offset = (int) $request->get('offset', 0);
-        $limit = (int) $request->get('limit', 25);
         $searchResult = $this->searchService->findContent(new Query([
-            'filter' => $criterion,
-            'offset' => $offset,
-            'limit' => $limit,
+            'filter' => new Query\Criterion\ContentTypeId($contentType->id),
+            'offset' => (int) $request->get('offset', 0),
+            'limit' => (int) $request->get('limit', 25),
         ]));
 
         $examples = [];
@@ -161,8 +158,6 @@ class ContentUsageController extends Controller
         }
 
         return new JsonResponse([
-            'offset' => $offset,
-            'limit' => $limit,
             'totalCount' => $searchResult->totalCount,
             'examples' => $examples,
         ]);
