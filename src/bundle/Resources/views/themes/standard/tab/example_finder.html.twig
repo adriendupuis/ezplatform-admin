@@ -2,15 +2,19 @@
     <p>Find good and bad examples for each field of a content type</p>
     <dl>
         <dt>Good Example</dt>
-        <dd>A content having this optional field not empty, the maximum of other optional field not empty and no empty required field.</dd>
+        <dd>A content having this optional field not empty, the maximum of other optional field not empty and no empty
+            required field.
+        </dd>
         <dt>Bad Example</dt>
-        <dd>A content having this required field empty. (For example, it can happen when a field has become required but previous content haven't been updated.)</dd>
+        <dd>A content having this required field empty. (For example, it can happen when a field has become required but
+            previous content haven't been updated.)
+        </dd>
     </dl>
 </div>
 <fieldset>
     <legend>Content Type</legend>
     <select id="example_finder_content_type">
-            <option value="">Select a content type…</option>
+        <option value="">Select a content type…</option>
         {% for content_type_group in content_type_list %}
             <option disabled value="">{{ content_type_group.itself.identifier }}</option>
             {% for content_type in content_type_group.content_types %}
@@ -19,20 +23,27 @@
                 </option>
             {% endfor %}
         {% endfor %}
-        {# TODO: Remove before release #}<option value="unknown">Unknown content type!</option>
+        {# TODO: Remove before release #}
+        <option value="unknown">Unknown content type!</option>
     </select>
 </fieldset>
 <script>
     {# TODO: Move to a .js file #}
     {% set content_type_placeholder = '+content_type+' %}
-    $(function() {
-        let contentType, exampleFinder = new ExampleFinder(
-            '{{ path('ad_admin.content_usage.example_finder.search', {content_type: content_type_placeholder}) }}'.replace('{{ content_type_placeholder }}', ''),
-            '#example_finder_result', '#example_finder_status');
-        $('#example_finder_content_type').val('').change(function() {
+    let contentBaseUrl = '{{ path('ez_urlalias', {'locationId': 2} ) }}/view/content/',
+        searchBaseUrl = '{{ path('ad_admin.content_usage.example_finder.search', {content_type: content_type_placeholder}) }}'.replace('{{ content_type_placeholder }}', '');
+
+    window.onload = function () {
+        let exampleFinder = new ExampleFinder(
+            searchBaseUrl,
+            '#example_finder_result',
+            contentBaseUrl,
+            '#example_finder_status'
+        );
+        $('#example_finder_content_type').val('').change(function () {
             if ($(this).val()) {
                 $('#example_finder_status').text('Initializing field table…');
-                contentType = $(this).val();
+                let contentType = $(this).val();
                 $('#example_finder_result').load(
                     '{{ path('ad_admin.content_usage.example_finder.table', {content_type: content_type_placeholder}) }}'.replace('{{ content_type_placeholder }}', contentType),
                     function (response, status, xhr) {
@@ -47,7 +58,7 @@
                 );
             }
         });
-    });
+    };
 
 </script>
 <div>Example Finder status: <em id="example_finder_status">Waiting for Content Type selection…</em></div>

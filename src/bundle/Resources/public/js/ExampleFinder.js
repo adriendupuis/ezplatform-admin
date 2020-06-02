@@ -1,8 +1,16 @@
 class ExampleFinder {
-    constructor(baseUrl, tableElement, statusElement, limit = 1/*TODO: 25*/) {
-        this.baseUrl = baseUrl;
-        this.tableElement = tableElement;
-        this.statusElement = statusElement;
+    /**
+     * @param {string} searchBaseUrl
+     * @param {(string|Element|jQuery)} resultContainer
+     * @param {string} contentBaseUrl
+     * @param {(string|Element|jQuery)} statusContainer
+     * @param {number} limit
+     */
+    constructor(searchBaseUrl, resultContainer, contentBaseUrl, statusContainer, limit = 1/*TODO: 25*/) {
+        this.searchBaseUrl = searchBaseUrl;
+        this.resultContainer = resultContainer;
+        this.contentBaseUrl = contentBaseUrl;
+        this.statusContainer = statusContainer;
         this.setLimit(limit).resetSearch();
     }
 
@@ -72,12 +80,12 @@ class ExampleFinder {
 
     getExampleLinkElement(example) {
         return $('<a>', {
-            href: '{{ path('ez_urlalias', {'locationId': 2} ) }}/view/content/' + example.id
+            href: this.contentBaseUrl + example.id
         }).html(example.name);
     }
 
     search() {
-        let url = this.baseUrl + this.contentType + '/' + this.offset + '/' + this.limit;
+        let url = this.searchBaseUrl + this.contentType + '/' + this.offset + '/' + this.limit;
         this.displayStatus('Searching…', true);
         $.getJSON(url, function (data, status, xhr) {
             if ('error' === status) {
@@ -99,10 +107,12 @@ class ExampleFinder {
     }
 
     displayStatus(status, progress = false) {
-        var status = status;
+        let statusText = status;
         if (progress && this.totalCount) {
-            status = status + ' (' + Math.floor(100 * this.offset / this.totalCount) + '%)';
+            statusText = statusText + ' (' + Math.floor(100 * this.offset / this.totalCount) + '%)';
         }
-        $(this.statusElement).text(status);
+        $(this.statusContainer).text(statusText);
     }
 }
+// Expose the class
+window.ExampleFinder = ExampleFinder;
