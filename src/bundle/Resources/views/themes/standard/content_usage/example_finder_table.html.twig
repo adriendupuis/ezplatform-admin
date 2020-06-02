@@ -1,0 +1,22 @@
+<table class="ez-table table">
+    <thead>
+    <tr>
+        <th scope="col">Field Name</th>
+        <th scope="col">Mandatoriness</th>
+        <th scope="col">Field Type</th>
+        <th scope="col">Best Example</th>
+        <th scope="col">Bad Examples</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for field_definition in content_type.fieldDefinitions %}
+        <tr id="{{ field_definition.identifier }}">
+            <td>{{ field_definition.names[field_definition.mainLanguageCode] }}</td>
+            <td>{{ field_definition.isRequired ? 'Required' : 'Optional' }}</td>
+            <td title="{{ field_definition.fieldTypeIdentifier }}">{{ field_type_labels[field_definition.fieldTypeIdentifier] }}</td>
+            <td class-"best-example"></td>
+            <td class-"bad-examples"><ul></ul></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

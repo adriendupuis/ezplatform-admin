@@ -23,7 +23,7 @@ class ContentUsageMenuListener implements EventSubscriberInterface
             'content_stats',
             [
                 'label' => 'Usage',
-                'route' => 'ad_admin.content_usage.main',
+                'route' => 'ad_admin.content_usage',
             ]
         );
     }

@@ -1,13 +1,29 @@
 <fieldset>
     <legend>Content Type</legend>
-    <select>
+    <select id="example_finder_content_type">
+            <option value="">Select a content type…</option>
         {% for content_type_group in content_type_list %}
-            <option disabled>{{ content_type_group.itself.identifier }}</option>
+            <option disabled value="">{{ content_type_group.itself.identifier }}</option>
             {% for content_type in content_type_group.content_types %}
-                <option>
+                <option value="{{ content_type.identifier }}">
                     {{ content_type.name }}
                 </option>
             {% endfor %}
         {% endfor %}
     </select>
 </fieldset>
+<script>
+    {% set content_type_placeholder = '+content_type+' %}
+    $(function() {
+        $('#example_finder_content_type').change(function() {
+            if ($(this).val()) {
+                $('#example_finder_result').load('{{ path('ad_admin.content_usage.example_finder.table', {content_type: content_type_placeholder}) }}'.replace('{{ content_type_placeholder }}', $(this).val()), function () {
+                    $('#example_finder_status').text('Initialized');
+                });
+            }
+        });
+    });
+</script>
+<div id="example_finder_status"></div>
+<div id="example_finder_result">
+</div>
