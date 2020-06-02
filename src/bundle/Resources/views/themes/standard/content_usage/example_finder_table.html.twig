@@ -14,8 +14,24 @@
             <td>{{ field_definition.names[field_definition.mainLanguageCode] }}</td>
             <td>{{ field_definition.isRequired ? 'Required' : 'Optional' }}</td>
             <td title="{{ field_definition.fieldTypeIdentifier }}">{{ field_type_labels[field_definition.fieldTypeIdentifier] }}</td>
-            <td class-"best-example"></td>
-            <td class-"bad-examples"><ul></ul></td>
+            <td class="best-example">
+                {% if field_definition.fieldTypeIdentifier in never_empty_field_types %}
+                    <small title="Field of this field type can't be empty">(irrelevant)</small>
+                {% elseif field_definition.isRequired %}
+                    <small title="This field is required and can't be empty">(irrelevant)</small>
+                {% else %}
+                    <small title="No good example found.">(none)</small>
+                {% endif %}
+            <td class="bad-examples">
+                {% if field_definition.isRequired %}
+                    <ul>
+                        <li>
+                            <small title="No bad example found.">(none)</small>
+                        </li>
+                    </ul>
+                {% else %}
+                    <small title="The field is optional and have the right to be empty.">(irrelevant)</small>
+                {% endif %}</td>
         </tr>
     {% endfor %}
     </tbody>

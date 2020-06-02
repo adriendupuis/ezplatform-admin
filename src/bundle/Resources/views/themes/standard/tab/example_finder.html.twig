@@ -1,3 +1,12 @@
+<div>
+    <p>Find good and bad examples for each field of a content type</p>
+    <dl>
+        <dt>Good Example</dt>
+        <dd>A content having this optional field not empty, the maximum of other optional field not empty and no empty required field.</dd>
+        <dt>Bad Example</dt>
+        <dd>A content having this required field empty. (For example, it can happen when a field has become required but previous content haven't been updated.)</dd>
+    </dl>
+</div>
 <fieldset>
     <legend>Content Type</legend>
     <select id="example_finder_content_type">
@@ -13,6 +22,14 @@
         {# TODO: Remove before release #}<option value="unknown">Unknown content type!</option>
     </select>
 </fieldset>
+<style>
+    {# TODO: Move to a .css file #}
+    .bad-examples ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+</style>
 <script>
     {# TODO: Move to a .js file #}
     {% set content_type_placeholder = '+content_type+' %}
@@ -22,7 +39,7 @@
             '#example_finder_result', '#example_finder_status');
         $('#example_finder_content_type').val('').change(function() {
             if ($(this).val()) {
-                $('#example_finder_status').text('Initializing…');
+                $('#example_finder_status').text('Initializing field table…');
                 contentType = $(this).val();
                 $('#example_finder_result').load(
                     '{{ path('ad_admin.content_usage.example_finder.table', {content_type: content_type_placeholder}) }}'.replace('{{ content_type_placeholder }}', contentType),
@@ -31,7 +48,7 @@
                             $('#example_finder_status').text(xhr.statusText);
                             $('#example_finder_result').html('');
                         } else {
-                            $('#example_finder_status').text('Initialized.');
+                            $('#example_finder_status').text('Ready to search…');
                             exampleFinder.setContentType(contentType).search();
                         }
                     }
@@ -40,7 +57,7 @@
         });
     });
     class ExampleFinder {
-        constructor(baseUrl, tableElement, statusElement, limit=25) {
+        constructor(baseUrl, tableElement, statusElement, limit=1/*TODO: 25*/) {
             this.baseUrl = baseUrl;
             this.tableElement = tableElement;
             this.statusElement = statusElement;
@@ -69,20 +86,48 @@
         setTotalCount(totalCount) {
             this.totalCount = totalCount;
         }
-        mergeExamples(data) {
-            //TODO
+        mergeExamples(examples) {
+            for (let fieldDefIdentifier in examples) {
+                let fieldExamples = examples[fieldDefIdentifier];
+                if ('undefined' === typeof this.examples[fieldDefIdentifier]) {
+                    this.examples[fieldDefIdentifier] = {};
+                }
+                if (fieldExamples.good) {
+                    if (!this.examples[fieldDefIdentifier].best || this.examples[fieldDefIdentifier].good < fieldExamples.good.score) {
+                        this.examples[fieldDefIdentifier].best = fieldExamples.good;
+                    }
+                }
+                if (fieldExamples.bads) {
+                    if (!this.examples[fieldDefIdentifier].bads) {
+                        this.examples[fieldDefIdentifier].bads = Array.from(fieldExamples.bads);
+                    }
+                    this.examples[fieldDefIdentifier].bads.concat(fieldExamples.bads)
+                }
+            }
+            console.log(this.examples);
             return this;
         }
         displayExamples() {
-            //TODO
+            for (let fieldDefIdentifier in this.examples) {
+                let fieldExamples = this.examples[fieldDefIdentifier];
+                if ('undefined' !== typeof fieldExamples.best) {
+                    $('#' + fieldDefIdentifier).find('.best-example').empty().append(this.getExampleLinkElement(fieldExamples.best));
+                }
+                if ('undefined' !== typeof fieldExamples.bads) {
+                    $('#' + fieldDefIdentifier).find('.bad-examples ul').empty();
+                    for (let badExample of fieldExamples.bads) {
+                        $('#' + fieldDefIdentifier).find('.bad-examples ul').append($('<li>').append(this.getExampleLinkElement(badExample)));
+                    }
+                }
+            }
             return this;
         }
-        displayStatus(status, progress) {
-            if (progress && this.totalCount) {
-                let status = status + ' (' + Math.floor(100 * this.offset / this.totalCount) + '%)';
-            }
-            $(this.statusElement).text(status);
+        getExampleLinkElement(example) {
+            return $('<a>', {
+                href: '{{ path('ez_urlalias', {'locationId': 2} ) }}/view/content/' + example.id
+            }).html(example.name);
         }
+
         search() {
             let url = this.baseUrl + this.contentType + '/' + this.offset + '/' + this.limit;
             this.displayStatus('Searching…', true);
@@ -91,24 +136,27 @@
                     //TODO
                     return;
                 }
-                console.log(data);
-                this.setTotalCount(data.totalCount);
-                this.mergeExamples(data.examples).displayExamples();
-                if (this.increaseOffset() < this.totalCount) {
-                    this.search();
+                if (data.totalCount) {
+                    this.setTotalCount(data.totalCount);
+                    this.mergeExamples(data.examples).displayExamples();
+                    if (this.increaseOffset() < data.totalCount) {
+                        this.search();
+                    } else {
+                        this.displayStatus('Displaying final result.', false);
+                    }
                 } else {
-                    this.displayStatus('Done.', false);
+                    this.displayStatus('No content of this type.', false);
                 }
             }.bind(this));
         }
-    }
-
-    function initExampleFinder() {
-
-    }
-    function runExampleFinder(content_type, offset = 0, limit = 25) {
-
+        displayStatus(status, progress=false) {
+            var status = status;
+            if (progress && this.totalCount) {
+                status = status + ' (' + Math.floor(100 * this.offset / this.totalCount) + '%)';
+            }
+            $(this.statusElement).text(status);
+        }
     }
 </script>
-<div id="example_finder_status"></div>
+<div>Example Finder status: <em id="example_finder_status">Waiting for Content Type selection…</em></div>
 <div id="example_finder_result"></div>
