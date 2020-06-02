@@ -10,20 +10,105 @@
                 </option>
             {% endfor %}
         {% endfor %}
+        {# TODO: Remove before release #}<option value="unknown">Unknown content type!</option>
     </select>
 </fieldset>
 <script>
+    {# TODO: Move to a .js file #}
     {% set content_type_placeholder = '+content_type+' %}
     $(function() {
-        $('#example_finder_content_type').change(function() {
+        let contentType, exampleFinder = new ExampleFinder(
+            '{{ path('ad_admin.content_usage.example_finder.search', {content_type: content_type_placeholder}) }}'.replace('{{ content_type_placeholder }}', ''),
+            '#example_finder_result', '#example_finder_status');
+        $('#example_finder_content_type').val('').change(function() {
             if ($(this).val()) {
-                $('#example_finder_result').load('{{ path('ad_admin.content_usage.example_finder.table', {content_type: content_type_placeholder}) }}'.replace('{{ content_type_placeholder }}', $(this).val()), function () {
-                    $('#example_finder_status').text('Initialized');
-                });
+                $('#example_finder_status').text('Initializing…');
+                contentType = $(this).val();
+                $('#example_finder_result').load(
+                    '{{ path('ad_admin.content_usage.example_finder.table', {content_type: content_type_placeholder}) }}'.replace('{{ content_type_placeholder }}', contentType),
+                    function (response, status, xhr) {
+                        if ('error' === status) {
+                            $('#example_finder_status').text(xhr.statusText);
+                            $('#example_finder_result').html('');
+                        } else {
+                            $('#example_finder_status').text('Initialized.');
+                            exampleFinder.setContentType(contentType).search();
+                        }
+                    }
+                );
             }
         });
     });
+    class ExampleFinder {
+        constructor(baseUrl, tableElement, statusElement, limit=25) {
+            this.baseUrl = baseUrl;
+            this.tableElement = tableElement;
+            this.statusElement = statusElement;
+            this.setLimit(limit).resetSearch();
+        }
+        setContentType(contentType) {
+            this.contentType = contentType;
+            this.resetSearch();
+            return this;
+        }
+
+        setLimit(limit) {
+            this.limit = limit;
+            return this;
+        }
+        increaseOffset() {
+            this.offset += this.limit;
+            return this.offset;
+        }
+        resetSearch() {
+            this.offset = 0;
+            this.examples = {};
+            return this;
+        }
+
+        setTotalCount(totalCount) {
+            this.totalCount = totalCount;
+        }
+        mergeExamples(data) {
+            //TODO
+            return this;
+        }
+        displayExamples() {
+            //TODO
+            return this;
+        }
+        displayStatus(status, progress) {
+            if (progress && this.totalCount) {
+                let status = status + ' (' + Math.floor(100 * this.offset / this.totalCount) + '%)';
+            }
+            $(this.statusElement).text(status);
+        }
+        search() {
+            let url = this.baseUrl + this.contentType + '/' + this.offset + '/' + this.limit;
+            this.displayStatus('Searching…', true);
+            $.getJSON(url, function(data, status, xhr) {
+                if ('error' === status) {
+                    //TODO
+                    return;
+                }
+                console.log(data);
+                this.setTotalCount(data.totalCount);
+                this.mergeExamples(data.examples).displayExamples();
+                if (this.increaseOffset() < this.totalCount) {
+                    this.search();
+                } else {
+                    this.displayStatus('Done.', false);
+                }
+            }.bind(this));
+        }
+    }
+
+    function initExampleFinder() {
+
+    }
+    function runExampleFinder(content_type, offset = 0, limit = 25) {
+
+    }
 </script>
 <div id="example_finder_status"></div>
-<div id="example_finder_result">
-</div>
+<div id="example_finder_result"></div>

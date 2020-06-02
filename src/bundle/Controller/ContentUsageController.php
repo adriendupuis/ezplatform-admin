@@ -46,7 +46,7 @@ class ContentUsageController extends Controller
                 $contentType = $this->contentTypeService->loadContentTypeByIdentifier($contentTypeIdentifier);
             }
         } catch (NotFoundException $notFoundException) {
-            return '<strong>Content type not found.</strong>';
+            throw $this->createNotFoundException('Content type not found.');
         }
 
         /** @var FieldDefinition $fieldDefinition */
@@ -55,7 +55,7 @@ class ContentUsageController extends Controller
         }
 
         return $this->render('@ezdesign/content_usage/example_finder_table.html.twig', [
-            'content_type' => $contentType ?? [],
+            'content_type' => $contentType,
             'field_type_labels' => $fieldTypeLabels ?? [],
         ]);
     }
@@ -73,9 +73,9 @@ class ContentUsageController extends Controller
         } else {
             $criterion = new Query\Criterion\ContentTypeIdentifier($contentTypeIdentifier);
         }
-        $offset = $request->get('offset', 0);
-        $limit = $request->get('limit', 25);
-        $searchResult = $this->searchService->findContent(Query([
+        $offset = (int) $request->get('offset', 0);
+        $limit = (int) $request->get('limit', 25);
+        $searchResult = $this->searchService->findContent(new Query([
             'filter' => $criterion,
             'offset' => $offset,
             'limit' => $limit,
@@ -88,6 +88,8 @@ class ContentUsageController extends Controller
         return new JsonResponse([
             'offset' => $offset,
             'limit' => $limit,
+            'totalCount' => $searchResult->totalCount,
+            'examples' => $examples ?? [],
         ]);
     }
 }
