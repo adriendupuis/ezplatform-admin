@@ -11,6 +11,10 @@
                 <source>content_usage</source>
                 <target>Utilisation des contenus</target>
             </trans-unit>
+            <trans-unit id="content_type_usage">
+                <source>content_type_usage</source>
+                <target>Utilisation des types de contenu</target>
+            </trans-unit>
             <trans-unit id="example_finder">
                 <source>example_finder</source>
                 <target>Chercheur d'exemples</target>

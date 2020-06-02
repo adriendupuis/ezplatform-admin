@@ -11,6 +11,10 @@
                 <source>content_usage</source>
                 <target>Content Usage</target>
             </trans-unit>
+            <trans-unit id="content_type_usage">
+                <source>content_type_usage</source>
+                <target>Content Type Usage</target>
+            </trans-unit>
             <trans-unit id="example_finder">
                 <source>example_finder</source>
                 <target>Example Finder</target>

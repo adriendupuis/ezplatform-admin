@@ -8,7 +8,7 @@ use EzSystems\EzPlatformAdminUi\Tab\AbstractTab;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-class ContentUsage extends AbstractTab
+class ContentTypeUsage extends AbstractTab
 {
     /** @var Connection */
     private $dbalConnection;
@@ -35,8 +35,8 @@ class ContentUsage extends AbstractTab
 
     public function getName(): string
     {
-        return /* @Desc("Content Usage Tab") */
-            $this->translator->trans('content_usage', [], 'ad_admin.content_usage');
+        return /* @Desc("Content Type Usage Tab") */
+            $this->translator->trans('content_type_usage', [], 'ad_admin.content_usage');
     }
 
     public function renderView(array $parameters): string
@@ -64,7 +64,7 @@ SQL)->fetchAll();
             }
         }
 
-        return $this->twig->render('@ezdesign/tab/content_usage.html.twig', [
+        return $this->twig->render('@ezdesign/tab/content_type_usage.html.twig', [
             'global_content_count' => $globalContentCount,
             'used_content_type_count' => $usedContentTypeCount,
             'content_count_list' => $contentCountList,
