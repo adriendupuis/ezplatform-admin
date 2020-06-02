@@ -1,6 +1,10 @@
 {% extends "@ezdesign/ui/layout.html.twig" %}
 
-{#TODO:#}{% trans_default_domain 'ad_admin.content_usage' %}
+{% trans_default_domain 'ad_admin.content_usage' %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('ad-admin-css', null, 'ezplatform') }}
+{% endblock %}
 
 {% block body_class %}{% endblock %}
 
@@ -19,4 +23,8 @@
 
 {% block content %}
     {{ ez_render_component_group('ad-admin-content-usage-tab-groups') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('ad-admin-js', null, 'ezplatform') }}
 {% endblock %}
