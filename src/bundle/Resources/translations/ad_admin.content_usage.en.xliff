@@ -39,9 +39,25 @@
                 <source>best_example</source>
                 <target>Best Example</target>
             </trans-unit>
+            <trans-unit id="best_example_definition">
+                <source>best_example_definition</source>
+                <target>
+                    A content having this optional field not empty,
+                    the maximum of other optional field not empty
+                    and no empty required field.
+                </target>
+            </trans-unit>
             <trans-unit id="bad_example">
                 <source>bad_example</source>
                 <target>Bad Example</target>
+            </trans-unit>
+            <trans-unit id="bad_example_definition">
+                <source>bad_example_definition</source>
+                <target>
+                    A content having this required field empty.
+                    (For example, it can happen when a field has become required
+                    but previous content haven't been updated.)
+                </target>
             </trans-unit>
             <trans-unit id="bad_examples">
                 <source>bad_examples</source>

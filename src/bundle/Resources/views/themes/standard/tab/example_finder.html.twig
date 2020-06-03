@@ -3,13 +3,9 @@
     <p>Find good and bad examples for each field of a content type</p>
     <dl>
         <dt>{{ 'best_example'|trans|desc('Best Example') }}</dt>
-        <dd>A content having this optional field not empty, the maximum of other optional field not empty and no empty
-            required field.
-        </dd>
+        <dd>{{ 'best_example_definition'|trans }}</dd>
         <dt>{{ 'bad_example'|trans|desc('Bad Example') }}</dt>
-        <dd>A content having this required field empty. (For example, it can happen when a field has become required but
-            previous content haven't been updated.)
-        </dd>
+        <dd>{{ 'bad_example_definition'|trans }}</dd>
     </dl>
 </div>
 <fieldset>

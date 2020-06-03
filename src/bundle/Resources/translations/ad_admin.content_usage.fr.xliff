@@ -39,13 +39,30 @@
                 <source>best_example</source>
                 <target>Meilleur Exemple</target>
             </trans-unit>
+            <trans-unit id="best_example_definition">
+                <source>best_example_definition</source>
+                <target>
+                    Un contenu ayant ce champ optionnel de renseigné,
+                    un maximum d'autres champs optionnels renseignés
+                    et aucun champ obligatoire vide.
+                </target>
+            </trans-unit>
             <trans-unit id="bad_example">
                 <source>bad_example</source>
                 <target>Mauvais Exemple</target>
             </trans-unit>
+
             <trans-unit id="bad_examples">
                 <source>bad_examples</source>
                 <target>Mauvais Exemples</target>
+            </trans-unit>
+            <trans-unit id="bad_example_definition">
+                <source>bad_example_definition</source>
+                <target>
+                    Un contenu ayant ce champ obligatoire non renseigné.
+                    (Par exemple, celà peut se produire quand un champ est devenu obligatoire
+                    mais que des contenus existant précédement n'ont pas été mis à jour.)
+                </target>
             </trans-unit>
             <trans-unit id="field_name">
                 <source>field_name</source>
