@@ -35,6 +35,10 @@
                 <source>example_finder</source>
                 <target>Chercheur d'exemples</target>
             </trans-unit>
+            <trans-unit id="example_finder_purpose">
+                <source>example_finder_purpose</source>
+                <target>Trouve de bons et mauvais exemples pour chaque champ d'un type de contenu</target>
+            </trans-unit>
             <trans-unit id="best_example">
                 <source>best_example</source>
                 <target>Meilleur Exemple</target>
@@ -51,11 +55,6 @@
                 <source>bad_example</source>
                 <target>Mauvais Exemple</target>
             </trans-unit>
-
-            <trans-unit id="bad_examples">
-                <source>bad_examples</source>
-                <target>Mauvais Exemples</target>
-            </trans-unit>
             <trans-unit id="bad_example_definition">
                 <source>bad_example_definition</source>
                 <target>
@@ -63,6 +62,10 @@
                     (Par exemple, celà peut se produire quand un champ est devenu obligatoire
                     mais que des contenus existant précédement n'ont pas été mis à jour.)
                 </target>
+            </trans-unit>
+            <trans-unit id="bad_examples">
+                <source>bad_examples</source>
+                <target>Mauvais Exemples</target>
             </trans-unit>
             <trans-unit id="field_name">
                 <source>field_name</source>

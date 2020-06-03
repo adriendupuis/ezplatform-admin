@@ -35,6 +35,10 @@
                 <source>example_finder</source>
                 <target>Example Finder</target>
             </trans-unit>
+            <trans-unit id="example_finder_purpose">
+                <source>example_finder_purpose</source>
+                <target>Find good and bad examples for each field of a content type</target>
+            </trans-unit>
             <trans-unit id="best_example">
                 <source>best_example</source>
                 <target>Best Example</target>
