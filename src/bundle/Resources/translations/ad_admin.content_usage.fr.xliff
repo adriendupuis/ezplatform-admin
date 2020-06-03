@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file target-language="fr" datatype="plaintext">
+    <file target-language="fr" datatype="plaintext" original="">
         <body>
             <trans-unit id="usage">
                 <source>usage</source>
