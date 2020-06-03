@@ -19,6 +19,46 @@
                 <source>example_finder</source>
                 <target>Chercheur d'exemples</target>
             </trans-unit>
+            <trans-unit id="best_example">
+                <source>best_example</source>
+                <target>Meilleur Exemple</target>
+            </trans-unit>
+            <trans-unit id="bad_example">
+                <source>bad_example</source>
+                <target>Mauvais Exemple</target>
+            </trans-unit>
+            <trans-unit id="bad_examples">
+                <source>bad_examples</source>
+                <target>Mauvais Exemples</target>
+            </trans-unit>
+            <trans-unit id="field_name">
+                <source>field_name</source>
+                <target>Nom du champ</target>
+            </trans-unit>
+            <trans-unit id="field_type">
+                <source>field_type</source>
+                <target>Type de champ</target>
+            </trans-unit>
+            <trans-unit id="requirement">
+                <source>requirement</source>
+                <target>Exigence</target>
+            </trans-unit>
+            <trans-unit id="required">
+                <source>required</source>
+                <target>Requis</target>
+            </trans-unit>
+            <trans-unit id="optional">
+                <source>optional</source>
+                <target>Optionnel</target>
+            </trans-unit>
+            <trans-unit id="irrelevant">
+                <source>irrelevant</source>
+                <target>insignifiant</target>
+            </trans-unit>
+            <trans-unit id="none">
+                <source>none</source>
+                <target>aucun</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

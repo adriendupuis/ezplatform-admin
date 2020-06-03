@@ -1,38 +1,39 @@
+{% trans_default_domain 'ad_admin.content_usage' %}
 <table class="ez-table table">
     <thead>
     <tr>
-        <th scope="col">Field Name</th>
-        <th scope="col">Mandatoriness</th>
-        <th scope="col">Field Type</th>
-        <th scope="col">Best Example</th>
-        <th scope="col">Bad Examples</th>
+        <th scope="col">{{ 'field_name'|trans|desc('Field Name') }}</th>
+        <th scope="col">{{ 'requirement'|trans|desc('Requirement') }}</th>
+        <th scope="col">{{ 'field_type'|trans|desc('Field Type') }}</th>
+        <th scope="col">{{ 'best_example'|trans|desc('Best Example') }}</th>
+        <th scope="col">{{ 'bad_examples'|trans|desc('Bad Examples') }}</th>
     </tr>
     </thead>
     <tbody>
     {% for field_definition in content_type.fieldDefinitions %}
         <tr id="{{ field_definition.identifier }}">
             <td>{{ field_definition.names[field_definition.mainLanguageCode] }}</td>
-            <td>{{ field_definition.isRequired ? 'Required' : 'Optional' }}</td>
+            <td>{{ field_definition.isRequired ? 'required'|trans|desc('Required') : 'optional'|trans|desc('Optional') }}</td>
             <td title="{{ field_definition.fieldTypeIdentifier }}">{{ field_type_labels[field_definition.fieldTypeIdentifier] }}</td>
             <td class="best-example">
                 {% if field_definition.fieldTypeIdentifier in never_empty_field_types %}
-                    <small title="Field of this field type can't be empty">(irrelevant)</small>
+                    <small title="Field of this field type can't be empty">({{ 'irrelevant'|trans|desc('irrelevant') }})</small>
                 {% elseif field_definition.isRequired %}
-                    <small title="This field is required and can't be empty">(irrelevant)</small>
+                    <small title="This field is required and can't be empty">({{ 'irrelevant'|trans|desc('irrelevant') }})</small>
                 {% else %}
-                    <small title="No good example found.">(none)</small>
+                    <small title="No good example found.">({{ 'none'|trans|desc('none') }})</small>
                 {% endif %}
             <td class="bad-examples">
                 {% if field_definition.fieldTypeIdentifier in never_empty_field_types %}
-                    <small title="Field of this field type can't be empty">(irrelevant)</small>
+                    <small title="Field of this field type can't be empty">({{ 'irrelevant'|trans|desc('irrelevant') }})</small>
                 {% elseif field_definition.isRequired %}
                     <ul>
                         <li>
-                            <small title="No bad example found.">(none)</small>
+                            <small title="No bad example found.">({{ 'none'|trans|desc('none') }})</small>
                         </li>
                     </ul>
                 {% else %}
-                    <small title="The field is optional and have the right to be empty.">(irrelevant)</small>
+                    <small title="The field is optional and have the right to be empty.">({{ 'irrelevant'|trans|desc('irrelevant') }})</small>
                 {% endif %}</td>
         </tr>
     {% endfor %}

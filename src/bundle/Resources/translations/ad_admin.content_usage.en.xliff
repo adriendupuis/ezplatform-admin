@@ -19,6 +19,46 @@
                 <source>example_finder</source>
                 <target>Example Finder</target>
             </trans-unit>
+            <trans-unit id="best_example">
+                <source>best_example</source>
+                <target>Best Example</target>
+            </trans-unit>
+            <trans-unit id="bad_example">
+                <source>bad_example</source>
+                <target>Bad Example</target>
+            </trans-unit>
+            <trans-unit id="bad_examples">
+                <source>bad_examples</source>
+                <target>Bad Examples</target>
+            </trans-unit>
+            <trans-unit id="field_name">
+                <source>field_name</source>
+                <target>Field Name</target>
+            </trans-unit>
+            <trans-unit id="field_type">
+                <source>field_type</source>
+                <target>Field Type</target>
+            </trans-unit>
+            <trans-unit id="requirement">
+                <source>requirement</source>
+                <target>Requirement</target>
+            </trans-unit>
+            <trans-unit id="required">
+                <source>required</source>
+                <target>Required</target>
+            </trans-unit>
+            <trans-unit id="optional">
+                <source>optional</source>
+                <target>Optional</target>
+            </trans-unit>
+            <trans-unit id="irrelevant">
+                <source>irrelevant</source>
+                <target>irrelevant</target>
+            </trans-unit>
+            <trans-unit id="none">
+                <source>none</source>
+                <target>none</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
