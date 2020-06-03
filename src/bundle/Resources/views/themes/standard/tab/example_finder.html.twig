@@ -9,7 +9,7 @@
     </dl>
 </div>
 <fieldset>
-    <legend>Content Type</legend>
+    <legend>{{ 'content_type'|trans|desc('Content Type') }}</legend>
     <select id="example_finder_content_type">
         <option value="">Select a content type…</option>
         {% for content_type_group in content_type_list %}
