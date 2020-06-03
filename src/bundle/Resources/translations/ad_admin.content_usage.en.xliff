@@ -59,6 +59,26 @@
                 <source>none</source>
                 <target>none</target>
             </trans-unit>
+            <trans-unit id="never_empty_field_type">
+                <source>never_empty_field_type</source>
+                <target>Field of this type can't be empty.</target>
+            </trans-unit>
+            <trans-unit id="non_empty_required_field">
+                <source>non_empty_required_field</source>
+                <target>This field is required and shouldn't be empty.</target>
+            </trans-unit>
+            <trans-unit id="optional_can_be_empty">
+                <source>optional_can_be_empty</source>
+                <target>This field is optional and can be rightly empty.</target>
+            </trans-unit>
+            <trans-unit id="no_good_example_found">
+                <source>no_good_example_found</source>
+                <target>No good example found.</target>
+            </trans-unit>
+            <trans-unit id="no_bad_example_found">
+                <source>no_bad_example_found</source>
+                <target>No bad example found.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
