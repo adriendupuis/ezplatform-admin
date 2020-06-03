@@ -15,6 +15,22 @@
                 <source>content_type_usage</source>
                 <target>Content Type Usage</target>
             </trans-unit>
+            <trans-unit id="content_distribution">
+                <source>content_distribution</source>
+                <target>%global_content_count% contents in %used_content_type_count% content types</target>
+            </trans-unit>
+            <trans-unit id="content_type_count_notice">
+                <source>content_type_count_notice</source>
+                <target>(among %content_type_count% available content types)</target>
+            </trans-unit>
+            <trans-unit id="content_type">
+                <source>content_type</source>
+                <target>Content Type</target>
+            </trans-unit>
+            <trans-unit id="content_count">
+                <source>content_count</source>
+                <target>Content Count</target>
+            </trans-unit>
             <trans-unit id="example_finder">
                 <source>example_finder</source>
                 <target>Example Finder</target>
