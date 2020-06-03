@@ -17,11 +17,11 @@
             </trans-unit>
             <trans-unit id="content_distribution">
                 <source>content_distribution</source>
-                <target>%global_content_count% contents in %used_content_type_count% content types</target>
+                <target>%global_content_count%&#xa0;contents in %used_content_type_count%&#xa0;content types</target>
             </trans-unit>
             <trans-unit id="content_type_count_notice">
                 <source>content_type_count_notice</source>
-                <target>(among %content_type_count% available content types)</target>
+                <target>(among %content_type_count%&#xa0;available content types)</target>
             </trans-unit>
             <trans-unit id="content_type">
                 <source>content_type</source>
@@ -62,6 +62,14 @@
                     (For example, it can happen when a field has become required
                     but previous content haven't been updated.)
                 </target>
+            </trans-unit>
+            <trans-unit id="select_content_type">
+                <source>select_content_type</source>
+                <target>Select a content type…</target>
+            </trans-unit>
+            <trans-unit id="example_finder_status">
+                <source>example_finder_status</source>
+                <target>Example Finder status</target>
             </trans-unit>
             <trans-unit id="bad_examples">
                 <source>bad_examples</source>
