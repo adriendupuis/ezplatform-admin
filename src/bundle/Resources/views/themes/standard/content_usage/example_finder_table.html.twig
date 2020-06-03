@@ -3,8 +3,8 @@
     <thead>
     <tr>
         <th scope="col">{{ 'field_name'|trans|desc('Field Name') }}</th>
-        <th scope="col">{{ 'requirement'|trans|desc('Requirement') }}</th>
         <th scope="col">{{ 'field_type'|trans|desc('Field Type') }}</th>
+        <th scope="col">{{ 'requirement'|trans|desc('Requirement') }}</th>
         <th scope="col">{{ 'best_example'|trans|desc('Best Example') }}</th>
         <th scope="col">{{ 'bad_examples'|trans|desc('Bad Examples') }}</th>
     </tr>
@@ -13,8 +13,8 @@
     {% for field_definition in content_type.fieldDefinitions %}
         <tr id="{{ field_definition.identifier }}">
             <td>{{ field_definition.names[field_definition.mainLanguageCode] }}</td>
-            <td>{{ field_definition.isRequired ? 'required'|trans|desc('Required') : 'optional'|trans|desc('Optional') }}</td>
             <td title="{{ field_definition.fieldTypeIdentifier }}">{{ field_type_labels[field_definition.fieldTypeIdentifier] }}</td>
+            <td>{{ field_definition.isRequired ? 'required'|trans|desc('Required') : 'optional'|trans|desc('Optional') }}</td>
             <td class="best-example">
                 {% if field_definition.fieldTypeIdentifier in never_empty_field_types %}
                     <small title="{{ 'never_empty_field_type'|trans }}">({{ 'irrelevant'|trans|desc('irrelevant') }})</small>
@@ -33,7 +33,7 @@
                         </li>
                     </ul>
                 {% else %}
-                    <small title="{{ optional_can_be_empty|trans }}">({{ 'irrelevant'|trans|desc('irrelevant') }})</small>
+                    <small title="{{ 'optional_can_be_empty'|trans }}">({{ 'irrelevant'|trans|desc('irrelevant') }})</small>
                 {% endif %}</td>
         </tr>
     {% endfor %}

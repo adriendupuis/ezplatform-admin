@@ -69,7 +69,7 @@
             </trans-unit>
             <trans-unit id="optional_can_be_empty">
                 <source>optional_can_be_empty</source>
-                <target>Ce champ est optionel et peut légitimement être vide.</target>
+                <target>Ce champ est optionnel et peut légitimement être vide.</target>
             </trans-unit>
             <trans-unit id="no_good_example_found">
                 <source>no_good_example_found</source>
