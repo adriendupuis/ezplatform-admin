@@ -4,16 +4,14 @@ class ExampleFinder {
      * @param {string} tableBaseUrl
      * @param {string} searchBaseUrl
      * @param {(string|Element|jQuery)} resultContainer
-     * @param {string} contentBaseUrl
      * @param {(string|Element|jQuery)} statusContainer
      * @param {number} [limit=25]
      */
-    constructor(contentTypeSelect, tableBaseUrl, searchBaseUrl, resultContainer, contentBaseUrl, statusContainer, limit = 25) {
+    constructor(contentTypeSelect, tableBaseUrl, searchBaseUrl, resultContainer, statusContainer, limit = 25) {
         this.contentTypeSelect = $(contentTypeSelect);
         this.tableBaseUrl = tableBaseUrl;
         this.searchBaseUrl = searchBaseUrl;
         this.resultContainer = $(resultContainer);
-        this.contentBaseUrl = contentBaseUrl;
         this.statusContainer = $(statusContainer);
         this
             .setLimit(limit)
@@ -109,7 +107,8 @@ class ExampleFinder {
 
     getExampleLinkElement(example) {
         return $('<a>', {
-            href: this.contentBaseUrl + example.id
+            href: example.url
+            //href: example.url_alias
         }).html(example.name);
     }
 

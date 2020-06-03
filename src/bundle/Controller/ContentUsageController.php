@@ -133,7 +133,9 @@ class ContentUsageController extends Controller
             $exampleData = [
                 'score' => $worstExampleScore ? $worstExampleScore : $bestExampleScore,
                 'name' => $content->getName(),
-                'id' => $content->id,
+                //'id' => $content->id,
+                'url' => $this->generateUrl('_ez_content_view', [ 'contentId' => $content->id ]),
+                //'url_alias' => $this->generateUrl('ez_urlalias', [ 'contentId' => $content->id ]),
             ];
 
             if ($worstExampleScore) {

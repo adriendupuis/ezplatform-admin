@@ -4,7 +4,6 @@ window.onload = function () {
         tableBaseUrl,
         searchBaseUrl,
         '#example_finder_result',
-        contentBaseUrl,
         '#example_finder_status'
     );
 };
