@@ -1,6 +1,6 @@
 {% extends "@ezdesign/ui/layout.html.twig" %}
 
-{% trans_default_domain 'ad_admin.content_usage' %}
+{% trans_default_domain 'ad_admin_content_usage' %}
 
 {% block stylesheets %}
     {{ encore_entry_link_tags('ad-admin-css', null, 'ezplatform') }}
@@ -27,4 +27,5 @@
 
 {% block javascripts %}
     {{ encore_entry_script_tags('ad-admin-js', null, 'ezplatform') }}
+    <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'ad_admin_content_usage' }) }}"></script>
 {% endblock %}

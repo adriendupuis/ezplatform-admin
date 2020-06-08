@@ -24,7 +24,7 @@ class ExampleFinder {
         this.contentTypeSelect.val('').change(function () {
             if (this.contentTypeSelect.val()) {
                 let contentType = this.contentTypeSelect.val();
-                this.displayStatus('Initializing field table…');
+                this.displayStatus('field_table_init');
                 this.resultContainer.load(
                     this.tableBaseUrl + contentType,
                     function (response, status, xhr) {
@@ -32,7 +32,7 @@ class ExampleFinder {
                             this.displayStatus(xhr.statusText);
                             this.resultContainer.html('');
                         } else {
-                            this.displayStatus('Ready to search…');
+                            this.displayStatus('ready_to_search');
                             this.setContentType(contentType).search();
                         }
                     }.bind(this)
@@ -114,7 +114,7 @@ class ExampleFinder {
 
     search() {
         let url = this.searchBaseUrl + this.contentType + '/' + this.offset + '/' + this.limit;
-        this.displayStatus('Searching…', true);
+        this.displayStatus('searching', true);
         $.getJSON(url, function (data, status, xhr) {
             if ('error' === status) {
                 //TODO
@@ -126,16 +126,16 @@ class ExampleFinder {
                 if (this.increaseOffset() < data.totalCount) {
                     this.search();
                 } else {
-                    this.displayStatus('Displaying final result.', false);
+                    this.displayStatus('final_result_display', false);
                 }
             } else {
-                this.displayStatus('No content of this type.', false);
+                this.displayStatus('no_content', false);
             }
         }.bind(this));
     }
 
     displayStatus(status, progress = false) {
-        let statusText = status;
+        let statusText = Translator.trans(status,  {}, 'ad_admin_content_usage');
         if (progress && this.totalCount) {
             statusText = statusText + ' (' + Math.floor(100 * this.offset / this.totalCount) + '%)';
         }

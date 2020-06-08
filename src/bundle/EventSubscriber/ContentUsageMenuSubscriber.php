@@ -32,7 +32,7 @@ class ContentUsageMenuSubscriber implements EventSubscriberInterface, Translatio
             [
                 'route' => 'ad_admin.content_usage',
                 'extras' => [
-                    'translation_domain' => 'ad_admin.content_usage',
+                    'translation_domain' => 'ad_admin_content_usage',
                 ],
             ]
         );
@@ -41,7 +41,7 @@ class ContentUsageMenuSubscriber implements EventSubscriberInterface, Translatio
     public static function getTranslationMessages(): array
     {
         return [
-            (new Message(self::ITEM_CONTENT__CONTENT_USAGE, 'ad_admin.content_usage'))->setDesc('Usage'),
+            (new Message(self::ITEM_CONTENT__CONTENT_USAGE, 'ad_admin_content_usage'))->setDesc('Usage'),
         ];
     }
 }

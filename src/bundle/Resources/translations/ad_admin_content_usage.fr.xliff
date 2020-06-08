@@ -1,126 +1,150 @@
 <?xml version="1.0"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file target-language="en" datatype="plaintext" original="">
+    <file target-language="fr" datatype="plaintext" original="">
         <body>
             <trans-unit id="usage" resname="main__content__content_usage">
                 <source>Usage</source>
-                <target>Usage</target>
+                <target>Utilisation</target>
             </trans-unit>
             <trans-unit id="content_usage">
                 <source>content_usage</source>
-                <target>Content Usage</target>
+                <target>Utilisation des contenus</target>
             </trans-unit>
             <trans-unit id="content_type_usage">
                 <source>content_type_usage</source>
-                <target>Content Type Usage</target>
+                <target>Utilisation des types de contenu</target>
             </trans-unit>
             <trans-unit id="content_distribution">
                 <source>content_distribution</source>
-                <target>%global_content_count%&#xa0;contents in %used_content_type_count%&#xa0;content types</target>
+                <target>%global_content_count%&#xa0;contenus de %used_content_type_count%&#xa0;types</target>
             </trans-unit>
             <trans-unit id="content_type_count_notice">
                 <source>content_type_count_notice</source>
-                <target>(among %content_type_count%&#xa0;available content types)</target>
+                <target>(parmis %content_type_count%&#xa0;types de contenu disponibles)</target>
             </trans-unit>
             <trans-unit id="content_type">
                 <source>content_type</source>
-                <target>Content Type</target>
+                <target>Types de contenu</target>
             </trans-unit>
             <trans-unit id="content_count">
                 <source>content_count</source>
-                <target>Content Count</target>
+                <target>Nombre de contenus</target>
             </trans-unit>
             <trans-unit id="example_finder">
                 <source>example_finder</source>
-                <target>Example Finder</target>
+                <target>Chercheur d'exemples</target>
             </trans-unit>
             <trans-unit id="example_finder_purpose">
                 <source>example_finder_purpose</source>
-                <target>Find good and bad examples for each field of a content type</target>
+                <target>Trouve de bons et mauvais exemples pour chaque champ d'un type de contenu</target>
             </trans-unit>
             <trans-unit id="best_example">
                 <source>best_example</source>
-                <target>Best Example</target>
+                <target>Meilleur Exemple</target>
             </trans-unit>
             <trans-unit id="best_example_definition">
                 <source>best_example_definition</source>
                 <target>
-                    A content having this optional field not empty,
-                    the maximum of other optional field not empty
-                    and no empty required field.
+                    Un contenu ayant ce champ optionnel de renseigné,
+                    un maximum d'autres champs optionnels renseignés
+                    et aucun champ obligatoire vide.
                 </target>
             </trans-unit>
             <trans-unit id="bad_example">
                 <source>bad_example</source>
-                <target>Bad Example</target>
+                <target>Mauvais Exemple</target>
             </trans-unit>
             <trans-unit id="bad_example_definition">
                 <source>bad_example_definition</source>
                 <target>
-                    A content having this required field empty.
-                    (For example, it can happen when a field has become required
-                    but previous content haven't been updated.)
+                    Un contenu ayant ce champ obligatoire non renseigné.
+                    (Par exemple, celà peut se produire quand un champ est devenu obligatoire
+                    mais que des contenus existant précédement n'ont pas été mis à jour.)
                 </target>
             </trans-unit>
             <trans-unit id="select_content_type">
                 <source>select_content_type</source>
-                <target>Select a content type…</target>
+                <target>Sélectionnez un type de contenu…</target>
             </trans-unit>
             <trans-unit id="example_finder_status">
                 <source>example_finder_status</source>
-                <target>Example Finder status</target>
+                <target>État du chercheur d'exemples&#xa0;</target>
+            </trans-unit>
+            <trans-unit id="waiting_selection">
+                <source>waiting_selection</source>
+                <target>En attente de la sélection d'un type de contenu…</target>
+            </trans-unit>
+            <trans-unit id="field_table_init">
+                <source>field_table_init</source>
+                <target>Initialisation du tableau des champs…</target>
+            </trans-unit>
+            <trans-unit id="ready_to_search">
+                <source>ready_to_search</source>
+                <target>Prêt à chercher…</target>
+            </trans-unit>
+            <trans-unit id="searching">
+                <source>searching</source>
+                <target>En recherche…</target>
+            </trans-unit>
+            <trans-unit id="final_result_display">
+                <source>final_result_display</source>
+                <target>Affichage du résultat final.</target>
+            </trans-unit>
+            <trans-unit id="no_content">
+                <source>no_content</source>
+                <target>Pas de contenu de ce type.</target>
             </trans-unit>
             <trans-unit id="bad_examples">
                 <source>bad_examples</source>
-                <target>Bad Examples</target>
+                <target>Mauvais Exemples</target>
             </trans-unit>
             <trans-unit id="field_name">
                 <source>field_name</source>
-                <target>Field Name</target>
+                <target>Nom du champ</target>
             </trans-unit>
             <trans-unit id="field_type">
                 <source>field_type</source>
-                <target>Field Type</target>
+                <target>Type de champ</target>
             </trans-unit>
             <trans-unit id="requirement">
                 <source>requirement</source>
-                <target>Requirement</target>
+                <target>Exigence</target>
             </trans-unit>
             <trans-unit id="required">
                 <source>required</source>
-                <target>Required</target>
+                <target>Requis</target>
             </trans-unit>
             <trans-unit id="optional">
                 <source>optional</source>
-                <target>Optional</target>
+                <target>Optionnel</target>
             </trans-unit>
             <trans-unit id="irrelevant">
                 <source>irrelevant</source>
-                <target>irrelevant</target>
+                <target>insignifiant</target>
             </trans-unit>
             <trans-unit id="none">
                 <source>none</source>
-                <target>none</target>
+                <target>aucun</target>
             </trans-unit>
             <trans-unit id="never_empty_field_type">
                 <source>never_empty_field_type</source>
-                <target>Field of this type can't be empty.</target>
+                <target>Un champ de ce type ne peut être vide.</target>
             </trans-unit>
             <trans-unit id="non_empty_required_field">
                 <source>non_empty_required_field</source>
-                <target>This field is required and shouldn't be empty.</target>
+                <target>Ce champ est requis et ne devrait pas être vide.</target>
             </trans-unit>
             <trans-unit id="optional_can_be_empty">
                 <source>optional_can_be_empty</source>
-                <target>This field is optional and can be rightly empty.</target>
+                <target>Ce champ est optionnel et peut légitimement être vide.</target>
             </trans-unit>
             <trans-unit id="no_good_example_found">
                 <source>no_good_example_found</source>
-                <target>No good example found.</target>
+                <target>Pas de bon exemple de trouvé.</target>
             </trans-unit>
             <trans-unit id="no_bad_example_found">
                 <source>no_bad_example_found</source>
-                <target>No bad example found.</target>
+                <target>Pas de mauvais exemple de trouvé.</target>
             </trans-unit>
         </body>
     </file>
