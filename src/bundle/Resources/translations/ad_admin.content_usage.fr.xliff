@@ -2,8 +2,8 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file target-language="fr" datatype="plaintext" original="">
         <body>
-            <trans-unit id="usage">
-                <source>usage</source>
+            <trans-unit id="usage" resname="main__content__content_usage">
+                <source>Usage</source>
                 <target>Utilisation</target>
             </trans-unit>
             <trans-unit id="content_usage">
