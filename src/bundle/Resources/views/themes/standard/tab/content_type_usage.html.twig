@@ -3,11 +3,11 @@
     {{ 'content_distribution'|trans({
         '%global_content_count%': global_content_count,
         '%used_content_type_count%': used_content_type_count,
-    }) }}
+    })|desc('%global_content_count% contents of %used_content_type_count% (used) content types') }}
     {%- if content_count_list|length > used_content_type_count %}
     {{ 'content_type_count_notice'|trans({
         '%content_type_count%': content_count_list|length,
-    }) }}
+    })|desc('If some content types are not used, this is a notice about the total number of content types — %content_type_count%&#xa0;available content types)') }}
     {%- endif -%}.
 </div>
 
