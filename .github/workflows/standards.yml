@@ -18,7 +18,7 @@ jobs:
         run: composer validate
 
       - name: Remove eZ Platform Admin UI's dependency
-        run: composer remove ezsystems/ezplatform-admin-ui --no-interaction
+        run: composer remove ezsystems/ezplatform-admin-ui --no-interaction --no-update
 
       - name: Install PHP CS Fixer
         run: composer require friendsofphp/php-cs-fixer --dev --no-interaction
