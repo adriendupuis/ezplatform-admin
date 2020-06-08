@@ -8,27 +8,29 @@
         <dd>{{ 'bad_example_definition'|trans }}</dd>
     </dl>
 </div>
-<fieldset>
-    <legend>{{ 'content_type'|trans|desc('Content Type') }}</legend>
-    <select id="example_finder_content_type">
-        <option value="">{{ 'select_content_type'|trans|desc('Select a content type…') }}</option>
+<div>
+    <label for="example_finder_content_type">{{ 'content_type'|trans|desc('Content Type') }}</label>
+    <select id="example_finder_content_type" class="form-control">
+        <option value="" disabled selected class="placeholder">{{ 'select_content_type'|trans|desc('Select a content type…') }}</option>
         {% for content_type_group in content_type_list %}
-            <option disabled value="">{{ content_type_group.itself.identifier }}</option>
-            {% for content_type in content_type_group.content_types %}
-                <option value="{{ content_type.identifier }}">
-                    {{ content_type.name }}
-                </option>
-            {% endfor %}
+            <optgroup label="{{ content_type_group.itself.identifier }}">
+                {% for content_type in content_type_group.content_types %}
+                    <option value="{{ content_type.identifier }}">
+                        {{ content_type.name }}
+                    </option>
+                {% endfor %}
+            </optgroup>
         {% endfor %}
-        {# TODO: Remove before release #}
-        <option value="unknown">Unknown content type!</option>
     </select>
-</fieldset>
+</div>
 <script>
     {% set content_type_placeholder = '+content_type+' %}
     {% set content_id_placeholder = 41 %}
     let tableBaseUrl = '{{ path('ad_admin.content_usage.example_finder.table', {content_type: content_type_placeholder})|replace({(content_type_placeholder): ''}) }}',
         searchBaseUrl = '{{ path('ad_admin.content_usage.example_finder.search', {content_type: content_type_placeholder})|replace({(content_type_placeholder): ''}) }}';
 </script>
-<div>{{ 'example_finder_status'|trans|desc('Example Finder status') }}: <em id="example_finder_status">Waiting for Content Type selection…</em></div>
+<div>
+    {{ 'example_finder_status'|trans|desc('Example Finder status') }}:
+    <em id="example_finder_status">Waiting for Content Type selection…</em>
+</div>
 <div id="example_finder_result"></div>

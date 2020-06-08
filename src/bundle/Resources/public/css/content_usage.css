@@ -1,3 +1,7 @@
+#example_finder_content_type {
+    width: auto;
+}
+
 #example_finder_result .bad-examples ul {
     margin: 0;
     padding: 0;
