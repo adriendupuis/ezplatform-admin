@@ -7,8 +7,8 @@ services:
         calls:
             - [setContainer, ['@service_container']]
 
-    AdrienDupuis\EzPlatformAdminBundle\EventListener\:
-        resource: '../../EventListener/*'
+    AdrienDupuis\EzPlatformAdminBundle\EventSubscriber\:
+        resource: '../../EventSubscriber/*'
         public: true
         tags:
             - { name: kernel.event_subscriber }

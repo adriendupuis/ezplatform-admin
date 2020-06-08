@@ -1,6 +1,6 @@
 <?php
 
-namespace AdrienDupuis\EzPlatformAdminBundle\EventListener;
+namespace AdrienDupuis\EzPlatformAdminBundle\EventSubscriber;
 
 use EzSystems\EzPlatformAdminUi\Menu\Event\ConfigureMenuEvent;
 use EzSystems\EzPlatformAdminUi\Menu\MainMenuBuilder;
@@ -9,7 +9,7 @@ use JMS\TranslationBundle\Translation\TranslationContainerInterface;
 use Knp\Menu\MenuItem;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class ContentUsageMenuListener implements EventSubscriberInterface, TranslationContainerInterface
+class ContentUsageMenuSubscriber implements EventSubscriberInterface, TranslationContainerInterface
 {
     const ITEM_CONTENT__CONTENT_USAGE = 'main__content__content_usage';
 
