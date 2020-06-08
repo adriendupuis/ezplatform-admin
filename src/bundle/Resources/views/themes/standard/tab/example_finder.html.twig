@@ -26,8 +26,10 @@
 <script>
     {% set content_type_placeholder = '+content_type+' %}
     {% set content_id_placeholder = 41 %}
-    let tableBaseUrl = '{{ path('ad_admin.content_usage.example_finder.table', {content_type: content_type_placeholder})|replace({(content_type_placeholder): ''}) }}',
-        searchBaseUrl = '{{ path('ad_admin.content_usage.example_finder.search', {content_type: content_type_placeholder})|replace({(content_type_placeholder): ''}) }}';
+    let exampleFinderConfig= {
+        layoutBaseUrl: '{{ path('ad_admin.content_usage.example_finder.table', {content_type: content_type_placeholder})|replace({(content_type_placeholder): ''}) }}',
+        searchBaseUrl: '{{ path('ad_admin.content_usage.example_finder.search', {content_type: content_type_placeholder})|replace({(content_type_placeholder): ''}) }}'
+    };
 </script>
 <div>
     {{ 'example_finder_status'|trans|desc('Example Finder status') }}:
