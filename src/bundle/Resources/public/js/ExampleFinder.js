@@ -24,7 +24,7 @@ class ExampleFinder {
         this.contentTypeSelect.val('').change(function () {
             if (this.contentTypeSelect.val()) {
                 let contentType = this.contentTypeSelect.val();
-                this.displayStatus('field_table_init');
+                this.displayStatus(Translator.trans(/*@Desc("Initialize field table…")*/ 'field_table_init', {}, 'ad_admin_content_usage'));
                 this.resultContainer.load(
                     this.tableBaseUrl + contentType,
                     function (response, status, xhr) {
@@ -32,7 +32,7 @@ class ExampleFinder {
                             this.displayStatus(xhr.statusText);
                             this.resultContainer.html('');
                         } else {
-                            this.displayStatus('ready_to_search');
+                            this.displayStatus(Translator.trans(/*@Desc("Ready to search…")*/ 'ready_to_search', {}, 'ad_admin_content_usage'));
                             this.setContentType(contentType).search();
                         }
                     }.bind(this)
@@ -114,7 +114,7 @@ class ExampleFinder {
 
     search() {
         let url = this.searchBaseUrl + this.contentType + '/' + this.offset + '/' + this.limit;
-        this.displayStatus('searching', true);
+        this.displayStatus(Translator.trans(/*@Desc("Searching…")*/ 'searching', {}, 'ad_admin_content_usage'), true);
         $.getJSON(url, function (data, status, xhr) {
             if ('error' === status) {
                 //TODO
@@ -126,16 +126,16 @@ class ExampleFinder {
                 if (this.increaseOffset() < data.totalCount) {
                     this.search();
                 } else {
-                    this.displayStatus('final_result_display', false);
+                    this.displayStatus(Translator.trans(/*@Desc("Displaying final result.")*/ 'final_result_display', {}, 'ad_admin_content_usage'), false);
                 }
             } else {
-                this.displayStatus('no_content', false);
+                this.displayStatus(Translator.trans(/*@Desc("No content of this type.")*/ 'no_content', {}, 'ad_admin_content_usage'), false);
             }
         }.bind(this));
     }
 
     displayStatus(status, progress = false) {
-        let statusText = Translator.trans(status,  {}, 'ad_admin_content_usage');
+        let statusText = status;
         if (progress && this.totalCount) {
             statusText = statusText + ' (' + Math.floor(100 * this.offset / this.totalCount) + '%)';
         }
