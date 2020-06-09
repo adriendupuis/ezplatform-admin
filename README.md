@@ -23,17 +23,16 @@ imports:
 Features
 --------
 
-* Content
+* Content Usage
   - Content Type Usage: Content count per content type.
+  - Example Finder: Find best and bad content examples for each field of a content type.
 * Navigation
-  - Tab Opener: Open a tab according to URL hash. Example: Right-click on a non-first tab and open it in a new window, the tab is opened.
+  - Tab Opener: Open a tab according to URL hash. Example: Right-click on a tab and open it in a new window, the tab is opened.
 
 
 TODO
 ----
 
-* Content
-  - Content type's good examples finder
 * Users
   - User creation command
   - Password update command
