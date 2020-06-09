@@ -12,6 +12,17 @@ use eZ\Publish\API\Repository\Values\ContentType\ContentType;
 
 class ContentUsageService
 {
+    /**
+     * Even if optional, by their own logic, those field types can't be empty.
+     *
+     * @var string[]
+     */
+    public $neverEmptyFieldTypeIdentifierList = [
+        'ezauthor',
+        'ezboolean',
+        //TODO: Check all build-in field types
+    ];
+
     /** @var Connection */
     private $dbalConnection;
 
@@ -120,11 +131,9 @@ class ContentUsageService
             }
 
             $exampleData = [
-                'score' => $worstExampleScore ? $worstExampleScore : $bestExampleScore,
+                'score' => $worstExampleScore ?: $bestExampleScore,
                 'name' => $content->getName(),
-                //'id' => $content->id,
-                'url' => $this->generateUrl('_ez_content_view', ['contentId' => $content->id]),
-                //'url_alias' => $this->generateUrl('ez_urlalias', [ 'contentId' => $content->id ]),
+                'id' => $content->id,
             ];
 
             if ($worstExampleScore) {

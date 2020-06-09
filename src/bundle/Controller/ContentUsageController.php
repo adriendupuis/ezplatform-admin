@@ -16,17 +16,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ContentUsageController extends Controller
 {
-    /**
-     * Even if optional, by their own logic, those field types can't be empty.
-     *
-     * @var string[]
-     */
-    public $neverEmptyFieldTypeIdentifierList = [
-        'ezauthor',
-        'ezboolean',
-        //TODO: Check all build-in field types
-    ];
-
     /** @var ContentTypeService */
     private $contentTypeService;
 
@@ -89,10 +78,20 @@ class ContentUsageController extends Controller
 
     public function exampleFinderSearchAction(Request $request): JsonResponse
     {
-        return new JsonResponse($this->contentUsageService->findExamples(
+        $contentTypeExamplesDatas = $this->contentUsageService->findExamples(
             $this->getContentType($request),
-            (int) $request->get('limit', 25)),
+            (int) $request->get('limit', 25),
             (int) $request->get('offset', 0),
         );
+        foreach ($contentTypeExamplesDatas['examples'] as $fieldIdentifier => $fieldExamplesDatas) {
+            if (array_key_exists('good', $fieldExamplesDatas)) {
+                $exampleDatas['examples'][$fieldIdentifier]['good']['url'] = $this->generateUrl('_ez_content_view', ['contentId' => $fieldExamplesDatas['good']['id']]);
+            }
+            if (array_key_exists('bad', $fieldExamplesDatas)) {
+                foreach ($fieldExamplesDatas['bad'] as $exampleIndex => $example)
+                $exampleDatas['examples'][$fieldIdentifier]['bad'][$exampleIndex]['url'] = $this->generateUrl('_ez_content_view', ['contentId' => $example['id']]);
+            }
+        }
+        return new JsonResponse($exampleDatas);
     }
 }
