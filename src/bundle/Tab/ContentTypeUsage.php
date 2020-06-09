@@ -2,7 +2,7 @@
 
 namespace AdrienDupuis\EzPlatformAdminBundle\Tab;
 
-use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Connection;
 use eZ\Publish\API\Repository\ContentTypeService;
 use EzSystems\EzPlatformAdminUi\Tab\AbstractTab;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -42,16 +42,17 @@ class ContentTypeUsage extends AbstractTab
     public function renderView(array $parameters): string
     {
         /** @var array[] $contentCountList */
-        $contentCountList = $this->dbalConnection->query(<<<SQL
-SELECT ezcontentclass.identifier AS content_type_identifier, COUNT(ezcontentobject.id) AS content_count
-  FROM ezcontentclass
-    LEFT JOIN ezcontentobject ON ezcontentclass.id = ezcontentobject.contentclass_id
-  WHERE 1 = ezcontentobject.status
-    OR ezcontentobject.id IS NULL
-  GROUP BY ezcontentclass.id
-  ORDER BY content_count DESC
-;
-SQL)->fetchAll();
+        $contentCountList = $this->dbalConnection->createQueryBuilder()
+            ->select('c.identifier AS content_type_identifier', 'COUNT(o.id) AS content_count')
+            ->from('ezcontentclass', 'c')
+            ->leftJoin('c', 'ezcontentobject', 'o', 'c.id = o.contentclass_id')
+            ->where('1 = o.status')
+            ->orWhere('o.id IS NULL')
+            ->groupBy('c.id')
+            ->orderBy('content_count', 'DESC')
+            ->execute()
+            ->fetchAll()
+        ;
 
         $globalContentCount = 0;
         $usedContentTypeCount = 0;
