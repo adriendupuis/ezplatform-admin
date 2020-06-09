@@ -1,5 +1,9 @@
 services:
 
+    AdrienDupuis\EzPlatformAdminBundle\Service\:
+        resource: '../../Service'
+        autowire: true
+
     AdrienDupuis\EzPlatformAdminBundle\Controller\:
         resource: '../../Controller'
         autowire: true
