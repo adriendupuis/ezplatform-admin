@@ -33,6 +33,10 @@ Features
 TODO
 ----
 
-* Users
-  - User creation command
-  - Password update command
+* Features
+  * Users
+    - User creation command
+    - Password update command
+* Developments
+  * Quality
+    - Unit tests
