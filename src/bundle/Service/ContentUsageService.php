@@ -9,6 +9,7 @@ use eZ\Publish\API\Repository\SearchService;
 use eZ\Publish\API\Repository\Values\Content\Content;
 use eZ\Publish\API\Repository\Values\Content\Query;
 use eZ\Publish\API\Repository\Values\ContentType\ContentType;
+use Symfony\Component\Routing\RouterInterface;
 
 class ContentUsageService
 {
@@ -35,16 +36,21 @@ class ContentUsageService
     /** @var SearchService */
     private $searchService;
 
+    /** @var RouterInterface */
+    private $router;
+
     public function __construct(
         Connection $connection,
         ContentTypeService $contentTypeService,
         FieldTypeService $fieldTypeService,
-        SearchService $searchService
+        SearchService $searchService,
+        RouterInterface $router
     ) {
         $this->dbalConnection = $connection;
         $this->contentTypeService = $contentTypeService;
         $this->fieldTypeService = $fieldTypeService;
         $this->searchService = $searchService;
+        $this->router = $router;
     }
 
     public function getContentTypeUsage()
@@ -133,7 +139,8 @@ class ContentUsageService
             $exampleData = [
                 'score' => $worstExampleScore ?: $bestExampleScore,
                 'name' => $content->getName(),
-                'id' => $content->id,
+                'url' => $this->router->generate('_ez_content_view', ['contentId' => $content->id]),
+                //'url_alias' => $this->router->generate('ez_urlalias', ['contentId' => $content->id]),
             ];
 
             if ($worstExampleScore) {

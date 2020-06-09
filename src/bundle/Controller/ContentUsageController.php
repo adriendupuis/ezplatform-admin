@@ -26,8 +26,7 @@ class ContentUsageController extends Controller
         ContentTypeService $contentTypeService,
         ContentUsageService $contentUsageService,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         $this->contentTypeService = $contentTypeService;
         $this->contentUsageService = $contentUsageService;
         $this->translator = $translator;
@@ -67,7 +66,7 @@ class ContentUsageController extends Controller
         return $this->render('@ezdesign/content_usage/example_finder_table.html.twig', [
             'content_type' => $contentType,
             'field_type_labels' => $fieldTypeLabels ?? [],
-            'never_empty_field_types' => $this->neverEmptyFieldTypeIdentifierList,
+            'never_empty_field_types' => $this->contentUsageService->neverEmptyFieldTypeIdentifierList,
         ]);
     }
 
@@ -78,20 +77,10 @@ class ContentUsageController extends Controller
 
     public function exampleFinderSearchAction(Request $request): JsonResponse
     {
-        $contentTypeExamplesDatas = $this->contentUsageService->findExamples(
+        return new JsonResponse($this->contentUsageService->findExamples(
             $this->getContentType($request),
             (int) $request->get('limit', 25),
             (int) $request->get('offset', 0),
-        );
-        foreach ($contentTypeExamplesDatas['examples'] as $fieldIdentifier => $fieldExamplesDatas) {
-            if (array_key_exists('good', $fieldExamplesDatas)) {
-                $exampleDatas['examples'][$fieldIdentifier]['good']['url'] = $this->generateUrl('_ez_content_view', ['contentId' => $fieldExamplesDatas['good']['id']]);
-            }
-            if (array_key_exists('bad', $fieldExamplesDatas)) {
-                foreach ($fieldExamplesDatas['bad'] as $exampleIndex => $example)
-                $exampleDatas['examples'][$fieldIdentifier]['bad'][$exampleIndex]['url'] = $this->generateUrl('_ez_content_view', ['contentId' => $example['id']]);
-            }
-        }
-        return new JsonResponse($exampleDatas);
+        ));
     }
 }
