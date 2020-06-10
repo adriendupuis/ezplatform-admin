@@ -1,4 +1,10 @@
 services:
+
+    AdrienDupuis\EzPlatformAdminBundle\Command\:
+        resource: '../../Command'
+        autowire: true
+        tags: [console.command]
+
     AdrienDupuis\EzPlatformAdminBundle\Tab\ContentUsage:
         parent: EzSystems\EzPlatformAdminUi\Tab\AbstractTab
         autowire: true
