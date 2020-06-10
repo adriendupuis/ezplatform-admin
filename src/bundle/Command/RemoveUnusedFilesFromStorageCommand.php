@@ -19,7 +19,7 @@ class RemoveUnusedFilesFromStorageCommand extends Command
     /** @var string */
     private $imageDirFindCmd = 'find var/site/storage/images -mindepth 5 -type d;';
 
-    /** @var QueryBuilder $imageQueryBuilder */
+    /** @var QueryBuilder */
     private $imageQueryBuilder;
 
     /** @var string */
@@ -28,9 +28,8 @@ class RemoveUnusedFilesFromStorageCommand extends Command
     /** @var string */
     private $binaryFileFindCmd = 'find var/site/storage/original/application -type f;';
 
-    /** @var QueryBuilder $imageQueryBuilder */
+    /** @var QueryBuilder */
     private $binaryQueryBuilder;
-
 
     public function __construct(Connection $connection)
     {
@@ -40,7 +39,7 @@ class RemoveUnusedFilesFromStorageCommand extends Command
         $this->imageQueryBuilder = $this->dbalConnection->createQueryBuilder()
             ->select('a.id, a.contentobject_id, a.version')
             ->from('ezcontentobject_attribute', 'a')
-            ->where("a.data_text LIKE :dirpath");
+            ->where('a.data_text LIKE :dirpath');
 
         $this->binaryQueryBuilder = $this->dbalConnection->createQueryBuilder()
             ->select('a.id, a.contentobject_id, a.version')
@@ -63,6 +62,7 @@ class RemoveUnusedFilesFromStorageCommand extends Command
             if ($imageCleaningStatus = $this->cleanImages($input, $output)) {
                 return $imageCleaningStatus;
             }
+
             return $this->cleanBinaries($input, $output);
         } else {
             return 1;
@@ -71,11 +71,10 @@ class RemoveUnusedFilesFromStorageCommand extends Command
 
     private function cleanImages(InputInterface $input, OutputInterface $output): int
     {
-
         foreach ($this->getPathListFromCmd($this->imageDirFindCmd) as $dirPath) {
             /** @var array|bool $usage */
             $usage = $this->imageQueryBuilder
-                ->setParameter(':dirpath', str_replace(':dirpath', $dirPath,$this->imageAttributePattern))
+                ->setParameter(':dirpath', str_replace(':dirpath', $dirPath, $this->imageAttributePattern))
                 ->execute()
                 ->fetch()
             ;
@@ -117,6 +116,7 @@ class RemoveUnusedFilesFromStorageCommand extends Command
         if (count($pathList) && $pathList[0]) {
             return $pathList;
         }
+
         return [];
     }
 }
