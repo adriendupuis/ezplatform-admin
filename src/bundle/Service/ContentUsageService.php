@@ -60,8 +60,6 @@ class ContentUsageService
             ->select('c.identifier AS content_type_identifier', 'COUNT(o.id) AS content_count')
             ->from('ezcontentclass', 'c')
             ->leftJoin('c', 'ezcontentobject', 'o', 'c.id = o.contentclass_id')
-            ->where('1 = o.status')// to count published content
-            ->orWhere('o.id IS NULL')// to count unused content type
             ->groupBy('c.id')
             ->orderBy('content_count', 'DESC')
             ->execute()
