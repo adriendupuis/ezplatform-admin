@@ -92,7 +92,7 @@
             </trans-unit>
             <trans-unit id="no_content">
                 <source>no_content</source>
-                <target>Pas de contenu de ce type.</target>
+                <target>Pas de contenu publié de ce type.</target>
             </trans-unit>
             <trans-unit id="bad_examples">
                 <source>bad_examples</source>
