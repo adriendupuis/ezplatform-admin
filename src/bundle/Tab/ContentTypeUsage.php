@@ -23,7 +23,7 @@ class ContentTypeUsage extends AbstractTab
 
     public function getIdentifier(): string
     {
-        return 'ad-admin-content-usage-tab';
+        return 'ad-admin-content-type-usage-tab';
     }
 
     public function getName(): string
