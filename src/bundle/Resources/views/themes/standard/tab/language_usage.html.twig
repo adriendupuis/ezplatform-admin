@@ -32,4 +32,23 @@
         <div><a href="{{ path('ezplatform.language.create') }}">{{ 'language.new'|trans({}, 'language') }}</a></div>
     </div>
 {% endif %}
-{#TODO: language usage stats#}
+<table class="ez-table table language-usage" style="width: auto;">
+    <thead>
+    <tr>
+        <th scope="col">{{ 'language'|trans|desc('Language') }}</th>
+        <th scope="col">{{ 'content_count'|trans|desc('Content Count') }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for content_count in content_count_list %}
+        <tr>
+            {% if content_count.language_code is null %}
+                <td class="nonexistent" title="Some content have translation to a nonexistent language (maybe previously removed)">Nonexistent language</td>
+            {% else %}
+                <td class="{{ language_map[content_count.language_code].enabled ? 'enabled' : 'disabled' }}">{{ language_map[content_count.language_code].name }}</td>
+            {% endif %}
+            <td align="right">{{ content_count.content_count }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

@@ -2,6 +2,7 @@
 
 namespace AdrienDupuis\EzPlatformAdminBundle\Tab;
 
+use AdrienDupuis\EzPlatformAdminBundle\Service\ContentUsageService;
 use eZ\Publish\API\Repository\LanguageService;
 use eZ\Publish\API\Repository\Values\Content\Language;
 use eZ\Publish\Core\MVC\Symfony\SiteAccess;
@@ -12,8 +13,14 @@ use Twig\Environment;
 
 class LanguageUsage extends AbstractTab
 {
+    /** @var ContainerInterface */
+    private $container;
+
     /** @var LanguageService */
     private $languageService;
+
+    /** @var ContentUsageService */
+    private $contentUsageService;
 
     /** @var SiteAccess */
     private $siteAccess;
@@ -21,11 +28,13 @@ class LanguageUsage extends AbstractTab
     public function __construct(
         Environment $twig,
         TranslatorInterface $translator,
-        ContainerInterface $container
+        ContainerInterface $container,
+        ContentUsageService $contentUsageService
     ) {
         parent::__construct($twig, $translator);
         $this->container = $container;
         $this->languageService = $this->container->get('ezpublish.api.service.language');
+        $this->contentUsageService = $contentUsageService;
     }
 
     public function getIdentifier(): string
@@ -55,7 +64,6 @@ class LanguageUsage extends AbstractTab
             $databaseLanguageCodeList[] = $language->languageCode;
             $languageMap[$language->languageCode] = $language;
         }
-        //TODO: language usage stats
 
         return $this->twig->render(
             '@ezdesign/tab/language_usage.html.twig',
@@ -66,6 +74,7 @@ class LanguageUsage extends AbstractTab
                     'from_config' => array_diff($databaseLanguageCodeList, $configLanguageCodeList), // Error: using this language(s) in admin can cause errors
                     'from_database' => array_diff($configLanguageCodeList, $databaseLanguageCodeList), // Notice: won't be usable until created in admin
                 ],
+                'content_count_list' => $this->contentUsageService->getLanguageUsage(),
             ]
         );
     }

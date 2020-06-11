@@ -146,6 +146,10 @@
                 <source>no_bad_example_found</source>
                 <target>No bad example found.</target>
             </trans-unit>
+            <trans-unit id="language">
+                <source>language</source>
+                <target>Language</target>
+            </trans-unit>
             <trans-unit id="language_usage">
                 <source>language_usage</source>
                 <target>Language Usage</target>

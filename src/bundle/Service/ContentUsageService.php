@@ -53,7 +53,7 @@ class ContentUsageService
         $this->router = $router;
     }
 
-    public function getContentTypeUsage()
+    public function getContentTypeUsage(): array
     {
         /** @var array[] $contentCountList */
         $contentCountList = $this->dbalConnection->createQueryBuilder()
@@ -84,7 +84,7 @@ class ContentUsageService
         ];
     }
 
-    public function findExamples(ContentType $contentType, int $limit = 25, int $offset = 0)
+    public function findExamples(ContentType $contentType, int $limit = 25, int $offset = 0): array
     {
         $searchAllExamples = false;
         if (-1 === $limit) {
@@ -166,5 +166,17 @@ class ContentUsageService
             'totalCount' => $searchResult->totalCount,
             'examples' => $examples,
         ];
+    }
+
+    public function getLanguageUsage(): array
+    {
+        return $this->dbalConnection->query(<<<SQL
+SELECT ezcontent_language.locale AS language_code, COUNT(ezcontentobject.id) AS content_count
+  FROM ezcontentobject
+    LEFT JOIN ezcontent_language ON ezcontentobject.language_mask & ezcontent_language.id = ezcontent_language.id
+  GROUP BY ezcontent_language.locale
+  ORDER BY content_count DESC
+;
+SQL)->fetchAll();
     }
 }

@@ -7,3 +7,13 @@
     padding: 0;
     list-style: none;
 }
+
+table.language-usage td.disabled {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+table.language-usage td.nonexistent {
+    background-color: #aa0000;/* TODO: use $ez-color-warning-dark from ezsystems/ezplatform-admin-ui/src/bundle/Resources/public/scss/_custom.scss */
+    color: white;
+}
