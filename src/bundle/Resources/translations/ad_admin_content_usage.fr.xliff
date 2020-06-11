@@ -154,6 +154,10 @@
                 <source>language_usage</source>
                 <target>Utilisation des langues</target>
             </trans-unit>
+            <trans-unit id="disabled_language">
+                <source>disabled_language</source>
+                <target>Langue désactivée</target>
+            </trans-unit>
             <trans-unit id="nonexistent_language">
                 <source>list_language</source>
                 <target>Lister les languages enregistrées en base</target>

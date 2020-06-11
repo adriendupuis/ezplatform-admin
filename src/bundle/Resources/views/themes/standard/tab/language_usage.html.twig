@@ -44,10 +44,12 @@
         <tr>
             {% if content_count.language_code is null %}
                 <td class="nonexistent" title="{{ 'nonexistent_language_explanation'|trans }}">
-                    {{ 'nonexistent_language'|trans|desc('Nonexistent language') }}
+                    ({{ 'nonexistent_language'|trans|desc('Nonexistent language') }})
                 </td>
             {% else %}
-                <td class="{{ language_map[content_count.language_code].enabled ? 'enabled' : 'disabled' }}">{{ language_map[content_count.language_code].name }}</td>
+                <td class="{{ language_map[content_count.language_code].enabled ? 'enabled' : ('disabled" title="'~'disabled_language'|trans|desc('Disabled language'))|raw }}">
+                    {{ language_map[content_count.language_code].name }}
+                </td>
             {% endif %}
             <td align="right">{{ content_count.content_count }}</td>
         </tr>

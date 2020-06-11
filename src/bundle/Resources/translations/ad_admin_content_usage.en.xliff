@@ -154,6 +154,10 @@
                 <source>language_usage</source>
                 <target>Language Usage</target>
             </trans-unit>
+            <trans-unit id="disabled_language">
+                <source>disabled_language</source>
+                <target>Disabled language</target>
+            </trans-unit>
             <trans-unit id="nonexistent_language">
                 <source>list_language</source>
                 <target>List languages registered in database</target>
