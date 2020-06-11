@@ -154,6 +154,18 @@
                 <source>language_usage</source>
                 <target>Utilisation des langues</target>
             </trans-unit>
+            <trans-unit id="nonexistent_language">
+                <source>list_language</source>
+                <target>Lister les languages enregistrées en base</target>
+            </trans-unit>
+            <trans-unit id="nonexistent_language">
+                <source>nonexistent_language</source>
+                <target>Langue inexistante</target>
+            </trans-unit>
+            <trans-unit id="nonexistent_language_explanation">
+                <source>nonexistent_language_explanation</source>
+                <target>Des contenus ont des traductions dans des langues qui n'existent pas (généralement précédemment supprimées)</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -18,7 +18,7 @@
 {% if missing_languages.from_database|length %}
     <div class="missing_language">
         <p>
-            {{ missing_languages.from_database|length }}&nbsp;language{{ 1 < missing_languages.from_database|length ? 's are' : ' is' }}
+            {{ missing_languages.from_database|length }}&nbsp;language code{{ 1 < missing_languages.from_database|length ? 's are' : ' is' }}
             declared in configuration but missing from database; Some errors will occur when using other language.
         </p>
         <ul>
@@ -28,7 +28,7 @@
                 </li>
             {% endfor %}
         </ul>
-        <div><a href="{{ path('ezplatform.language.list') }}">List languages registered in database</a></div>
+        <div><a href="{{ path('ezplatform.language.list') }}">{{ 'list_language'|trans|desc('List languages registered in database') }}</a></div>
         <div><a href="{{ path('ezplatform.language.create') }}">{{ 'language.new'|trans({}, 'language') }}</a></div>
     </div>
 {% endif %}
@@ -43,7 +43,9 @@
     {% for content_count in content_count_list %}
         <tr>
             {% if content_count.language_code is null %}
-                <td class="nonexistent" title="Some content have translation to a nonexistent language (maybe previously removed)">Nonexistent language</td>
+                <td class="nonexistent" title="{{ 'nonexistent_language_explanation'|trans }}">
+                    {{ 'nonexistent_language'|trans|desc('Nonexistent language') }}
+                </td>
             {% else %}
                 <td class="{{ language_map[content_count.language_code].enabled ? 'enabled' : 'disabled' }}">{{ language_map[content_count.language_code].name }}</td>
             {% endif %}

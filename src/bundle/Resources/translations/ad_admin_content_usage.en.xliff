@@ -154,6 +154,18 @@
                 <source>language_usage</source>
                 <target>Language Usage</target>
             </trans-unit>
+            <trans-unit id="nonexistent_language">
+                <source>list_language</source>
+                <target>List languages registered in database</target>
+            </trans-unit>
+            <trans-unit id="nonexistent_language">
+                <source>nonexistent_language</source>
+                <target>Nonexistent language</target>
+            </trans-unit>
+            <trans-unit id="nonexistent_language_explanation">
+                <source>nonexistent_language_explanation</source>
+                <target>Some contents have translations to a nonexistent language (usually previously removed)</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
