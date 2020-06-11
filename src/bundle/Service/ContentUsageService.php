@@ -57,7 +57,7 @@ class ContentUsageService
     {
         /** @var array[] $contentCountList */
         $contentCountList = $this->dbalConnection->createQueryBuilder()
-            ->select('c.identifier AS content_type_identifier', 'COUNT(o.id) AS content_count')
+            ->select(['c.identifier AS content_type_identifier', 'COUNT(o.id) AS content_count'])
             ->from('ezcontentclass', 'c')
             ->leftJoin('c', 'ezcontentobject', 'o', 'c.id = o.contentclass_id')
             ->groupBy('c.id')
@@ -170,13 +170,14 @@ class ContentUsageService
 
     public function getLanguageUsage(): array
     {
-        return $this->dbalConnection->query(<<<SQL
-SELECT ezcontent_language.locale AS language_code, COUNT(ezcontentobject.id) AS content_count
-  FROM ezcontentobject
-    LEFT JOIN ezcontent_language ON ezcontentobject.language_mask & ezcontent_language.id = ezcontent_language.id
-  GROUP BY ezcontent_language.locale
-  ORDER BY content_count DESC
-;
-SQL)->fetchAll();
+        return $this->dbalConnection->createQueryBuilder()
+            ->select(['l.locale AS language_code', 'COUNT(o.id) AS content_count'])
+            ->from('ezcontentobject', 'o')
+            ->leftJoin('o', 'ezcontent_language', 'l', 'o.language_mask & l.id = l.id')
+            ->groupBy('l.id')
+            ->orderBy('content_count', 'DESC')
+            ->execute()
+            ->fetchAll()
+        ;
     }
 }
