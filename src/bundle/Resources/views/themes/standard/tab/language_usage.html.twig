@@ -1,7 +1,7 @@
 {% trans_default_domain 'ad_admin_content_usage' %}
 
 {% if missing_languages.from_config|length %}
-    <div class="error">
+    <div class="missing_language">
         <p>
             {{ missing_languages.from_config|length }}&nbsp;language{{ 1 < missing_languages.from_config|length ? 's are' : ' is' }}
             missing from configuration; Some errors will occur if used.
@@ -16,10 +16,10 @@
     </div>
 {% endif %}
 {% if missing_languages.from_database|length %}
-    <div class="notice">
+    <div class="missing_language">
         <p>
             {{ missing_languages.from_database|length }}&nbsp;language{{ 1 < missing_languages.from_database|length ? 's are' : ' is' }}
-            declared in configuration but missing from database.
+            declared in configuration but missing from database; Some errors will occur when using other language.
         </p>
         <ul>
             {% for language_code in missing_languages.from_database %}

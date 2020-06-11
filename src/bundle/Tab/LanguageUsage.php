@@ -71,8 +71,8 @@ class LanguageUsage extends AbstractTab
                 'language_map' => $languageMap,
                 'language_code_list' => array_intersect($configLanguageCodeList, $databaseLanguageCodeList),
                 'missing_languages' => [
-                    'from_config' => array_diff($databaseLanguageCodeList, $configLanguageCodeList), // Error: using this language(s) in admin can cause errors
-                    'from_database' => array_diff($configLanguageCodeList, $databaseLanguageCodeList), // Notice: won't be usable until created in admin
+                    'from_config' => array_diff($databaseLanguageCodeList, $configLanguageCodeList),
+                    'from_database' => array_diff($configLanguageCodeList, $databaseLanguageCodeList),
                 ],
                 'content_count_list' => $this->contentUsageService->getLanguageUsage(),
             ]

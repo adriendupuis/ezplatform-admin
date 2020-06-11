@@ -8,6 +8,12 @@
     list-style: none;
 }
 
+.missing_language {
+    margin-bottom: 10px;
+    border: 3px solid #aa0000;/* TODO: use $ez-color-warning-dark from ezsystems/ezplatform-admin-ui/src/bundle/Resources/public/scss/_custom.scss */
+    padding: 10px;
+}
+
 table.language-usage td.disabled {
     text-decoration: line-through;
     opacity: 0.5;
