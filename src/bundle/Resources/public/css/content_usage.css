@@ -10,8 +10,15 @@
 
 .missing_language {
     margin-bottom: 10px;
-    border: 3px solid #aa0000;/* TODO: use $ez-color-warning-dark from ezsystems/ezplatform-admin-ui/src/bundle/Resources/public/scss/_custom.scss */
     padding: 10px;
+}
+
+.missing_language.notice {
+    border: 3px solid transparent;
+}
+
+.missing_language.error {
+    border: 3px solid #aa0000;/* TODO: use $ez-color-warning-dark from ezsystems/ezplatform-admin-ui/src/bundle/Resources/public/scss/_custom.scss */
 }
 
 table.language-usage td.disabled {
