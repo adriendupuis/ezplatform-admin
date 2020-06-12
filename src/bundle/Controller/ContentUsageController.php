@@ -81,6 +81,7 @@ class ContentUsageController extends Controller
             $this->getContentType($request),
             (int) $request->get('limit', 25),
             (int) $request->get('offset', 0),
+            $request->get('language')
         ));
     }
 }

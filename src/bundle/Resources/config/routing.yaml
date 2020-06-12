@@ -9,8 +9,9 @@ ad_admin.content_usage.example_finder.table:
         _controller: AdrienDupuis\EzPlatformAdminBundle\Controller\ContentUsageController::exampleFinderTableAction
 
 ad_admin.content_usage.example_finder.search:
-    path:  /content_usage/example_finder/search/{content_type}/{offset}/{limit}
+    path:  /content_usage/example_finder/search/{content_type}/{offset}/{limit}/{language}
     defaults:
         _controller: AdrienDupuis\EzPlatformAdminBundle\Controller\ContentUsageController::exampleFinderSearchAction
         offset: 0
         limit: 25
+        language: null
