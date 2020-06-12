@@ -32,8 +32,8 @@ class ExampleFinder {
     setContentTypeSelectEventHandler() {
         this.contentTypeSelect.val('').change(function () {
             this.abortSearch();
-            if (this.contentTypeSelect.val()) {
-                let contentType = this.contentTypeSelect.val();
+            let contentType = this.contentTypeSelect.val();
+            if (contentType) {
                 this.displayStatus(Translator.trans(/*@Desc("Initialize field table…")*/ 'field_table_init', {}, 'ad_admin_content_usage'));
                 this.resultContainer.load(
                     this.tableBaseUrl + contentType,
@@ -54,6 +54,7 @@ class ExampleFinder {
 
     setLanguageCodeSelectEventHandler() {
         this.languageCodeSelect.val('').change(function () {
+            // Clean previous language's examples by reloading the table and running a new search.
             this.contentTypeSelect.change();
         }.bind(this));
         return this;
