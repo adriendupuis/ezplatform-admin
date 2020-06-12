@@ -8,21 +8,32 @@
         <dd>{{ 'bad_example_definition'|trans }}</dd>
     </dl>
 </div>
-<div>
-    <label for="example_finder_content_type">{{ 'content_type'|trans|desc('Content Type') }}</label>
-    <select id="example_finder_content_type" class="form-control">
-        <option value="" disabled selected class="placeholder">{{ 'select_content_type'|trans|desc('Select a content type…') }}</option>
-        {% for content_type_group in content_type_list %}
-            <optgroup label="{{ content_type_group.itself.identifier }}">
-                {% for content_type in content_type_group.content_types %}
-                    <option value="{{ content_type.identifier }}">
-                        {{ content_type.name }}
-                    </option>
-                {% endfor %}
-            </optgroup>
-        {% endfor %}
-    </select>
-</div>
+<form id="example_finder_form">
+    <div style="width:50%;float:left;">
+        <label for="example_finder_content_type">{{ 'content_type'|trans|desc('Content Type') }}</label>
+        <select id="example_finder_content_type" class="form-control">
+            <option value="" disabled selected class="placeholder">{{ 'select_content_type'|trans|desc('Select a content type…') }}</option>
+            {% for content_type_group in content_type_list %}
+                <optgroup label="{{ content_type_group.itself.identifier }}">
+                    {% for content_type in content_type_group.content_types %}
+                        <option value="{{ content_type.identifier }}">
+                            {{ content_type.name }}
+                        </option>
+                    {% endfor %}
+                </optgroup>
+            {% endfor %}
+        </select>
+    </div>
+    <div style="width:50%;float:left;">
+        <label for="example_finder_language_code">{{ 'language'|trans|desc('Language') }}</label>
+        <select id="example_finder_language_code" class="form-control">
+            <option value="" selected>All languages</option>
+            {% for language in language_list %}
+                <option value="{{ language.languageCode }}">{{ language.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</form>
 <script>
     {% set content_type_placeholder = '+content_type+' %}
     {% set content_id_placeholder = 41 %}

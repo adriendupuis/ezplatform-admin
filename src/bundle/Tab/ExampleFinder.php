@@ -3,6 +3,7 @@
 namespace AdrienDupuis\EzPlatformAdminBundle\Tab;
 
 use eZ\Publish\API\Repository\ContentTypeService;
+use eZ\Publish\API\Repository\LanguageService;
 use EzSystems\EzPlatformAdminUi\Tab\AbstractTab;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -12,14 +13,19 @@ class ExampleFinder extends AbstractTab
     /** @var ContentTypeService */
     private $contentTypeService;
 
+    /** @var LanguageService */
+    private $languageService;
+
     public function __construct(
         Environment $twig,
         TranslatorInterface $translator,
-        ContentTypeService $contentTypeService
+        ContentTypeService $contentTypeService,
+        LanguageService $languageService
     ) {
         parent::__construct($twig, $translator);
 
         $this->contentTypeService = $contentTypeService;
+        $this->languageService = $languageService;
     }
 
     public function getIdentifier(): string
@@ -45,6 +51,7 @@ class ExampleFinder extends AbstractTab
 
         return $this->twig->render('@ezdesign/tab/example_finder.html.twig', [
             'content_type_list' => $contentTypeList ?? [],
+            'language_list' => $this->languageService->loadLanguages(),
         ]);
     }
 }

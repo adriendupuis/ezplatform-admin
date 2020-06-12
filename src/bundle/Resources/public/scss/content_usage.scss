@@ -4,7 +4,17 @@
     border-bottom: none;
 }
 
-#example_finder_content_type {
+#example_finder_form {
+    overflow: hidden;/* to have the same height than the floating elements */
+    margin-bottom: 20px;
+}
+
+#example_finder_form > div {
+    float: left;
+    width: auto;
+}
+
+#example_finder_form select {
     width: auto;
 }
 

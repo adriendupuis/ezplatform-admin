@@ -1,27 +1,37 @@
 class ExampleFinder {
     /**
      * @param {(string|Element|jQuery)} contentTypeSelect
+     * @param {(string|Element|jQuery)} languageCodeSelect
      * @param {string} tableBaseUrl
      * @param {string} searchBaseUrl
      * @param {(string|Element|jQuery)} resultContainer
      * @param {(string|Element|jQuery)} statusContainer
      * @param {number} [limit=25]
      */
-    constructor(contentTypeSelect, tableBaseUrl, searchBaseUrl, resultContainer, statusContainer, limit = 25) {
+    constructor(contentTypeSelect, languageCodeSelect, tableBaseUrl, searchBaseUrl, resultContainer, statusContainer, limit = 25) {
         this.contentTypeSelect = $(contentTypeSelect);
+        this.languageCodeSelect = $(languageCodeSelect);
         this.tableBaseUrl = tableBaseUrl;
         this.searchBaseUrl = searchBaseUrl;
         this.resultContainer = $(resultContainer);
         this.statusContainer = $(statusContainer);
+        this.xhr = null;
         this
             .setLimit(limit)
             .resetSearch()
-            .setEventHandler()
+            .setEventHandlers()
         ;
     }
 
-    setEventHandler() {
+    setEventHandlers() {
+        this
+            .setContentTypeSelectEventHandler()
+            .setLanguageCodeSelectEventHandler()
+        ;
+    }
+    setContentTypeSelectEventHandler() {
         this.contentTypeSelect.val('').change(function () {
+            this.abortSearch();
             if (this.contentTypeSelect.val()) {
                 let contentType = this.contentTypeSelect.val();
                 this.displayStatus(Translator.trans(/*@Desc("Initialize field table…")*/ 'field_table_init', {}, 'ad_admin_content_usage'));
@@ -42,6 +52,13 @@ class ExampleFinder {
         return this;
     }
 
+    setLanguageCodeSelectEventHandler() {
+        this.languageCodeSelect.val('').change(function () {
+            this.contentTypeSelect.change();
+        }.bind(this));
+        return this;
+    }
+
     setContentType(contentType) {
         this.contentType = contentType;
         this.resetSearch();
@@ -53,6 +70,10 @@ class ExampleFinder {
         return this;
     }
 
+    /**
+     * Add limit to offset
+     * @returns {number} offset value after being increased
+     */
     increaseOffset() {
         this.offset += this.limit;
         return this.offset;
@@ -61,6 +82,7 @@ class ExampleFinder {
     resetSearch() {
         this.offset = 0;
         this.examples = {};
+        this.abortSearch();
         return this;
     }
 
@@ -108,14 +130,17 @@ class ExampleFinder {
     getExampleLinkElement(example) {
         return $('<a>', {
             href: example.url
-            //href: example.url_alias
+            //href: example.urlAlias
         }).html(example.name);
     }
 
     search() {
         let url = this.searchBaseUrl + this.contentType + '/' + this.offset + '/' + this.limit;
+        if (this.languageCodeSelect.val()) {
+            url += '/' + this.languageCodeSelect.val();
+        }
         this.displayStatus(Translator.trans(/*@Desc("Searching…")*/ 'searching', {}, 'ad_admin_content_usage'), true);
-        $.getJSON(url, function (data, status, xhr) {
+        this.xhr = $.getJSON(url, function (data, status, xhr) {
             if ('error' === status) {
                 //TODO
                 return;
@@ -132,6 +157,12 @@ class ExampleFinder {
                 this.displayStatus(Translator.trans(/*@Desc("No content of this type.")*/ 'no_content', {}, 'ad_admin_content_usage'), false);
             }
         }.bind(this));
+    }
+
+    abortSearch() {
+        if (this.xhr) {
+            this.xhr.abort();
+        }
     }
 
     displayStatus(status, progress = false) {
