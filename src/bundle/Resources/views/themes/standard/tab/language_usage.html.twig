@@ -1,7 +1,7 @@
 {% trans_default_domain 'ad_admin_content_usage' %}
 
 {% if missing_languages.from_config|length %}
-    <div class="missing_language error">
+    <div class="missing_language danger">
         <p>
             {{ missing_languages.from_config|length }}&nbsp;language{{ 1 < missing_languages.from_config|length ? 's are' : ' is' }}
             missing from configuration; Some errors will occur if used until it's added to configuration.
@@ -16,7 +16,7 @@
     </div>
 {% endif %}
 {% if missing_languages.from_database|length %}
-    <div class="missing_language notice">
+    <div class="missing_language warning">
         <p>
             {{ missing_languages.from_database|length }}&nbsp;language code{{ 1 < missing_languages.from_database|length ? 's are' : ' is' }}
             declared in configuration but missing from database; It won't be usable until created in database.

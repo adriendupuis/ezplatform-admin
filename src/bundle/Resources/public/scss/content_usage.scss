@@ -15,11 +15,11 @@
     padding: 10px;
 }
 
-.missing_language.notice {
+.missing_language.warning {
     border: 3px solid $ez-color-warning;
 }
 
-.missing_language.error {
+.missing_language.danger {
     border: 3px solid $ez-color-danger;
 }
 
@@ -29,6 +29,6 @@ table.language-usage td.disabled {
 }
 
 table.language-usage td.nonexistent {
-    background-color: #aa0000;/* TODO: use $ez-color-warning-dark from ezsystems/ezplatform-admin-ui/src/bundle/Resources/public/scss/_custom.scss */
+    background-color: $ez-color-danger;
     color: white;
 }
