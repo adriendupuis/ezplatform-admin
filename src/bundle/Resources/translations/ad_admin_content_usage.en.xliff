@@ -150,6 +150,10 @@
                 <source>language</source>
                 <target>Language</target>
             </trans-unit>
+            <trans-unit id="all_languages">
+                <source>all_languages</source>
+                <target>All languages</target>
+            </trans-unit>
             <trans-unit id="language_usage">
                 <source>language_usage</source>
                 <target>Language Usage</target>

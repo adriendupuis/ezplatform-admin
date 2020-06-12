@@ -27,7 +27,7 @@
     <div style="width:50%;float:left;">
         <label for="example_finder_language_code">{{ 'language'|trans|desc('Language') }}</label>
         <select id="example_finder_language_code" class="form-control">
-            <option value="" selected>All languages</option>
+            <option value="" selected>{{ 'all_languages'|trans|desc('All languages') }}</option>
             {% for language in language_list %}
                 <option value="{{ language.languageCode }}">{{ language.name }}</option>
             {% endfor %}
