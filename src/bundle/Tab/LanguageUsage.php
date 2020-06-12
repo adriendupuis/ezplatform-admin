@@ -4,10 +4,8 @@ namespace AdrienDupuis\EzPlatformAdminBundle\Tab;
 
 use AdrienDupuis\EzPlatformAdminBundle\Service\ContentUsageService;
 use AdrienDupuis\EzPlatformAdminBundle\Service\IntegrityService;
-use eZ\Publish\API\Repository\LanguageService;
 use eZ\Publish\API\Repository\Values\Content\Language;
 use EzSystems\EzPlatformAdminUi\Tab\AbstractTab;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -37,8 +35,6 @@ class LanguageUsage extends AbstractTab
         return /* @Desc("Language Usage Tab") */
             $this->translator->trans('language_usage', [], 'ad_admin_content_usage');
     }
-
-
 
     public function renderView(array $parameters): string
     {
