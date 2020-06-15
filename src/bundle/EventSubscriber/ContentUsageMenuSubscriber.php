@@ -16,7 +16,7 @@ class ContentUsageMenuSubscriber implements EventSubscriberInterface, Translatio
     public static function getSubscribedEvents(): array
     {
         return [
-            ConfigureMenuEvent::MAIN_MENU => ['onMenuConfigure', 0],
+            ConfigureMenuEvent::MAIN_MENU => 'onMenuConfigure',
         ];
     }
 
