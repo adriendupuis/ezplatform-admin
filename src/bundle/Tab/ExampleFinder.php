@@ -2,30 +2,24 @@
 
 namespace AdrienDupuis\EzPlatformAdminBundle\Tab;
 
-use eZ\Publish\API\Repository\ContentTypeService;
-use eZ\Publish\API\Repository\LanguageService;
+use AdrienDupuis\EzPlatformAdminBundle\Form\Type\ExampleFinderType;
 use EzSystems\EzPlatformAdminUi\Tab\AbstractTab;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 class ExampleFinder extends AbstractTab
 {
-    /** @var ContentTypeService */
-    private $contentTypeService;
-
-    /** @var LanguageService */
-    private $languageService;
+    /** @var FormFactoryInterface */
+    private $formFactory;
 
     public function __construct(
         Environment $twig,
         TranslatorInterface $translator,
-        ContentTypeService $contentTypeService,
-        LanguageService $languageService
+        FormFactoryInterface $formFactory
     ) {
         parent::__construct($twig, $translator);
-
-        $this->contentTypeService = $contentTypeService;
-        $this->languageService = $languageService;
+        $this->formFactory = $formFactory;
     }
 
     public function getIdentifier(): string
@@ -41,17 +35,14 @@ class ExampleFinder extends AbstractTab
 
     public function renderView(array $parameters): string
     {
-        $contentTypeGroups = $this->contentTypeService->loadContentTypeGroups();
-        foreach ($contentTypeGroups as $contentTypeGroup) {
-            $contentTypeList[$contentTypeGroup->id] = [
-                'itself' => $contentTypeGroup,
-                'content_types' => $this->contentTypeService->loadContentTypes($contentTypeGroup),
-            ];
-        }
-
         return $this->twig->render('@ezdesign/tab/example_finder.html.twig', [
-            'content_type_list' => $contentTypeList ?? [],
-            'language_list' => $this->languageService->loadLanguages(),
+            'form' => $this->formFactory->create(ExampleFinderType::class, null, [
+                'attr' => [
+                    'id' => 'example_finder_form',
+                ],
+                'csrf_protection' => false,
+                'method' => 'GET', // AJAX in fact
+            ])->createView(),
         ]);
     }
 }
