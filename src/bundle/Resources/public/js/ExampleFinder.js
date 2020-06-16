@@ -35,7 +35,7 @@ class ExampleFinder {
             this.abortSearch();
             let contentType = this.contentTypeSelect.val();
             if (contentType) {
-                this.displayStatus(Translator.trans(/*@Desc("Initialize field table…")*/ 'field_table_init', {}, 'ad_admin_content_usage'));
+                this.displayStatus(Translator.trans(/*@Desc("Initialize field table…")*/ 'example_finder.status.field_table_init', {}, 'ad_admin_content_usage'));
                 this.resultContainer.load(
                     this.tableBaseUrl + contentType,
                     function (response, status, xhr) {
@@ -43,7 +43,7 @@ class ExampleFinder {
                             this.displayStatus(xhr.statusText);
                             this.resultContainer.html('');
                         } else {
-                            this.displayStatus(Translator.trans(/*@Desc("Ready to search…")*/ 'ready_to_search', {}, 'ad_admin_content_usage'));
+                            this.displayStatus(Translator.trans(/*@Desc("Ready to search…")*/ 'example_finder.status.ready_to_search', {}, 'ad_admin_content_usage'));
                             this.setContentType(contentType).search();
                         }
                     }.bind(this)
@@ -141,7 +141,7 @@ class ExampleFinder {
         if (this.languageCodeSelect.val()) {
             url += '/' + this.languageCodeSelect.val();
         }
-        this.displayStatus(Translator.trans(/*@Desc("Searching…")*/ 'searching', {}, 'ad_admin_content_usage'), true);
+        this.displayStatus(Translator.trans(/*@Desc("Searching…")*/ 'example_finder.status.searching', {}, 'ad_admin_content_usage'), true);
         this.xhr = $.getJSON(url, function (data) {
             if (data.totalCount) {
                 this.setTotalCount(data.totalCount);
@@ -149,10 +149,10 @@ class ExampleFinder {
                 if (this.increaseOffset() < data.totalCount) {
                     this.search();
                 } else {
-                    this.displayStatus(Translator.trans(/*@Desc("Displaying final result.")*/ 'final_result_display', {}, 'ad_admin_content_usage'), false);
+                    this.displayStatus(Translator.trans(/*@Desc("Displaying final result.")*/ 'example_finder.status.final_result_display', {}, 'ad_admin_content_usage'), false);
                 }
             } else {
-                this.displayStatus(Translator.trans(/*@Desc("No content of this type.")*/ 'no_content', {}, 'ad_admin_content_usage'), false);
+                this.displayStatus(Translator.trans(/*@Desc("No content of this type.")*/ 'example_finder.status.no_content', {}, 'ad_admin_content_usage'), false);
             }
         }.bind(this)).fail(function (xhr, status, error) {
             this.displayStatus(error);

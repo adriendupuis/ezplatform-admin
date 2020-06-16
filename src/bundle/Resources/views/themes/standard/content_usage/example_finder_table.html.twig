@@ -2,11 +2,11 @@
 <table class="ez-table table">
     <thead>
     <tr>
-        <th scope="col">{{ 'field_name'|trans|desc('Field Name') }}</th>
-        <th scope="col">{{ 'field_type'|trans|desc('Field Type') }}</th>
-        <th scope="col">{{ 'requirement'|trans|desc('Requirement') }}</th>
-        <th scope="col">{{ 'best_example'|trans|desc('Best Example') }}</th>
-        <th scope="col">{{ 'bad_examples'|trans|desc('Bad Examples') }}</th>
+        <th scope="col">{{ 'example_finder.field_name'|trans|desc('Field Name') }}</th>
+        <th scope="col">{{ 'example_finder.field_type'|trans|desc('Field Type') }}</th>
+        <th scope="col">{{ 'example_finder.requirement'|trans|desc('Requirement') }}</th>
+        <th scope="col">{{ 'example_finder.best_example'|trans|desc('Best Example') }}</th>
+        <th scope="col">{{ 'example_finder.bad_examples'|trans|desc('Bad Examples') }}</th>
     </tr>
     </thead>
     <tbody>
@@ -14,26 +14,26 @@
         <tr id="{{ field_definition.identifier }}">
             <td>{{ field_definition.names[field_definition.mainLanguageCode] }}</td>
             <td title="{{ field_definition.fieldTypeIdentifier }}">{{ field_type_labels[field_definition.fieldTypeIdentifier] }}</td>
-            <td>{{ field_definition.isRequired ? 'required'|trans|desc('Required') : 'optional'|trans|desc('Optional') }}</td>
+            <td>{{ field_definition.isRequired ? 'example_finder.required'|trans|desc('Required') : 'example_finder.optional'|trans|desc('Optional') }}</td>
             <td class="best-example">
                 {% if field_definition.fieldTypeIdentifier in never_empty_field_types %}
-                    <small title="{{ 'never_empty_field_type'|trans }}">({{ 'irrelevant'|trans|desc('irrelevant') }})</small>
+                    <small title="{{ 'example_finder.never_empty_field_type'|trans }}">({{ 'example_finder.irrelevant'|trans|desc('irrelevant') }})</small>
                 {% elseif field_definition.isRequired %}
-                    <small title="{{ 'non_empty_required_field'|trans }}">({{ 'irrelevant'|trans|desc('irrelevant') }})</small>
+                    <small title="{{ 'example_finder.non_empty_required_field'|trans }}">({{ 'example_finder.irrelevant'|trans|desc('irrelevant') }})</small>
                 {% else %}
-                    <small title="{{ 'no_good_example_found'|trans }}">({{ 'none'|trans|desc('none') }})</small>
+                    <small title="{{ 'example_finder.no_good_example_found'|trans }}">({{ 'example_finder.none'|trans|desc('none') }})</small>
                 {% endif %}
             <td class="bad-examples">
                 {% if field_definition.fieldTypeIdentifier in never_empty_field_types %}
-                    <small title="{{ 'never_empty_field_type'|trans }}">({{ 'irrelevant'|trans|desc('irrelevant') }})</small>
+                    <small title="{{ 'example_finder.never_empty_field_type'|trans }}">({{ 'example_finder.irrelevant'|trans|desc('irrelevant') }})</small>
                 {% elseif field_definition.isRequired %}
                     <ul>
                         <li>
-                            <small title="{{ 'no_bad_example_found'|trans }}">({{ 'none'|trans|desc('none') }})</small>
+                            <small title="{{ 'example_finder.no_bad_example_found'|trans }}">({{ 'example_finder.none'|trans|desc('none') }})</small>
                         </li>
                     </ul>
                 {% else %}
-                    <small title="{{ 'optional_can_be_empty'|trans }}">({{ 'irrelevant'|trans|desc('irrelevant') }})</small>
+                    <small title="{{ 'example_finder.optional_can_be_empty'|trans }}">({{ 'example_finder.irrelevant'|trans|desc('irrelevant') }})</small>
                 {% endif %}</td>
         </tr>
     {% endfor %}

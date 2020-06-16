@@ -14,14 +14,14 @@ class ExampleFinderType extends AbstractType
         $builder
             ->add('content_type', ContentTypeChoiceType::class, [
                 'required' => true,
-                'label' => 'content_type',
-                'placeholder' => 'select_content_type',
+                'label' => 'common.content_type',
+                'placeholder' => 'example_finder.select_content_type',
                 'translation_domain' => 'ad_admin_content_usage',
             ])
             ->add('language_code', LanguageChoiceType::class, [
                 'required' => false,
-                'label' => 'language',
-                'placeholder' => 'all_languages',
+                'label' => 'common.language',
+                'placeholder' => 'example_finder.all_languages',
                 'translation_domain' => 'ad_admin_content_usage',
             ])
         ;

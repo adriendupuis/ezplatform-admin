@@ -10,10 +10,10 @@ $(function () {
                 '    <div class="modal-dialog modal-lg" role="document">\n' +
                 '        <div class="modal-content">\n' +
                 '            <div class="modal-header">' +
-                '               <h5 class="modal-title">Tab Redirect</h5>' +
+                '               <h5 class="modal-title">Tab Redirect</h5>' +//TODO: Translation
                 '            </div>' +
                 '            <div class="modal-body">' +
-                '                Redirecting to tab' +
+                '                Redirecting to tab' +//TODO: Translation
                 '                <em>'+tab.text().trim()+'</em>&nbsp;/' +
                 '                <strong><em>' + childTab.text().trim() +' </em></strong>…' +
                 '            </div>' +

@@ -1,11 +1,11 @@
 {% trans_default_domain 'ad_admin_content_usage' %}
 <div>
-    <p>{{ 'example_finder_purpose'|trans }}</p>
+    <p>{{ 'example_finder.purpose'|trans }}</p>
     <dl>
-        <dt>{{ 'best_example'|trans|desc('Best Example') }}</dt>
-        <dd>{{ 'best_example_definition'|trans }}</dd>
-        <dt>{{ 'bad_example'|trans|desc('Bad Example') }}</dt>
-        <dd>{{ 'bad_example_definition'|trans }}</dd>
+        <dt>{{ 'example_finder.best_example'|trans|desc('Best Example') }}</dt>
+        <dd>{{ 'example_finder.best_example_definition'|trans }}</dd>
+        <dt>{{ 'example_finder.bad_example'|trans|desc('Bad Example') }}</dt>
+        <dd>{{ 'example_finder.bad_example_definition'|trans }}</dd>
     </dl>
 </div>
 {{ form_start(form) }}
@@ -33,7 +33,7 @@
     };
 </script>
 <div>
-    {{ 'example_finder_status'|trans|desc('Example Finder status') }}:
-    <em id="example_finder_status">{{ 'waiting_selection'|trans|desc('Waiting for Content Type selection…') }}</em>
+    {{ 'example_finder.status'|trans|desc('Example Finder status') }}:
+    <em id="example_finder_status">{{ 'example_finder.status.waiting_selection'|trans|desc('Waiting for Content Type selection…') }}</em>
 </div>
 <div id="example_finder_result"></div>

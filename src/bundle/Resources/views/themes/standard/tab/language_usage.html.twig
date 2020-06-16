@@ -28,26 +28,26 @@
                 </li>
             {% endfor %}
         </ul>
-        <div><a href="{{ path('ezplatform.language.list') }}">{{ 'list_language'|trans|desc('List languages registered in database') }}</a></div>
+        <div><a href="{{ path('ezplatform.language.list') }}">{{ 'language_usage.list_language'|trans|desc('List languages registered in database') }}</a></div>
         <div><a href="{{ path('ezplatform.language.create') }}">{{ 'language.new'|trans({}, 'language') }}</a></div>
     </div>
 {% endif %}
 <table class="ez-table table language-usage" style="width: auto;">
     <thead>
     <tr>
-        <th scope="col">{{ 'language'|trans|desc('Language') }}</th>
-        <th scope="col">{{ 'content_count'|trans|desc('Content Count') }}</th>
+        <th scope="col">{{ 'common.language'|trans|desc('Language') }}</th>
+        <th scope="col">{{ 'common.content_count'|trans|desc('Content Count') }}</th>
     </tr>
     </thead>
     <tbody>
     {% for content_count in content_count_list %}
         <tr>
             {% if content_count.language_code is null %}
-                <td class="nonexistent" title="{{ 'nonexistent_language_explanation'|trans }}">
-                    ({{ 'nonexistent_language'|trans|desc('Nonexistent language') }})
+                <td class="nonexistent" title="{{ 'language_usage.nonexistent_language_explanation'|trans }}">
+                    ({{ 'language_usage.nonexistent_language'|trans|desc('Nonexistent language') }})
                 </td>
             {% else %}
-                <td class="{{ language_map[content_count.language_code].enabled ? 'enabled' : ('disabled" title="'~'disabled_language'|trans|desc('Disabled language'))|raw }}">
+                <td class="{{ language_map[content_count.language_code].enabled ? 'enabled' : ('disabled" title="'~'language_usage.disabled_language'|trans|desc('Disabled language'))|raw }}">
                     {{ language_map[content_count.language_code].name }}
                 </td>
             {% endif %}
