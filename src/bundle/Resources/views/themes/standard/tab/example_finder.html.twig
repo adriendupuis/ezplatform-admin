@@ -9,13 +9,19 @@
     </dl>
 </div>
 {{ form_start(form) }}
-    <div>
-        {{ form_label(form.content_type) }}
-        {{ form_widget(form.content_type, {'attr': {'class': 'form-control'}}) }}
-    </div>
-    <div>
-        {{ form_label(form.language_code) }}
-        {{ form_widget(form.language_code, {'attr': {'class': 'form-control'}}) }}
+    <div class="card ez-card">
+        <div class="card-body">
+            <div class="form-group">
+                <div>
+                    {{ form_label(form.content_type) }}
+                    {{ form_widget(form.content_type, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div>
+                    {{ form_label(form.language_code) }}
+                    {{ form_widget(form.language_code, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+        </div>
     </div>
 {{ form_end(form) }}
 <script>
