@@ -1,179 +1,232 @@
-<?xml version="1.0"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file target-language="fr" datatype="plaintext" original="">
-        <body>
-            <trans-unit id="usage" resname="main__content__content_usage">
-                <source>Usage</source>
-                <target>Utilisation</target>
-            </trans-unit>
-            <trans-unit id="content_usage">
-                <source>content_usage</source>
-                <target>Utilisation des contenus</target>
-            </trans-unit>
-            <trans-unit id="content_type_usage">
-                <source>content_type_usage</source>
-                <target>Utilisation des types de contenu</target>
-            </trans-unit>
-            <trans-unit id="content_distribution">
-                <source>content_distribution</source>
-                <target>%global_content_count%&#xa0;contenus de %used_content_type_count%&#xa0;types</target>
-            </trans-unit>
-            <trans-unit id="content_type_count_notice">
-                <source>content_type_count_notice</source>
-                <target>(parmis %content_type_count%&#xa0;types de contenu disponibles)</target>
-            </trans-unit>
-            <trans-unit id="content_type">
-                <source>content_type</source>
-                <target>Type de contenu</target>
-            </trans-unit>
-            <trans-unit id="content_count">
-                <source>content_count</source>
-                <target>Nombre de contenus</target>
-            </trans-unit>
-            <trans-unit id="example_finder">
-                <source>example_finder</source>
-                <target>Chercheur d'exemples</target>
-            </trans-unit>
-            <trans-unit id="example_finder_purpose">
-                <source>example_finder_purpose</source>
-                <target>Trouve de bons et mauvais exemples pour chaque champ d'un type de contenu</target>
-            </trans-unit>
-            <trans-unit id="best_example">
-                <source>best_example</source>
-                <target>Meilleur Exemple</target>
-            </trans-unit>
-            <trans-unit id="best_example_definition">
-                <source>best_example_definition</source>
-                <target>
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
+  <file source-language="en" target-language="fr" datatype="plaintext" original="not.available">
+    <header>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
+    </header>
+    <body>
+      <trans-unit id="9e765c74e9b985cef8ebd26e08f88744f6e4010a" resname="all_languages">
+        <source>All languages</source>
+        <target>Toutes les langues</target>
+        <note>key: all_languages</note>
+      </trans-unit>
+      <trans-unit id="91b402f2df6a6648ad4e5143dde53fb5ef1cc3ce" resname="bad_example">
+        <source>Bad Example</source>
+        <target>Mauvais Exemple</target>
+        <note>key: bad_example</note>
+      </trans-unit>
+      <trans-unit id="ae6df53a9768ecf11bd65b17f71f16f59174c2a3" resname="bad_example_definition">
+        <source xml:space="preserve">
+          A content having this required field empty.
+          (For example, it can happen when a field has become required
+          but previous content haven't been updated.)
+        </source>
+        <target xml:space="preserve">
+            Un contenu ayant ce champ obligatoire non renseigné.
+            (Par exemple, celà peut se produire quand un champ est devenu obligatoire
+            mais que des contenus existant précédement n'ont pas été mis à jour.)
+        </target>
+        <note>key: bad_example_definition</note>
+      </trans-unit>
+      <trans-unit id="a761e169db9b75113e3893c91a34b75b6dd84b9f" resname="bad_examples">
+        <source>Bad Examples</source>
+        <target>Mauvais Exemples</target>
+        <note>key: bad_examples</note>
+      </trans-unit>
+      <trans-unit id="76d9ac2022236e5adffd595dfd454676f0b90312" resname="best_example">
+        <source>Best Example</source>
+        <target>Meilleur Exemple</target>
+        <note>key: best_example</note>
+      </trans-unit>
+      <trans-unit id="45e7c7d7259d6a17a73c41e929c6a61001686fa2" resname="best_example_definition">
+        <source xml:space="preserve">
+          A content having this optional field not empty,
+          the maximum of other optional field not empty
+          and no empty required field.
+        </source>
+        <target xml:space="preserve">
                     Un contenu ayant ce champ optionnel de renseigné,
                     un maximum d'autres champs optionnels renseignés
                     et aucun champ obligatoire vide.
                 </target>
-            </trans-unit>
-            <trans-unit id="bad_example">
-                <source>bad_example</source>
-                <target>Mauvais Exemple</target>
-            </trans-unit>
-            <trans-unit id="bad_example_definition">
-                <source>bad_example_definition</source>
-                <target>
-                    Un contenu ayant ce champ obligatoire non renseigné.
-                    (Par exemple, celà peut se produire quand un champ est devenu obligatoire
-                    mais que des contenus existant précédement n'ont pas été mis à jour.)
-                </target>
-            </trans-unit>
-            <trans-unit id="select_content_type">
-                <source>select_content_type</source>
-                <target>Sélectionnez un type de contenu…</target>
-            </trans-unit>
-            <trans-unit id="example_finder_status">
-                <source>example_finder_status</source>
-                <target>État du chercheur d'exemples&#xa0;</target>
-            </trans-unit>
-            <trans-unit id="waiting_selection">
-                <source>waiting_selection</source>
-                <target>En attente de la sélection d'un type de contenu…</target>
-            </trans-unit>
-            <trans-unit id="field_table_init">
-                <source>field_table_init</source>
-                <target>Initialisation du tableau des champs…</target>
-            </trans-unit>
-            <trans-unit id="ready_to_search">
-                <source>ready_to_search</source>
-                <target>Prêt à chercher…</target>
-            </trans-unit>
-            <trans-unit id="searching">
-                <source>searching</source>
-                <target>En recherche…</target>
-            </trans-unit>
-            <trans-unit id="final_result_display">
-                <source>final_result_display</source>
-                <target>Affichage du résultat final.</target>
-            </trans-unit>
-            <trans-unit id="no_content">
-                <source>no_content</source>
-                <target>Pas de contenu publié de ce type.</target>
-            </trans-unit>
-            <trans-unit id="bad_examples">
-                <source>bad_examples</source>
-                <target>Mauvais Exemples</target>
-            </trans-unit>
-            <trans-unit id="field_name">
-                <source>field_name</source>
-                <target>Nom du champ</target>
-            </trans-unit>
-            <trans-unit id="field_type">
-                <source>field_type</source>
-                <target>Type de champ</target>
-            </trans-unit>
-            <trans-unit id="requirement">
-                <source>requirement</source>
-                <target>Exigence</target>
-            </trans-unit>
-            <trans-unit id="required">
-                <source>required</source>
-                <target>Requis</target>
-            </trans-unit>
-            <trans-unit id="optional">
-                <source>optional</source>
-                <target>Optionnel</target>
-            </trans-unit>
-            <trans-unit id="irrelevant">
-                <source>irrelevant</source>
-                <target>insignifiant</target>
-            </trans-unit>
-            <trans-unit id="none">
-                <source>none</source>
-                <target>aucun</target>
-            </trans-unit>
-            <trans-unit id="never_empty_field_type">
-                <source>never_empty_field_type</source>
-                <target>Un champ de ce type ne peut être vide.</target>
-            </trans-unit>
-            <trans-unit id="non_empty_required_field">
-                <source>non_empty_required_field</source>
-                <target>Ce champ est requis et ne devrait pas être vide.</target>
-            </trans-unit>
-            <trans-unit id="optional_can_be_empty">
-                <source>optional_can_be_empty</source>
-                <target>Ce champ est optionnel et peut légitimement être vide.</target>
-            </trans-unit>
-            <trans-unit id="no_good_example_found">
-                <source>no_good_example_found</source>
-                <target>Pas de bon exemple de trouvé.</target>
-            </trans-unit>
-            <trans-unit id="no_bad_example_found">
-                <source>no_bad_example_found</source>
-                <target>Pas de mauvais exemple de trouvé.</target>
-            </trans-unit>
-            <trans-unit id="language">
-                <source>language</source>
-                <target>Langue</target>
-            </trans-unit>
-            <trans-unit id="all_languages">
-                <source>all_languages</source>
-                <target>Toutes les langues</target>
-            </trans-unit>
-            <trans-unit id="language_usage">
-                <source>language_usage</source>
-                <target>Utilisation des langues</target>
-            </trans-unit>
-            <trans-unit id="disabled_language">
-                <source>disabled_language</source>
-                <target>Langue désactivée</target>
-            </trans-unit>
-            <trans-unit id="nonexistent_language">
-                <source>list_language</source>
-                <target>Lister les languages enregistrées en base</target>
-            </trans-unit>
-            <trans-unit id="nonexistent_language">
-                <source>nonexistent_language</source>
-                <target>Langue inexistante</target>
-            </trans-unit>
-            <trans-unit id="nonexistent_language_explanation">
-                <source>nonexistent_language_explanation</source>
-                <target>Des contenus ont des traductions dans des langues qui n'existent pas (généralement précédemment supprimées)</target>
-            </trans-unit>
-        </body>
-    </file>
+        <note>key: best_example_definition</note>
+      </trans-unit>
+      <trans-unit id="b5863d3b7e3b9902363e10275070487912227b2f" resname="content_count">
+        <source>Content Count</source>
+        <target>Nombre de contenus</target>
+        <note>key: content_count</note>
+      </trans-unit>
+      <trans-unit id="3011ccc81c23919d68e0b6ad92ab2ac14e57ac02" resname="content_distribution">
+        <source>%global_content_count% contents in %used_content_type_count% content types</source>
+        <target>%global_content_count% contenus de %used_content_type_count% types</target>
+        <note>key: content_distribution</note>
+      </trans-unit>
+      <trans-unit id="b9b0eb0c1e1e5f61a56ef072bca30fce693442e6" resname="content_type">
+        <source>Content Type</source>
+        <target>Type de contenu</target>
+        <note>key: content_type</note>
+      </trans-unit>
+      <trans-unit id="712fdf9c4deef1ed2c613174e426b57db33f329d" resname="content_type_count_notice">
+        <source>(among %content_type_count% available content types)</source>
+        <target>(parmis %content_type_count% types de contenu disponibles)</target>
+        <note>key: content_type_count_notice</note>
+      </trans-unit>
+      <trans-unit id="e3a83119a1210e6317386df804e14bb7c0af0993" resname="content_type_usage">
+        <source>Content Type Usage</source>
+        <target>Utilisation des types de contenu</target>
+        <note>key: content_type_usage</note>
+      </trans-unit>
+      <trans-unit id="36424e1296468675b7ef1936bc1f0d6eddd0388b" resname="content_usage">
+        <source>Content Usage</source>
+        <target>Utilisation des contenus</target>
+        <note>key: content_usage</note>
+      </trans-unit>
+      <trans-unit id="e8e26bd28d0a66c6d729d218d07682f727b6baf2" resname="disabled_language">
+        <source>Disabled language</source>
+        <target>Langue désactivée</target>
+        <note>key: disabled_language</note>
+      </trans-unit>
+      <trans-unit id="a7b10fb4ba0b461f36a554a25ee3583f9eb19f5c" resname="example_finder">
+        <source>Example Finder</source>
+        <target>Chercheur d'exemples</target>
+        <note>key: example_finder</note>
+      </trans-unit>
+      <trans-unit id="d95d9578d79d67088185ec062369d70f1f907c07" resname="example_finder_purpose">
+        <source>Find good and bad examples for each field of a content type</source>
+        <target>Trouve de bons et mauvais exemples pour chaque champ d'un type de contenu</target>
+        <note>key: example_finder_purpose</note>
+      </trans-unit>
+      <trans-unit id="0d1ec05e9a59130b379e0ac4b509ebfdd4d63c6e" resname="example_finder_status">
+        <source>Example Finder status</source>
+        <target>État du chercheur d'exemples </target>
+        <note>key: example_finder_status</note>
+      </trans-unit>
+      <trans-unit id="2acf9b4a880d0588141b332902c68d93354166cc" resname="field_name">
+        <source>Field Name</source>
+        <target>Nom du champ</target>
+        <note>key: field_name</note>
+      </trans-unit>
+      <trans-unit id="1225376b869badffa693b227b1456c8af32391d7" resname="field_table_init">
+        <source>Initializing field table…</source>
+        <target>Initialisation du tableau des champs…</target>
+        <note>key: field_table_init</note>
+      </trans-unit>
+      <trans-unit id="022f8809b566dae9d532693a68c437fbaf891c2a" resname="field_type">
+        <source>Field Type</source>
+        <target>Type de champ</target>
+        <note>key: field_type</note>
+      </trans-unit>
+      <trans-unit id="9b4d06bfcc26a18c954d90275a85b976d48f81a8" resname="final_result_display">
+        <source>Displaying final result.</source>
+        <target>Affichage du résultat final.</target>
+        <note>key: final_result_display</note>
+      </trans-unit>
+      <trans-unit id="cdbc37ad70e22fd7bc55134b2c700f2124e7ab3c" resname="irrelevant">
+        <source>irrelevant</source>
+        <target>insignifiant</target>
+        <note>key: irrelevant</note>
+      </trans-unit>
+      <trans-unit id="e11523c5ff23fc1600aca2d8ee5adb542c5ce4b3" resname="language">
+        <source>Language</source>
+        <target>Langue</target>
+        <note>key: language</note>
+      </trans-unit>
+      <trans-unit id="4a3261979f840e0bbc651a7bfbadf11827eebd49" resname="language_usage">
+        <source>Language Usage</source>
+        <target>Utilisation des langues</target>
+        <note>key: language_usage</note>
+      </trans-unit>
+      <trans-unit id="4aa56cd7e8a9e27e37ebbd59c7fa3492cac9be90" resname="list_language">
+        <source>List languages registered in database</source>
+        <target>Lister les languages enregistrées en base</target>
+        <note>key: list_language</note>
+      </trans-unit>
+      <trans-unit id="fffa762df323f13cf75f1e8a915a12ac6922fdb0" resname="main__content__content_usage">
+        <source>Usage</source>
+        <target>Utilisation</target>
+        <note>key: main__content__content_usage</note>
+      </trans-unit>
+      <trans-unit id="8813239b7fa7d9ff88afaeec9fe8a00326b7622c" resname="never_empty_field_type">
+        <source>Field of this type can't be empty.</source>
+        <target>Un champ de ce type ne peut être vide.</target>
+        <note>key: never_empty_field_type</note>
+      </trans-unit>
+      <trans-unit id="6428005f1d0961b0514f402092079438fa89daaf" resname="no_bad_example_found">
+        <source>No bad example found.</source>
+        <target>Pas de mauvais exemple de trouvé.</target>
+        <note>key: no_bad_example_found</note>
+      </trans-unit>
+      <trans-unit id="90f76b95131239f968b1f81fdabdc45de3024c13" resname="no_content">
+        <source>No published content of this type.</source>
+        <target>Pas de contenu publié de ce type.</target>
+        <note>key: no_content</note>
+      </trans-unit>
+      <trans-unit id="28d50e216bbc1bf90557c359e8e2e14be33de51a" resname="no_good_example_found">
+        <source>No good example found.</source>
+        <target>Pas de bon exemple de trouvé.</target>
+        <note>key: no_good_example_found</note>
+      </trans-unit>
+      <trans-unit id="95290334c62b9a7aff39525fd61c716733ac4b1e" resname="non_empty_required_field">
+        <source>This field is required and shouldn't be empty.</source>
+        <target>Ce champ est requis et ne devrait pas être vide.</target>
+        <note>key: non_empty_required_field</note>
+      </trans-unit>
+      <trans-unit id="71f8e7976e4cbc4561c9d62fb283e7f788202acb" resname="none">
+        <source>none</source>
+        <target>aucun</target>
+        <note>key: none</note>
+      </trans-unit>
+      <trans-unit id="a83dbae01994df553fb617c78f1239eb19d87722" resname="nonexistent_language">
+        <source>Nonexistent language</source>
+        <target>Langue inexistante</target>
+        <note>key: nonexistent_language</note>
+      </trans-unit>
+      <trans-unit id="9e22ac2b5da3355afdabf2370bc98668983c8bd7" resname="nonexistent_language_explanation">
+        <source>Some contents have translations to a nonexistent language (usually previously removed)</source>
+        <target>Des contenus ont des traductions dans des langues qui n'existent pas (généralement précédemment supprimées)</target>
+        <note>key: nonexistent_language_explanation</note>
+      </trans-unit>
+      <trans-unit id="48a7b8889e1542650266c14a18c8708488fa1951" resname="optional">
+        <source>Optional</source>
+        <target>Optionnel</target>
+        <note>key: optional</note>
+      </trans-unit>
+      <trans-unit id="d3c0362df2a5933c75c2a74d65d20422f8333644" resname="optional_can_be_empty">
+        <source>This field is optional and can be rightly empty.</source>
+        <target>Ce champ est optionnel et peut légitimement être vide.</target>
+        <note>key: optional_can_be_empty</note>
+      </trans-unit>
+      <trans-unit id="e4721adfb76a7089c8c350fa72539a50926bd6ab" resname="ready_to_search">
+        <source>Ready to search…</source>
+        <target>Prêt à chercher…</target>
+        <note>key: ready_to_search</note>
+      </trans-unit>
+      <trans-unit id="1a77d416224cbbe77a439cfd6c198030cb522872" resname="required">
+        <source>Required</source>
+        <target>Requis</target>
+        <note>key: required</note>
+      </trans-unit>
+      <trans-unit id="15320ae28eb8c86bdd49bdd100b91b5e65c55697" resname="requirement">
+        <source>Requirement</source>
+        <target>Exigence</target>
+        <note>key: requirement</note>
+      </trans-unit>
+      <trans-unit id="de94f8210cfd3a81511c4888e9b42b92ea72417a" resname="searching">
+        <source>Searching…</source>
+        <target>En recherche…</target>
+        <note>key: searching</note>
+      </trans-unit>
+      <trans-unit id="d65909fb006fa6410376634751f89b1f2fe68943" resname="select_content_type">
+        <source>Select a content type…</source>
+        <target>Sélectionnez un type de contenu…</target>
+        <note>key: select_content_type</note>
+      </trans-unit>
+      <trans-unit id="02507724735be50befa405967c2648763b4a895f" resname="waiting_selection">
+        <source>Waiting for Content Type selection…</source>
+        <target>En attente de la sélection d'un type de contenu…</target>
+        <note>key: waiting_selection</note>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>
