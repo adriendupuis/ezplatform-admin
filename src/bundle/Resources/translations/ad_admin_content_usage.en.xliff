@@ -192,10 +192,10 @@
         <target>Searching…</target>
         <note>key: example_finder.status.searching</note>
       </trans-unit>
-      <trans-unit id="02507724735be50befa405967c2648763b4a895f" resname="example_finder.status.waiting_selection">
+      <trans-unit id="80296418a04e2287d742587759ef0f37c0192c7d" resname="example_finder.status.waiting_selection">
         <source>Waiting for Content Type selection…</source>
         <target>Waiting for Content Type selection…</target>
-        <note>key: waiting_selection</note>
+        <note>key: example_finder.status.waiting_selection</note>
       </trans-unit>
       <trans-unit id="4a3261979f840e0bbc651a7bfbadf11827eebd49" resname="language_usage">
         <source>Language Usage</source>

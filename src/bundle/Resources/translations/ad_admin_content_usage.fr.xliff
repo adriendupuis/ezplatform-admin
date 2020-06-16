@@ -63,9 +63,9 @@
           but previous content haven't been updated.)
         </source>
         <target xml:space="preserve">
-            Un contenu ayant ce champ obligatoire non renseigné.
-            (Par exemple, celà peut se produire quand un champ est devenu obligatoire
-            mais que des contenus existant précédement n'ont pas été mis à jour.)
+          Un contenu ayant ce champ obligatoire non renseigné.
+          (Par exemple, celà peut se produire quand un champ est devenu obligatoire
+          mais que des contenus existant précédement n'ont pas été mis à jour.)
         </target>
         <note>key: example_finder.bad_example_definition</note>
       </trans-unit>
@@ -192,10 +192,10 @@
         <target>En recherche…</target>
         <note>key: example_finder.status.searching</note>
       </trans-unit>
-      <trans-unit id="02507724735be50befa405967c2648763b4a895f" resname="example_finder.status.waiting_selection">
+      <trans-unit id="80296418a04e2287d742587759ef0f37c0192c7d" resname="example_finder.status.waiting_selection">
         <source>Waiting for Content Type selection…</source>
         <target>En attente de la sélection d'un type de contenu…</target>
-        <note>key: waiting_selection</note>
+        <note>key: example_finder.status.waiting_selection</note>
       </trans-unit>
       <trans-unit id="4a3261979f840e0bbc651a7bfbadf11827eebd49" resname="language_usage">
         <source>Language Usage</source>
