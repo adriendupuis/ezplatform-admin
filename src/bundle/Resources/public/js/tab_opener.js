@@ -12,10 +12,10 @@ $(function () {
                 '    <div class="modal-dialog modal-lg" role="document">\n' +
                 '        <div class="modal-content">\n' +
                 '            <div class="modal-header">' +
-                '               <h5 class="modal-title">Tab Redirect</h5>' +
+                '               <h5 class="modal-title">' + Translator.trans(/*@Desc("Tab Redirect")*/ 'tab_opener.modal_title', {}, 'ad_admin_content_usage') + '</h5>' +
                 '            </div>' +
                 '            <div class="modal-body">' +
-                '                Redirecting to tab' +
+                '                ' + Translator.trans(/*@Desc("Redirecting to tab")*/ 'tab_opener.modal_body', {}, 'ad_admin_content_usage') +
                 '                <em>' + tab.text().trim() + '</em>&nbsp;/' +
                 '                <strong><em>' + childTab.text().trim() + ' </em></strong>…' +
                 '            </div>' +
