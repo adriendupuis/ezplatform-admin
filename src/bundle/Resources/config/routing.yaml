@@ -1,0 +1,17 @@
+ad_admin.content_usage:
+    path: /content_usage
+    defaults:
+        _controller: AdrienDupuis\EzPlatformAdminBundle\Controller\ContentUsageController::mainAction
+
+ad_admin.content_usage.example_finder.table:
+    path:  /content_usage/example_finder/table/{content_type}
+    defaults:
+        _controller: AdrienDupuis\EzPlatformAdminBundle\Controller\ContentUsageController::exampleFinderTableAction
+
+ad_admin.content_usage.example_finder.search:
+    path:  /content_usage/example_finder/search/{content_type}/{offset}/{limit}/{language}
+    defaults:
+        _controller: AdrienDupuis\EzPlatformAdminBundle\Controller\ContentUsageController::exampleFinderSearchAction
+        offset: 0
+        limit: 25
+        language: null

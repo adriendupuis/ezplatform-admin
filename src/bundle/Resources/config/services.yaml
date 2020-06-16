@@ -1,13 +1,53 @@
 services:
-    AdrienDupuis\EzPlatformAdminBundle\Tab\ContentUsage:
+
+    AdrienDupuis\EzPlatformAdminBundle\Service\:
+        resource: '../../Service'
+        autowire: true
+
+    AdrienDupuis\EzPlatformAdminBundle\Controller\:
+        resource: '../../Controller'
+        autowire: true
+        tags: [controller.service_arguments]
+        calls:
+            - [setContainer, ['@service_container']]
+
+    AdrienDupuis\EzPlatformAdminBundle\EventSubscriber\:
+        resource: '../../EventSubscriber/*'
+        public: true
+        tags: [kernel.event_subscriber]
+
+    adriendupuis.ezplatform.admin.content_usage.tab_groups:
+        parent: EzSystems\EzPlatformAdminUi\Component\TabsComponent
+        autowire: true
+        autoconfigure: false
+        public: false
+        arguments:
+            $template: '@@ezdesign/ui/tab/system_info.html.twig'
+            #$template: '@@ezdesign/tab/content_usage_group.html.twig'
+            $groupIdentifier: 'ad-admin-content-usage'
+        tags:
+            - { name: ezplatform.admin_ui.component, group: ad-admin-content-usage-tab-groups }
+
+    AdrienDupuis\EzPlatformAdminBundle\Tab\ContentTypeUsage:
         parent: EzSystems\EzPlatformAdminUi\Tab\AbstractTab
         autowire: true
         autoconfigure: false
         public: false
         tags:
-            -
-                name: ezplatform.tab
-                group: dashboard-everyone
-                #group: dashboard-my
-                #group: location-view
-                #group: content-type
+            - { name: ezplatform.tab, group: ad-admin-content-usage }
+
+    AdrienDupuis\EzPlatformAdminBundle\Tab\ExampleFinder:
+        parent: EzSystems\EzPlatformAdminUi\Tab\AbstractTab
+        autowire: true
+        autoconfigure: false
+        public: false
+        tags:
+            - { name: ezplatform.tab, group: ad-admin-content-usage }
+
+    AdrienDupuis\EzPlatformAdminBundle\Tab\LanguageUsage:
+        parent: EzSystems\EzPlatformAdminUi\Tab\AbstractTab
+        autowire: true
+        autoconfigure: false
+        public: false
+        tags:
+            - { name: ezplatform.tab, group: ad-admin-content-usage }

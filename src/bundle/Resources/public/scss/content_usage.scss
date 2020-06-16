@@ -1,0 +1,48 @@
+@import '../../../../../../../ezsystems/ezplatform-admin-ui/src/bundle/Resources/public/scss/_custom.scss';
+
+.nav-tabs-ad-admin-content-usage {
+    border-bottom: none;
+}
+
+#example_finder_form {
+    overflow: hidden;/* to have the same height than the floating elements */
+    margin-bottom: 20px;
+}
+
+#example_finder_form .form-group > div {
+    float: left;
+    width: 50%;
+}
+
+#example_finder_form select {
+    width: auto;
+}
+
+#example_finder_result .bad-examples ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.missing_language {
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+.missing_language.warning {
+    border: 3px solid $ez-color-warning;
+}
+
+.missing_language.danger {
+    border: 3px solid $ez-color-danger;
+}
+
+table.language-usage td.disabled {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+table.language-usage td.nonexistent {
+    background-color: $ez-color-danger;
+    color: white;
+}

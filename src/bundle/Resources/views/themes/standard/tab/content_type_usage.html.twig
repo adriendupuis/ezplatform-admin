@@ -1,15 +1,22 @@
+{% trans_default_domain 'ad_admin_content_usage' %}
+
 <div>
-    {{ global_content_count }}&nbsp;contents in {{ used_content_type_count }}&nbsp;content types
+    {{ 'content_type_usage.content_distribution'|trans({
+        '%global_content_count%': global_content_count,
+        '%used_content_type_count%': used_content_type_count,
+    })|desc('%global_content_count% contents of %used_content_type_count% (used) content types') }}
     {%- if content_count_list|length > used_content_type_count %}
-    (among {{ content_count_list|length }} available content types)
+    {{ 'content_type_usage.content_type_count_notice'|trans({
+        '%content_type_count%': content_count_list|length,
+    })|desc('If some content types are not used, this is a notice about the total number of content types — %content_type_count%&#xa0;available content types)') }}
     {%- endif -%}.
 </div>
 
 <table class="ez-table table" style="width: auto;">
     <thead>
     <tr>
-        <th scope="col">Content Type</th>
-        <th scope="col">Content Count</th>
+        <th scope="col">{{ 'common.content_type'|trans|desc('Content Type') }}</th>
+        <th scope="col">{{ 'common.content_count'|trans|desc('Content Count') }}</th>
     </tr>
     </thead>
     <tbody>
