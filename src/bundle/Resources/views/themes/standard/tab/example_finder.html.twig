@@ -9,7 +9,7 @@
     </dl>
 </div>
 <form id="example_finder_form">
-    <div style="width:50%;float:left;">
+    <div>
         <label for="example_finder_content_type">{{ 'content_type'|trans|desc('Content Type') }}</label>
         <select id="example_finder_content_type" class="form-control">
             <option value="" disabled selected class="placeholder">{{ 'select_content_type'|trans|desc('Select a content type…') }}</option>
@@ -24,7 +24,7 @@
             {% endfor %}
         </select>
     </div>
-    <div style="width:50%;float:left;">
+    <div>
         <label for="example_finder_language_code">{{ 'language'|trans|desc('Language') }}</label>
         <select id="example_finder_language_code" class="form-control">
             <option value="" selected>{{ 'all_languages'|trans|desc('All languages') }}</option>
