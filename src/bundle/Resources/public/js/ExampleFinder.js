@@ -29,6 +29,7 @@ class ExampleFinder {
             .setLanguageCodeSelectEventHandler()
         ;
     }
+
     setContentTypeSelectEventHandler() {
         this.contentTypeSelect.val('').change(function () {
             this.abortSearch();
@@ -141,11 +142,7 @@ class ExampleFinder {
             url += '/' + this.languageCodeSelect.val();
         }
         this.displayStatus(Translator.trans(/*@Desc("Searching…")*/ 'searching', {}, 'ad_admin_content_usage'), true);
-        this.xhr = $.getJSON(url, function (data, status, xhr) {
-            if ('error' === status) {
-                //TODO
-                return;
-            }
+        this.xhr = $.getJSON(url, function (data) {
             if (data.totalCount) {
                 this.setTotalCount(data.totalCount);
                 this.mergeExamples(data.examples).displayExamples();
@@ -157,12 +154,15 @@ class ExampleFinder {
             } else {
                 this.displayStatus(Translator.trans(/*@Desc("No content of this type.")*/ 'no_content', {}, 'ad_admin_content_usage'), false);
             }
+        }.bind(this)).fail(function (xhr, status, error) {
+            this.displayStatus(error);
         }.bind(this));
     }
 
     abortSearch() {
         if (this.xhr) {
             this.xhr.abort();
+            this.xhr = null;
         }
     }
 
@@ -174,5 +174,6 @@ class ExampleFinder {
         this.statusContainer.text(statusText);
     }
 }
+
 // Expose the class
 window.ExampleFinder = ExampleFinder;
