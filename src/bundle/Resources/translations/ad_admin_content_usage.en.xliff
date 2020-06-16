@@ -229,12 +229,12 @@
       </trans-unit>
       <trans-unit id="de5f38f240755bdc4b43e5e464f0f27909b4bfe4" resname="tab_opener.modal_body">
         <source>Redirecting to tab</source>
-        <target state="new">Redirecting to tab</target>
+        <target>Redirecting to tab</target>
         <note>key: tab_opener.modal_body</note>
       </trans-unit>
       <trans-unit id="3d0730859a24c7071fcb9a7ae166a36db96c5991" resname="tab_opener.modal_title">
         <source>Tab Redirect</source>
-        <target state="new">Tab Redirect</target>
+        <target>Tab Redirect</target>
         <note>key: tab_opener.modal_title</note>
       </trans-unit>
     </body>
