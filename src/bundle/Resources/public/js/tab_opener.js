@@ -7,7 +7,7 @@ $(function () {
         } else if ('tab' === tab.attr('role') && tab.parents('.ez-main-nav').length) {
             let childTab = $(document.location.hash).find('a.nav-link:first');
             $('.ez-modal-wrapper').html(
-                '<div class="modal fade ez-modal ez-modal--version-draft-conflict" id="tab-redirect-modal" tabindex="-1" role="dialog">\n' +
+                '<div class="modal fade ez-modal" id="tab-redirect-modal" tabindex="-1" role="dialog">\n' +
                 '    <div class="modal-dialog modal-lg" role="document">\n' +
                 '        <div class="modal-content">\n' +
                 '            <div class="modal-header">' +
