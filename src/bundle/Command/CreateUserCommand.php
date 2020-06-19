@@ -29,38 +29,36 @@ class CreateUserCommand extends Command
     public const ERROR_GROUP_NOT_GIVEN = 6;
     public const ERROR_ADMIN_NOT_FOUND = 9;
 
+    /** @var Repository */
+    private $repository;
+
     /** @var UserService */
     private $userService;
 
     /** @var PermissionResolver */
     private $permissionResolver;
 
-    /** @var Repository */
-    private $repository;
-
-    /** @var string */
-    private $mainLanguageCode = 'eng-GB'; //TODO: How to select the right language?
-
-    public function __construct(UserService $userService, PermissionResolver $permissionResolver, Repository $repository)
+    public function __construct(Repository $repository)
     {
         parent::__construct(self::$defaultName);
-        $this->userService = $userService;
-        $this->permissionResolver = $permissionResolver;
         $this->repository = $repository;
+        $this->userService = $this->repository->getUserService();
+        $this->permissionResolver = $this->repository->getPermissionResolver();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Create a new user')
             ->addArgument('first_name', InputArgument::REQUIRED)
             ->addArgument('last_name', InputArgument::REQUIRED)
             ->addArgument('email', InputArgument::REQUIRED)
-            ->addArgument('login', InputArgument::OPTIONAL, 'If omitted, email is used as login')
-            ->addArgument('password', InputArgument::OPTIONAL, 'If omitted, asked on prompt (recommanded to avoid having password in shell history)')
+            ->addOption('login', 'l', InputOption::VALUE_REQUIRED, 'If omitted, email\'s username (part before at sign “@”) is used as login')
+            ->addOption('password', 'p', InputOption::VALUE_REQUIRED, 'If omitted, asked on prompt (it is recommended to omit it to avoid having password in shell history)')
             ->addOption('group', 'g', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'User\'s parent user group content ID.')
             ->addOption('admin-user', 'a', InputOption::VALUE_REQUIRED, 'Login of the admin user creating this new user', 'admin')
             ->addOption('sudo', 's', InputOption::VALUE_NONE, 'Use sudo instead of an admin user')
+            ->addOption('lang', 'c', InputOption::VALUE_REQUIRED, 'Main language code for user object creation', 'eng-GB')
         ;
     }
 
@@ -76,23 +74,28 @@ class CreateUserCommand extends Command
         }
 
         $email = $input->getArgument('email');
-        $login = $input->getArgument('login');
-        $password = $input->getArgument('password');
+        $login = $input->getOption('login');
+        $password = $input->getOption('password');
         $parentGroupIds = $input->getOption('group');
+        $mainLanguageCode = $input->getOption('lang');
 
-        //if (!$login) { $login=$email; }
         if (!$login) {
-            $login = 'dummy';
+            $login = explode('@', $email);
+            $login = $login[0];
+            $output->writeln("<comment>Email username  “{$login}” used as new user's login.</comment>");
         }
         while (!$password) {
-            $password = $this->getHelper('question')->ask($input, $output, new Question('Enter password: '));
+            $question = new Question('Enter new user\'s password…');
+            $question->setHidden(true);
+            $question->setHiddenFallback(false);
+            $password = $this->getHelper('question')->ask($input, $output, $question);
         }
 
         $userCreateStruct = $this->userService->newUserCreateStruct(
             $login,
             $email,
             $password,
-            $this->mainLanguageCode
+            $mainLanguageCode
         );
         $userCreateStruct->setField('first_name', $input->getArgument('first_name'));
         $userCreateStruct->setField('last_name', $input->getArgument('last_name'));
@@ -119,7 +122,7 @@ class CreateUserCommand extends Command
 
                 return self::ERROR_GROUP_NOT_FOUND;
             } catch (UnauthorizedException $unauthorizedException) {
-                $output->writeln("Error: $adminUserLogin can't access to group with ID $groupId.");
+                $output->writeln("Error: Current user ({$this->permissionResolver->getCurrentUserReference()->getUserId()}) can't access to group with ID $groupId.");
 
                 return self::ERROR_NO_ACCESS_GROUP;
             }
@@ -137,7 +140,7 @@ class CreateUserCommand extends Command
         } catch (ContentFieldValidationException $contentFieldValidationException) {
             foreach ($contentFieldValidationException->getFieldErrors() as $fieldDefinitionId => $fieldErrors) {
                 /** @var ValidationError $fieldError */
-                foreach ($fieldErrors[$this->mainLanguageCode] as $fieldError) {
+                foreach ($fieldErrors[$userCreateStruct->mainLanguageCode] as $fieldError) {
                     $output->writeln("<error>Error: {$fieldError->getTranslatableMessage()}</error>");
                 }
             }
