@@ -64,15 +64,6 @@ class CreateUserCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $adminUserLogin = $input->getOption('admin-user');
-        try {
-            $adminUser = $this->userService->loadUserByLogin($adminUserLogin);
-        } catch (NotFoundException $notFoundException) {
-            $output->writeln("<error>Error: $adminUserLogin can't be found.</error>");
-
-            return self::ERROR_ADMIN_NOT_FOUND;
-        }
-
         $email = $input->getArgument('email');
         $login = $input->getOption('login');
         $password = $input->getOption('password');
@@ -105,6 +96,14 @@ class CreateUserCommand extends Command
                 return $this->createUser($userCreateStruct, $parentGroupIds, $output);
             });
         } else {
+            $adminUserLogin = $input->getOption('admin-user');
+            try {
+                $adminUser = $this->userService->loadUserByLogin($adminUserLogin);
+            } catch (NotFoundException $notFoundException) {
+                $output->writeln("<error>Error: $adminUserLogin can't be found.</error>");
+
+                return self::ERROR_ADMIN_NOT_FOUND;
+            }
             $this->permissionResolver->setCurrentUserReference($adminUser);
 
             return $this->createUser($userCreateStruct, $parentGroupIds, $output);
