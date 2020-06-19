@@ -29,14 +29,14 @@ Features
   - Language Usage: Content count per language.
 * Navigation
   - Tab Opener: Open a tab according to URL hash. Examples: Right-click on a tab and open it in a new window, the tab is active; Reload a page, tab is still active.
-
+* Commands
+  - `ezuser:create` to create an user from command line
 
 TODO
 ----
 
 * Features
   * Users
-    - User creation command
     - Password update command
 * Developments
   * Quality
