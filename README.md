@@ -28,7 +28,7 @@ Features
   - Example Finder: Find best and bad content examples for each field of a content type.
   - Language Usage: Content count per language.
 * Navigation
-  - Tab Opener: Open a tab according to URL hash. Example: Right-click on a tab and open it in a new window, the tab is opened.
+  - Tab Opener: Open a tab according to URL hash. Examples: Right-click on a tab and open it in a new window, the tab is active; Reload a page, tab is still active.
 
 
 TODO
