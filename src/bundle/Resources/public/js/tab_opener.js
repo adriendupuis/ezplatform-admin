@@ -29,7 +29,7 @@ $(function () {
         }
     }
     $('[href^="#ez-tab"]').click(function (event) {
-        // Memorize clicked tab
+        // Memorize clicked tab via URL hash
         document.location.hash = $(this).attr('href');
     });
 });
