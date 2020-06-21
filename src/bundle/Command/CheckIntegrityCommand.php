@@ -29,7 +29,7 @@ class CheckIntegrityCommand extends Command
         /** @var Command $command */
         foreach ($this->getApplication()->all(self::$defaultName) as $command) {
             $output->writeln('Run '.$command->getName());
-            $status &= $command->run($input, $output);
+            $status |= $command->run($input, $output);
         }
         foreach ($this->otherNameSpaceCommandNameList as $commandName) {
             $command = $this->getApplication()->find($commandName);
@@ -41,8 +41,9 @@ class CheckIntegrityCommand extends Command
             if ($command->getDefinition()->hasOption('dry-run')) {
                 $parameters['--dry-run'] = true;
             }
-            $status &= $command->run(new ArrayInput($parameters), $output);
+            $status |= $command->run(new ArrayInput($parameters), $output);
         }
+
         if (!$status) {
             $output->writeln('<info>Globaly, every thing is alright.</info>');
         }
