@@ -34,7 +34,14 @@ class CheckIntegrityCommand extends Command
         foreach ($this->otherNameSpaceCommandNameList as $commandName) {
             $command = $this->getApplication()->find($commandName);
             $output->writeln("Run {$command->getName()} (dry run)");
-            $status &= $command->run(new ArrayInput(['--dry-run']), $output);
+            $parameters = [];
+            if ($input->hasOption('siteaccess')) {
+                $parameters['--siteaccess'] = $input->getOption('siteaccess');
+            }
+            if ($command->getDefinition()->hasOption('dry-run')) {
+                $parameters['--dry-run'] = true;
+            }
+            $status &= $command->run(new ArrayInput($parameters), $output);
         }
         if (!$status) {
             $output->writeln('<info>Globaly, every thing is alright.</info>');
