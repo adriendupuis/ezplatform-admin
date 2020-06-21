@@ -1,3 +1,6 @@
+# Notice: Those parameters are not automatically imported to your project.
+# Bellow are examples of customization that you could find useful. You can pick some ideas or import the full file.
+
 parameters:
     # http://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
     ezsettings.default.user_preferences.allowed_full_date_formats:
