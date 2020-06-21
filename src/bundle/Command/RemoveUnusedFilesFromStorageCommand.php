@@ -4,6 +4,7 @@ namespace AdrienDupuis\EzPlatformAdminBundle\Command;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
+use eZ\Publish\Core\MVC\Symfony\SiteAccess;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -34,7 +35,10 @@ class RemoveUnusedFilesFromStorageCommand extends Command
     /** @var QueryBuilder */
     private $binaryQueryBuilder;
 
-    public function __construct(Connection $connection)
+    /** @var SiteAccess */
+    private $siteAccess;
+
+    public function __construct(Connection $connection, SiteAccess $siteAccess)
     {
         parent::__construct();
         $this->dbalConnection = $connection;
@@ -49,6 +53,9 @@ class RemoveUnusedFilesFromStorageCommand extends Command
             ->from('ezbinaryfile', 'f')
             ->leftJoin('f', 'ezcontentobject_attribute', 'a', 'f.contentobject_attribute_id = a.id')
             ->where('f.filename = :filename');
+
+        $this->siteAccess = $siteAccess;
+        var_dump($siteAccess);
     }
 
     protected function configure()
@@ -61,11 +68,8 @@ class RemoveUnusedFilesFromStorageCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $siteaccess = $input->getOption('siteaccess');
-        if (!$siteaccess) {
-            //TODO: Better default siteaccess retrieving;
+        if (!$input->getOption('siteaccess')) {
             $output->writeln('<comment>An admin siteaccess should be provided (using --siteaccess option) instead of falling back on default one.</comment>');
-            $siteaccess = trim(explode(':', `grep "default_siteaccess: " config/packages/ezplatform.yaml;`)[1]);
         }
 
         if (chdir('public')) {
@@ -81,7 +85,7 @@ class RemoveUnusedFilesFromStorageCommand extends Command
 
     private function cleanImages(InputInterface $input, OutputInterface $output): int
     {
-        foreach ($this->getPathListFromCmd(str_replace('%siteaccess%', $input->getOption('siteaccess'), $this->imageDirFindCmdPattern)) as $dirPath) {
+        foreach ($this->getPathListFromCmd(str_replace('%siteaccess%', $this->siteAccess->name, $this->imageDirFindCmdPattern)) as $dirPath) {
             /** @var array|bool $usage */
             $usage = $this->imageQueryBuilder
                 ->setParameter(':dirpath', str_replace(':dirpath', $dirPath, $this->imageAttributePattern))
@@ -101,7 +105,7 @@ class RemoveUnusedFilesFromStorageCommand extends Command
 
     private function cleanBinaries(InputInterface $input, OutputInterface $output): int
     {
-        foreach ($this->getPathListFromCmd(str_replace('%siteaccess%', $input->getOption('siteaccess'), $this->binaryFileFindCmdPattern)) as $filePath) {
+        foreach ($this->getPathListFromCmd(str_replace('%siteaccess%', $this->siteAccess->name, $this->binaryFileFindCmdPattern)) as $filePath) {
             $fileName = basename($filePath);
             /** @var array|bool $usage */
             $usage = $this->binaryQueryBuilder
