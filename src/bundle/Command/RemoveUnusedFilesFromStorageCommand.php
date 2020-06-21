@@ -5,7 +5,6 @@ namespace AdrienDupuis\EzPlatformAdminBundle\Command;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use eZ\Publish\Core\IO\IOConfigProvider;
-use eZ\Publish\Core\MVC\Symfony\SiteAccess;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
