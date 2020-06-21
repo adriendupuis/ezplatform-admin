@@ -100,7 +100,7 @@ class CreateUserCommand extends Command
             try {
                 $adminUser = $this->userService->loadUserByLogin($adminUserLogin);
             } catch (NotFoundException $notFoundException) {
-                $output->writeln("<error>Error: $adminUserLogin can't be found.</error>");
+                $output->writeln("<error>Error: User '$adminUserLogin' not found.</error>");
 
                 return self::ERROR_ADMIN_NOT_FOUND;
             }
@@ -108,9 +108,11 @@ class CreateUserCommand extends Command
 
             return $this->createUser($userCreateStruct, $parentGroupIds, $output);
         }
+
+        return self::FAILURE;
     }
 
-    public function createUser(UserCreateStruct $userCreateStruct, array $parentGroupIds, OutputInterface $output): int
+    private function createUser(UserCreateStruct $userCreateStruct, array $parentGroupIds, OutputInterface $output): int
     {
         $parentGroups = [];
         foreach ($parentGroupIds as $groupId) {
@@ -146,7 +148,7 @@ class CreateUserCommand extends Command
 
             return self::ERROR_CREATION_FAILED;
         } catch (\Exception $exception) {
-            $output->writeln("Error: {$exception->getMessage()}");
+            $output->writeln("<error>Error: {$exception->getMessage()}</error>");
 
             return self::ERROR_CREATION_FAILED;
         }

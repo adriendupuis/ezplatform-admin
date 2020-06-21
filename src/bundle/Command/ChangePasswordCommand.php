@@ -2,10 +2,13 @@
 
 namespace AdrienDupuis\EzPlatformAdminBundle\Command;
 
+use eZ\Publish\API\Repository\Exceptions\ContentFieldValidationException;
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use eZ\Publish\API\Repository\PermissionResolver;
 use eZ\Publish\API\Repository\Repository;
 use eZ\Publish\API\Repository\UserService;
+use eZ\Publish\API\Repository\Values\User\User;
+use eZ\Publish\Core\FieldType\ValidationError;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,6 +19,12 @@ use Symfony\Component\Console\Question\Question;
 class ChangePasswordCommand extends Command
 {
     protected static $defaultName = 'ezuser:password';
+
+    public const SUCCESS = 0;
+    public const FAILURE = 1;
+    public const ERROR_USER_NOT_FOUND = 1;
+    public const ERROR_UPDATE_FAILED = 2;
+    public const ERROR_ADMIN_NOT_FOUND = 9;
 
     /** @var Repository */
     private $repository;
@@ -45,19 +54,9 @@ class ChangePasswordCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $login = $input->getArgument('login');
-        try {
-            $user = $this->userService->loadUserByLogin($login);
-        } catch (NotFoundException $notFoundException) {
-            try {
-                $user = $this->userService->loadUserByEmail($login);
-            } catch (NotFoundException $notFoundException) {
-                $output->writeln("<error>User $login not found.</error>");
-                return Command::FAILURE;
-            }
-        }
 
         $password = $input->getArgument('password');
         while (!$password) {
@@ -67,25 +66,64 @@ class ChangePasswordCommand extends Command
             $password = $this->getHelper('question')->ask($input, $output, $question);
         }
 
-        $userUpdateStruct = $this->userService->newUserUpdateStruct();
-        $userUpdateStruct->password = $password;
-
         if ($input->getOption('sudo')) {
-            $this->repository->sudo(function () use ($user, $userUpdateStruct) {
-                $this->userService->updateUser($user, $userUpdateStruct);
+            return $this->repository->sudo(function () use ($user, $userUpdateStruct) {
+                return $this->updatePassword($login, $password, $output);
             });
         } else {
             $adminUserLogin = $input->getOption('admin-user');
             try {
                 $adminUser = $this->userService->loadUserByLogin($adminUserLogin);
             } catch (NotFoundException $notFoundException) {
-                $output->writeln("<error>Error: $adminUserLogin can't be found.</error>");
+                $output->writeln("<error>Error: User '$adminUserLogin' not found.</error>");
 
                 return self::ERROR_ADMIN_NOT_FOUND;
             }
             $this->permissionResolver->setCurrentUserReference($adminUser);
 
-            $this->userService->updateUser($user, $userUpdateStruct);
+            return $this->updatePassword($login, $password, $output);
         }
+
+        return self::FAILURE;
+    }
+
+    private function updatePassword($loginOrEmail, $password, $output): int
+    {
+        /* @var User $user */
+        try {
+            $user = $this->userService->loadUserByLogin($loginOrEmail);
+        } catch (NotFoundException $notFoundException) {
+            try {
+                $user = $this->userService->loadUserByEmail($loginOrEmail);
+            } catch (NotFoundException $notFoundException) {
+                $output->writeln("<error>User '$login' not found.</error>");
+
+                return self::ERROR_USER_NOT_FOUND;
+            }
+        }
+
+        $userUpdateStruct = $this->userService->newUserUpdateStruct();
+        $userUpdateStruct->password = $password;
+
+        try {
+            $this->userService->updateUser($user, $userUpdateStruct);
+
+            return self::SUCCESS;
+        } catch (ContentFieldValidationException $contentFieldValidationException) {
+            foreach ($contentFieldValidationException->getFieldErrors() as $fieldDefinitionId => $fieldErrors) {
+                /** @var ValidationError $fieldError */
+                foreach ($fieldErrors[$user->getContentType()->mainLanguageCode] as $fieldError) {
+                    $output->writeln("<error>Error: {$fieldError->getTranslatableMessage()}</error>");
+                }
+            }
+
+            return self::ERROR_UPDATE_FAILED;
+        } catch (\Exception $exception) {
+            $output->writeln("<error>Error: {$exception->getMessage()}</error>");
+
+            return self::ERROR_UPDATE_FAILED;
+        }
+
+        return self::FAILURE;
     }
 }
