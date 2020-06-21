@@ -21,7 +21,7 @@ class RemoveUnusedFilesFromStorageCommand extends Command
     private $dbalConnection;
 
     /** @var string */
-    private $imageDirFindCmd = 'find ./images -mindepth 5 -type d;';
+    private $imageDirFindCmd = 'find ./images -mindepth 5 -type d 2> /dev/null;';
 
     /** @var QueryBuilder */
     private $imageQueryBuilder;
@@ -30,7 +30,7 @@ class RemoveUnusedFilesFromStorageCommand extends Command
     private $imageAttributePattern = '% dirpath=":dirpath" %';
 
     /** @var string */
-    private $binaryFileFindCmd = 'find ./original/application -type f;';
+    private $binaryFileFindCmd = 'find ./original/application -type f 2> /dev/null;';
 
     /** @var QueryBuilder */
     private $binaryQueryBuilder;
