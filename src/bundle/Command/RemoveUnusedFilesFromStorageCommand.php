@@ -4,24 +4,25 @@ namespace AdrienDupuis\EzPlatformAdminBundle\Command;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
+use eZ\Publish\Core\IO\IOConfigProvider;
 use eZ\Publish\Core\MVC\Symfony\SiteAccess;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * @todo Better siteaccess's storage path retrieving
- */
 class RemoveUnusedFilesFromStorageCommand extends Command
 {
     protected static $defaultName = 'ezplatform:storage:remove-unused-files';
+
+    /** @var IOConfigProvider */
+    private $ioConfigProvider;
 
     /** @var Connection */
     private $dbalConnection;
 
     /** @var string */
-    private $imageDirFindCmdPattern = 'find var/%siteaccess%/storage/images -mindepth 5 -type d;';
+    private $imageDirFindCmd = 'find ./images -mindepth 5 -type d;';
 
     /** @var QueryBuilder */
     private $imageQueryBuilder;
@@ -30,32 +31,27 @@ class RemoveUnusedFilesFromStorageCommand extends Command
     private $imageAttributePattern = '% dirpath=":dirpath" %';
 
     /** @var string */
-    private $binaryFileFindCmdPattern = 'find var/%siteaccess%/storage/original/application -type f;';
+    private $binaryFileFindCmd = 'find ./original/application -type f;';
 
     /** @var QueryBuilder */
     private $binaryQueryBuilder;
 
-    /** @var SiteAccess */
-    private $siteAccess;
-
-    public function __construct(Connection $connection, SiteAccess $siteAccess)
+    public function __construct(IOConfigProvider $ioConfigProvider, Connection $connection)
     {
         parent::__construct();
+        $this->ioConfigProvider = $ioConfigProvider;
         $this->dbalConnection = $connection;
-
         $this->imageQueryBuilder = $this->dbalConnection->createQueryBuilder()
             ->select('a.id, a.contentobject_id, a.version')
             ->from('ezcontentobject_attribute', 'a')
-            ->where('a.data_text LIKE :dirpath');
-
+            ->where('a.data_text LIKE :dirpath')
+        ;
         $this->binaryQueryBuilder = $this->dbalConnection->createQueryBuilder()
             ->select('a.id, a.contentobject_id, a.version')
             ->from('ezbinaryfile', 'f')
             ->leftJoin('f', 'ezcontentobject_attribute', 'a', 'f.contentobject_attribute_id = a.id')
-            ->where('f.filename = :filename');
-
-        $this->siteAccess = $siteAccess;
-        var_dump($siteAccess);
+            ->where('f.filename = :filename')
+        ;
     }
 
     protected function configure()
@@ -69,15 +65,15 @@ class RemoveUnusedFilesFromStorageCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$input->getOption('siteaccess')) {
-            $output->writeln('<comment>An admin siteaccess should be provided (using --siteaccess option) instead of falling back on default one.</comment>');
+            $output->writeln('<comment>A siteaccess should be provided (using --siteaccess option) instead of falling back on default one.</comment>');
         }
 
-        if (chdir('public')) {
-            if ($imageCleaningStatus = $this->cleanImages($input, $output)) {
-                return $imageCleaningStatus;
-            }
+        if (chdir($this->ioConfigProvider->getRootDir())) {
+            $status = 0;
+            $status |= $this->cleanImages($input, $output);
+            $status |= $this->cleanBinaries($input, $output);
 
-            return $this->cleanBinaries($input, $output);
+            return $status;
         } else {
             return 1;
         }
@@ -85,7 +81,7 @@ class RemoveUnusedFilesFromStorageCommand extends Command
 
     private function cleanImages(InputInterface $input, OutputInterface $output): int
     {
-        foreach ($this->getPathListFromCmd(str_replace('%siteaccess%', $this->siteAccess->name, $this->imageDirFindCmdPattern)) as $dirPath) {
+        foreach ($this->getPathListFromCmd($this->imageDirFindCmd) as $dirPath) {
             /** @var array|bool $usage */
             $usage = $this->imageQueryBuilder
                 ->setParameter(':dirpath', str_replace(':dirpath', $dirPath, $this->imageAttributePattern))
@@ -105,7 +101,7 @@ class RemoveUnusedFilesFromStorageCommand extends Command
 
     private function cleanBinaries(InputInterface $input, OutputInterface $output): int
     {
-        foreach ($this->getPathListFromCmd(str_replace('%siteaccess%', $this->siteAccess->name, $this->binaryFileFindCmdPattern)) as $filePath) {
+        foreach ($this->getPathListFromCmd($this->binaryFileFindCmd) as $filePath) {
             $fileName = basename($filePath);
             /** @var array|bool $usage */
             $usage = $this->binaryQueryBuilder
