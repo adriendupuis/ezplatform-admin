@@ -9,7 +9,7 @@
         <ul>
             {% for language_code in missing_languages.from_config %}
                 <li>
-                    {{ language_code }} | {{ language_map[language_code].name }}
+                    <code>{{ language_code }}</code> | {{ language_map[language_code].name }}
                 </li>
             {% endfor %}
         </ul>
@@ -24,7 +24,7 @@
         <ul>
             {% for language_code in missing_languages.from_database %}
                 <li>
-                    {{ language_code }}
+                    <code>{{ language_code }}</code>
                 </li>
             {% endfor %}
         </ul>
