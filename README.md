@@ -36,8 +36,6 @@ TODO
 ----
 
 * Features
-  * Users
-    - Password update command
 * Developments
   * Quality
     - Unit tests
