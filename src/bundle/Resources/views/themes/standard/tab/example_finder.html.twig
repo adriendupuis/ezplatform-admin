@@ -1,0 +1,39 @@
+{% trans_default_domain 'ad_admin_content_usage' %}
+<div>
+    <p>{{ 'example_finder.purpose'|trans }}</p>
+    <dl>
+        <dt>{{ 'example_finder.best_example'|trans|desc('Best Example') }}</dt>
+        <dd>{{ 'example_finder.best_example_definition'|trans }}</dd>
+        <dt>{{ 'example_finder.bad_example'|trans|desc('Bad Example') }}</dt>
+        <dd>{{ 'example_finder.bad_example_definition'|trans }}</dd>
+    </dl>
+</div>
+{{ form_start(form) }}
+    <div class="card ez-card">
+        <div class="card-body">
+            <div class="form-group">
+                <div>
+                    {{ form_label(form.content_type) }}
+                    {{ form_widget(form.content_type, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div>
+                    {{ form_label(form.language_code) }}
+                    {{ form_widget(form.language_code, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{{ form_end(form) }}
+<script>
+    {% set content_type_placeholder = '+content_type+' %}
+    {% set content_id_placeholder = 41 %}
+    let exampleFinderConfig= {
+        layoutBaseUrl: '{{ path('ad_admin.content_usage.example_finder.table', {content_type: content_type_placeholder})|replace({(content_type_placeholder): ''}) }}',
+        searchBaseUrl: '{{ path('ad_admin.content_usage.example_finder.search', {content_type: content_type_placeholder})|replace({(content_type_placeholder): ''}) }}'
+    };
+</script>
+<div>
+    {{ 'example_finder.status'|trans|desc('Example Finder status') }}:
+    <em id="example_finder_status">{{ 'example_finder.status.waiting_selection'|trans|desc('Waiting for Content Type selection…') }}</em>
+</div>
+<div id="example_finder_result"></div>
