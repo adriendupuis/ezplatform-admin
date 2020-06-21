@@ -4,8 +4,10 @@ namespace AdrienDupuis\EzPlatformAdminBundle\Service;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
+use eZ\Publish\API\Repository\Exceptions\NotImplementedException;
 use eZ\Publish\API\Repository\LanguageService;
 use eZ\Publish\API\Repository\Values\Content\Language;
+use eZ\Publish\Core\IO\IOConfigProvider;
 use eZ\Publish\Core\MVC\Symfony\SiteAccess;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -14,22 +16,30 @@ class IntegrityService
     /** @var ContainerInterface */
     private $container;
 
-    /** @var LanguageService */
-    private $languageService;
-
     /** @var SiteAccess */
     private $siteAccess;
 
     /** @var Connection */
     private $dbalConnection;
 
-    public function __construct(ContainerInterface $container, SiteAccess $siteAccess, Connection $connection/*, LanguageService, $languageService*/)
-    {
+    /** @var IOConfigProvider */
+    private $ioConfigProvider;
+
+    /** @var LanguageService */
+    private $languageService;
+
+    public function __construct(
+        ContainerInterface $container,
+        SiteAccess $siteAccess,
+        Connection $connection,
+        IOConfigProvider $ioConfigProvider,
+        LanguageService $languageService
+    ) {
         $this->container = $container;
-        $this->languageService = $this->container->get('ezpublish.api.service.language');
         $this->siteAccess = $siteAccess;
-        //$this->dbalConnection = $this->container->get('doctrine.dbal.connection'); // The "doctrine.dbal.connection" service or alias has been removed or inlined when the container was compiled. You should either make it public, or stop using the container directly and use dependency injection instead.
         $this->dbalConnection = $connection;
+        $this->ioConfigProvider = $ioConfigProvider;
+        $this->languageService = $languageService;
     }
 
     public function getAvailableAndMissingLanguages(): array
@@ -66,6 +76,7 @@ class IntegrityService
 
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $this->dbalConnection->createQueryBuilder();
+
         return $queryBuilder
             ->select(["DISTINCT (o.language_mask ^ $availableLanguageMask) AS unknown_language"])
             ->from('ezcontentobject', 'o')
@@ -74,5 +85,78 @@ class IntegrityService
             ->execute()
             ->fetchAll()
         ;
+    }
+
+    public function findUnusedImageDirectories()
+    {
+        $cmd = "find {$this->ioConfigProvider->getRootDir()}/images -mindepth 5 -type d 2> /dev/null;";
+        $imageQueryBuilder = $this->dbalConnection->createQueryBuilder()
+            ->select('a.id, a.contentobject_id, a.version')
+            ->from('ezcontentobject_attribute', 'a')
+            ->where('a.data_text LIKE :dirpath')
+        ;
+
+        $unusedImageDirectories = [];
+        foreach ($this->getPathListFromCmd($cmd) as $dirPath) {
+            /** @var array|bool $usage */
+            $usage = $imageQueryBuilder
+                ->setParameter(':dirpath', str_replace(':dirpath', $dirPath, $this->imageAttributePattern))
+                ->execute()
+                ->fetch()
+            ;
+            if (false === $usage) {
+                $unusedImageDirectories[] = $dirPath;
+            }
+        }
+
+        return $unusedImageDirectories;
+    }
+
+    public function findUnusedApplicationFiles()
+    {
+        $cmd = "find {$this->ioConfigProvider->getRootDir()}/original/application -type f 2> /dev/null;";
+        $binaryQueryBuilder = $this->dbalConnection->createQueryBuilder()
+            ->select('a.id, a.contentobject_id, a.version')
+            ->from('ezbinaryfile', 'f')
+            ->leftJoin('f', 'ezcontentobject_attribute', 'a', 'f.contentobject_attribute_id = a.id')
+            ->where('f.filename = :filename')
+        ;
+
+        $unusedApplicationFiles = [];
+        foreach ($this->getPathListFromCmd($cmd) as $filePath) {
+            $fileName = basename($filePath);
+            /** @var array|bool $usage */
+            $usage = $binaryQueryBuilder
+                ->setParameter(':filename', $fileName)
+                ->execute()
+                ->fetch()
+            ;
+            if (false === $usage) {
+                $unusedApplicationFiles[] = $filePath;
+            }
+        }
+
+        return $unusedApplicationFiles;
+    }
+
+    public function findMissingImageFiles()
+    {
+        throw new NotImplementedException(); //TODO
+    }
+
+    public function findMissingBinaryFiles()
+    {
+        throw new NotImplementedException(); //TODO
+    }
+
+    private function getPathListFromCmd($cmd)
+    {
+        $pathList = explode(PHP_EOL, trim(shell_exec($cmd)));
+
+        if (count($pathList) && $pathList[0]) {
+            return $pathList;
+        }
+
+        return [];
     }
 }
