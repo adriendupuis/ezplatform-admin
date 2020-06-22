@@ -6,11 +6,6 @@ services:
         autowire: true
         autoconfigure: true
 
-    AdrienDupuis\EzPlatformAdminBundle\Command\:
-        resource: '../../Command'
-        autowire: true
-        tags: [console.command]
-
     AdrienDupuis\EzPlatformAdminBundle\Controller\:
         resource: '../../Controller'
         autowire: true
