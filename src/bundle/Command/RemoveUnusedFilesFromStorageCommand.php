@@ -25,8 +25,7 @@ class RemoveUnusedFilesFromStorageCommand extends Command
     {
         $this
             ->setDescription('Remove unused files (images and binaries) from storage.')
-            ->addOption('dry-run', 'd', InputOption::VALUE_NONE, 'Do not remove anything, just list what could be removed.')
-        ;
+            ->addOption('dry-run', 'd', InputOption::VALUE_NONE, 'Do not remove anything, just list what could be removed.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -45,9 +44,13 @@ class RemoveUnusedFilesFromStorageCommand extends Command
     private function cleanImages(InputInterface $input, OutputInterface $output): int
     {
         foreach ($this->integrityService->findUnusedImageDirectories() as $dirPath) {
-            $output->writeln("Remove unused $dirPath");
+            $output->writeln("$dirPath is not used");
             if (!$input->getOption('dry-run')) {
-                shell_exec("rm -rf $dirPath");
+                if (!$output->isQuiet()) {
+                    $output->writeln("Remove {$dirPath} and its aliases…");
+                }
+                shell_exec('rm -r'.($output->isVerbose() ? 'v' : '')."f $dirPath "
+                    .str_replace('/images/', '/images/_aliases/*/', $dirPath));
             }
         }
 
@@ -57,9 +60,10 @@ class RemoveUnusedFilesFromStorageCommand extends Command
     private function cleanBinaries(InputInterface $input, OutputInterface $output): int
     {
         foreach ($this->integrityService->findUnusedApplicationFiles() as $filePath) {
-            $output->writeln("Remove unused $filePath");
+            $output->writeln("$filePath is not used");
             if (!$input->getOption('dry-run')) {
-                shell_exec("rm -f $filePath");
+                $output->writeln("Remove {$filePath}…");
+                shell_exec('rm -'.($output->isVerbose() ? 'v' : '')."f $filePath");
             }
         }
 
