@@ -87,17 +87,22 @@ class IntegrityService
         ;
     }
 
+    /** @var string */
+    private$imageAttributePattern = '% dirpath=":dirpath" %';
+
     public function findUnusedImageDirectories()
     {
         $cmd = "find {$this->ioConfigProvider->getRootDir()}/images -mindepth 5 -type d 2> /dev/null;";
         $imageQueryBuilder = $this->dbalConnection->createQueryBuilder()
             ->select('a.id, a.contentobject_id, a.version')
             ->from('ezcontentobject_attribute', 'a')
-            ->where('a.data_text LIKE :dirpath')
+            ->where('a.data_type_string = \'ezimage\'')
+            ->andWhere('a.data_text LIKE :dirpath')
         ;
 
         $unusedImageDirectories = [];
-        foreach ($this->getPathListFromCmd($cmd) as $dirPath) {
+        foreach ($this->getPathListFromCmd($cmd) as $absoluteDirPath) {
+            $dirPath = str_replace(trim(`pwd`).'/public/', '', $absoluteDirPath);
             /** @var array|bool $usage */
             $usage = $imageQueryBuilder
                 ->setParameter(':dirpath', str_replace(':dirpath', $dirPath, $this->imageAttributePattern))
@@ -105,7 +110,7 @@ class IntegrityService
                 ->fetch()
             ;
             if (false === $usage) {
-                $unusedImageDirectories[] = $dirPath;
+                $unusedImageDirectories[] = $absoluteDirPath;
             }
         }
 
