@@ -88,7 +88,7 @@ class IntegrityService
     }
 
     /** @var string */
-    private$imageAttributePattern = '% dirpath=":dirpath" %';
+    private $imageAttributePattern = '% dirpath=":dirpath" %';
 
     public function findUnusedImageDirectories()
     {
