@@ -2,32 +2,16 @@
 
 namespace AdrienDupuis\EzPlatformAdminBundle\Command;
 
-use AdrienDupuis\EzPlatformAdminBundle\Service\IntegrityService;
 use eZ\Publish\API\Repository\Values\Content\Content;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @todo storage/images-versioned
  */
-class CheckStorageIntegrityCommand extends Command
+class CheckStorageIntegrityCommand extends CheckIntegrityCommandAbstract
 {
     protected static $defaultName = 'integrity:check:storage';
-
-    public const SUCCESS = 0;
-    public const WARNING = 1;
-    public const ERROR = 2;
-
-    /** @var IntegrityService */
-    private $integrityService;
-
-    public function __construct(IntegrityService $integrityService)
-    {
-        parent::__construct(self::$defaultName);
-        $this->integrityService = $integrityService;
-    }
 
     protected function configure()
     {
@@ -38,30 +22,52 @@ class CheckStorageIntegrityCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $status = self::SUCCESS;
+        $exitCode = self::SUCCESS;
 
-        // Files in storage but not used
-        $status |= $this
-            ->getApplication()
-            ->find(RemoveUnusedFilesFromStorageCommand::getDefaultName())
-            ->run(new ArrayInput([
-                '--dry-run' => true,
-                '--siteaccess' => $input->getOption('siteaccess'),
-            ]), $output);
+        $exitCode |= $this->checkUnusedFiles($output);
+        $exitCode |= $this->checkMissingFiles($output);
 
-        // Files missing from storage
-        foreach ($this->integrityService->findMissingImageFiles() as $contentWithMissingImageFile) {
-            $status |= self::ERROR;
-            /** @var Content $content */
-            $content = $contentWithMissingImageFile['content'];
-            $output->writeln("Content “{$content->getName()}” (id: ({$contentWithMissingImageFile['id']}; v: {$contentWithMissingImageFile['version']}; lang: {$contentWithMissingImageFile['language_code']}): ");
-            foreach ($contentWithMissingImageFile['fields_with_wissing_image'] as $fieldIndentifier) {
-                $fieldName = $content->getContentType()->getFieldDefinition($fieldIndentifier)->getName($contentWithMissingImageFile['language_code']);
-                $fileName = $content->getField($fieldIndentifier)->value->fileName;
-                $output->writeln("\t$fieldName ($fieldIndentifier): $fileName is missing.");
+        return $exitCode;
+    }
+
+    private function checkUnusedFiles(OutputInterface $output): int
+    {
+        $exitCode = self::SUCCESS;
+
+        foreach ($this->integrityService->findUnusedImageDirectories() as $dirPath) {
+            $exitCode |= self::NOTICE;
+            $output->writeln("<notice>$dirPath is not used.</notice>");
+        }
+        foreach ($this->integrityService->findUnusedApplicationFiles() as $filePath) {
+            $exitCode |= self::NOTICE;
+            $output->writeln("<notice>$filePath is not used.</notice>");
+        }
+
+        return $exitCode;
+    }
+
+    private function checkMissingFiles(OutputInterface $output): int
+    {
+        $this->setStyles($output->getFormatter());
+
+        $exitCode = self::SUCCESS;
+
+        $contentsWithMissingFile = $this->integrityService->findMissingFiles();
+
+        foreach ($contentsWithMissingFile as $key => $contentData) {
+            /* @var Content $content */
+            $content = $contentData['content'];
+
+            $exitCode |= $content->versionInfo->isArchived() ? self::WARNING : self::ERROR;
+            $tagName = $this->getLevelName($exitCode);
+
+            $output->writeln("Content “{$content->getName()}” (id: {$content->id}; v: {$contentData['version']}; lang: {$contentData['language_code']}): ");
+            foreach ($contentData['fields_with_missing_file'] as $fieldData) {
+                $fieldName = $content->getContentType()->getFieldDefinition($fieldData['identifier'])->getName($contentData['language_code']);
+                $output->writeln("\t$fieldName ({$fieldData['identifier']}): <{$tagName}>{$fieldData['missing_path']} ({$fieldData['original_filename']}) is missing.</{$tagName}>");
             }
         }
 
-        return $status;
+        return $exitCode;
     }
 }
