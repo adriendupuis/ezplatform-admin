@@ -12,6 +12,10 @@ class RemoveUnusedFilesFromStorageCommand extends Command
 {
     protected static $defaultName = 'ezplatform:storage:remove-unused-files';
 
+    public const SUCCESS = 0;//TODO: When unused files are successfully removed or when there was nothing to remove?
+    public const WARNING = 1;
+    public const ERROR = 2;
+
     /** @var IntegrityService */
     private $integrityService;
 

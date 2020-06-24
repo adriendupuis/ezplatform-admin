@@ -3,7 +3,6 @@
 namespace AdrienDupuis\EzPlatformAdminBundle\Command;
 
 use AdrienDupuis\EzPlatformAdminBundle\Service\IntegrityService;
-use eZ\Publish\API\Repository\ContentTypeService;
 use eZ\Publish\API\Repository\Values\Content\Content;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -17,7 +16,9 @@ class CheckStorageIntegrityCommand extends Command
 {
     protected static $defaultName = 'integrity:check:storage';
 
-    const SUCCESS = 0;
+    public const SUCCESS = 0;
+    public const WARNING = 1;
+    public const ERROR = 2;
 
     /** @var IntegrityService */
     private $integrityService;
@@ -50,6 +51,7 @@ class CheckStorageIntegrityCommand extends Command
 
         // Files missing from storage
         foreach ($this->integrityService->findMissingImageFiles() as $contentWithMissingImageFile) {
+            $status |= self::ERROR;
             /** @var Content $content */
             $content = $contentWithMissingImageFile['content'];
             $output->writeln("Content “{$content->getName()}” (id: ({$contentWithMissingImageFile['id']}; v: {$contentWithMissingImageFile['version']}; lang: {$contentWithMissingImageFile['language_code']}): ");

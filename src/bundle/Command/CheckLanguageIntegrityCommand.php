@@ -11,9 +11,9 @@ class CheckLanguageIntegrityCommand extends Command
 {
     protected static $defaultName = 'integrity:check:language';
 
-    const SUCCESS = 0;
-    const WARNING = 1;
-    const ERROR = 2;
+    public const SUCCESS = 0;
+    public const WARNING = 1;
+    public const ERROR = 2;
 
     /** @var IntegrityService */
     private $integrityService;
