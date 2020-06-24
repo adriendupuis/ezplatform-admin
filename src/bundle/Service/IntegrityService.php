@@ -4,7 +4,6 @@ namespace AdrienDupuis\EzPlatformAdminBundle\Service;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
-use eZ\Publish\API\Repository\Exceptions\NotImplementedException;
 use eZ\Publish\API\Repository\LanguageService;
 use eZ\Publish\API\Repository\Values\Content\Language;
 use eZ\Publish\Core\IO\IOConfigProvider;
@@ -148,9 +147,46 @@ class IntegrityService
         return $unusedApplicationFiles;
     }
 
-    public function findMissingImageFiles()
+    /** @todo Use a dedicated PHP class instead of an array to represent a content with missing file(s) */
+    private function addFieldWithMissingFile(
+        array &$contentsWithMissingFile,
+        int $contentId,
+        int $version,
+        string $languageCode,
+        string $fieldIdentifier,
+        string $missingPath,
+        string $originalFilename
+    ): void {
+        $key = "$contentId--$version--$languageCode";
+        if (array_key_exists($key, $contentsWithMissingFile)) {
+            $contentsWithMissingFile[$key]['fields_with_wissing_file'][] = $fieldIdentifier;
+        } else {
+            $contentsWithMissingFile[$key] = [
+                'content' => $this->container->get('ezpublish.api.service.content')->loadContent($contentId, [$languageCode], $version), //TODO: dependecy injection
+                'content_id' => $contentId,
+                'version' => $version,
+                'language_code' => $languageCode,
+                'fields_with_missing_file' => [[
+                    'identifier' => $fieldIdentifier,
+                    'missing_path' => $missingPath,
+                    'original_filename' => $originalFilename,
+                ]],
+            ];
+        }
+    }
+
+    public function findMissingFiles()
     {
-        $cmd = "find {$this->ioConfigProvider->getRootDir()}/images -mindepth 5 -type d 2> /dev/null;";
+        $contentsWithMissingFile = [];
+        $contentsWithMissingFile = $this->findMissingImageFiles($contentsWithMissingFile);
+        $contentsWithMissingFile = $this->findMissingBinaryFiles($contentsWithMissingFile);
+
+        return $contentsWithMissingFile;
+    }
+
+    /** @return array[] */
+    public function findMissingImageFiles(?array $contentsWithMissingFile = null): array
+    {
         $statement = $this->dbalConnection->createQueryBuilder()
             ->select('oa.id, oa.contentobject_id, oa.version, oa.language_code, ca.identifier, oa.data_text')
             ->from('ezcontentobject_attribute', 'oa')
@@ -159,41 +195,63 @@ class IntegrityService
             ->execute()
         ;
 
-        $contentsWithMissingImage = [];
-        while($ezimageAttributeRow = $statement->fetch()) {
-            preg_match('@dirpath="(?<dirpath>[^"]+)"@', $ezimageAttributeRow['data_text'], $matches);
-
-            if (count($matches) && '' !== $matches['dirpath']) {
-                if (!file_exists("./public/{$matches['dirpath']}")) {
-                    $contentId = $ezimageAttributeRow['contentobject_id'];
-                    $version = $ezimageAttributeRow['version'];
-                    $languageCode = $ezimageAttributeRow['language_code'];
-                    $fieldIdentifier = $ezimageAttributeRow['identifier'];
-                    $key = "$contentId-$version-$languageCode";
-                    if (array_key_exists($key, $contentsWithMissingImage)) {
-                        $contentsWithMissingImage[$key]['fields_with_wissing_image'][] = $fieldIdentifier;
-                    } else {
-                        $contentsWithMissingImage[$key] = [
-                            'content' => $this->container->get('ezpublish.api.service.content')->loadContent($contentId, [$languageCode], $version),//TODO: dependecy injection
-                            'id' => $contentId,
-                            'version' => $version,
-                            'language_code' => $languageCode,
-                            'fields_with_wissing_image' => [$fieldIdentifier],
-                        ];
-                    }
-                }
+        if (!$contentsWithMissingFile) {
+            $contentsWithMissingFile = [];
+        }
+        while ($row = $statement->fetch()) {
+            preg_match('@dirpath="(?<dirpath>[^"]+)".*original_filename="(?<original_filename>[^"]+)"@s', $row['data_text'], $matches);
+            if (!empty($matches['dirpath']) && !file_exists($dirPath = "{$this->container->getParameter('kernel.project_dir')}/public/{$matches['dirpath']}")) {//TODO: dependecy injection
+                $this->addFieldWithMissingFile(
+                    $contentsWithMissingFile,
+                    $row['contentobject_id'],
+                    $row['version'],
+                    $row['language_code'],
+                    $row['identifier'],
+                    $dirPath,
+                    $matches['original_filename'],
+                );
             }
         }
-        ksort($contentsWithMissingImage);
-        return $contentsWithMissingImage;
+        ksort($contentsWithMissingFile);
+
+        return $contentsWithMissingFile;
     }
 
-    public function findMissingBinaryFiles()
+    /** @return array[] */
+    public function findMissingBinaryFiles(?array $contentsWithMissingFile = null): array
     {
-        throw new NotImplementedException('Not yet implemented \AdrienDupuis\EzPlatformAdminBundle\Service\IntegrityService::findMissingBinaryFiles'); //TODO
+        $statement = $this->dbalConnection->createQueryBuilder()
+            ->select('oa.id, oa.contentobject_id, oa.version, oa.language_code, ca.identifier, bf.filename, bf.original_filename')
+            ->from('ezcontentobject_attribute', 'oa')
+            ->join('oa', 'ezbinaryfile', 'bf', 'oa.id = bf.contentobject_attribute_id AND oa.version = bf.version')
+            ->join('oa', 'ezcontentclass_attribute', 'ca', 'oa.contentclassattribute_id = ca.id')
+            ->where('oa.data_type_string = \'ezbinaryfile\'')
+            ->execute()
+        ;
+
+        if (!$contentsWithMissingFile) {
+            $contentsWithMissingFile = [];
+        }
+        while ($row = $statement->fetch()) {
+            if (!file_exists($filePath = "{$this->ioConfigProvider->getRootDir()}/original/application/{$row['filename']}")) {
+                $this->addFieldWithMissingFile(
+                    $contentsWithMissingFile,
+                    $row['contentobject_id'],
+                    $row['version'],
+                    $row['language_code'],
+                    $row['identifier'],
+                    $filePath,
+                    $row['original_filename'],
+                );
+            }
+        }
+        ksort($contentsWithMissingFile);
+
+        return $contentsWithMissingFile;
     }
 
-    private function getPathListFromCmd($cmd)
+    /** @return string[] */
+    private function getPathListFromCmd($cmd): array
     {
         $pathList = explode(PHP_EOL, trim(shell_exec($cmd)));
 
