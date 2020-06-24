@@ -44,10 +44,16 @@ class RemoveUnusedFilesFromStorageCommand extends Command
     private function cleanImages(InputInterface $input, OutputInterface $output): int
     {
         foreach ($this->integrityService->findUnusedImageDirectories() as $dirPath) {
-            $output->writeln("$dirPath is not used");
-            if (!$input->getOption('dry-run')) {
+            if (!$output->isQuiet()) {
+                $output->write("$dirPath is not used");
+            }
+            if ($input->getOption('dry-run')) {
                 if (!$output->isQuiet()) {
-                    $output->writeln("Remove {$dirPath} and its aliases…");
+                    $output->writeln('.');
+                }
+            } else {
+                if (!$output->isQuiet()) {
+                    $output->writeln("; Remove {$dirPath} and its aliases…");
                 }
                 shell_exec('rm -r'.($output->isVerbose() ? 'v' : '')."f $dirPath "
                     .str_replace('/images/', '/images/_aliases/*/', $dirPath));
@@ -60,9 +66,15 @@ class RemoveUnusedFilesFromStorageCommand extends Command
     private function cleanBinaries(InputInterface $input, OutputInterface $output): int
     {
         foreach ($this->integrityService->findUnusedApplicationFiles() as $filePath) {
-            $output->writeln("$filePath is not used");
-            if (!$input->getOption('dry-run')) {
-                $output->writeln("Remove {$filePath}…");
+            $output->write("$filePath is not used");
+            if ($input->getOption('dry-run')) {
+                if (!$output->isQuiet()) {
+                    $output->writeln('.');
+                }
+            } else {
+                if (!$output->isQuiet()) {
+                    $output->writeln("; Remove {$filePath}…");
+                }
                 shell_exec('rm -'.($output->isVerbose() ? 'v' : '')."f $filePath");
             }
         }

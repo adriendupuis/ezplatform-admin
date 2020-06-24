@@ -90,7 +90,8 @@ class IntegrityService
     /** @var string */
     private $imageAttributePattern = '% dirpath=":dirpath" %';
 
-    public function findUnusedImageDirectories()
+    /** @return string[] Array of image directory paths seeming unused and deletable */
+    public function findUnusedImageDirectories(): array
     {
         $cmd = "find {$this->ioConfigProvider->getRootDir()}/images -mindepth 5 -type d 2> /dev/null;";
         $imageQueryBuilder = $this->dbalConnection->createQueryBuilder()
@@ -98,6 +99,7 @@ class IntegrityService
             ->from('ezcontentobject_attribute', 'a')
             ->where('a.data_type_string = \'ezimage\'')
             ->andWhere('a.data_text LIKE :dirpath')
+            ->setMaxResults(1)
         ;
 
         $unusedImageDirectories = [];
@@ -117,6 +119,7 @@ class IntegrityService
         return $unusedImageDirectories;
     }
 
+    /** @return string[] Array of binary file paths seeming unused and deletable */
     public function findUnusedApplicationFiles()
     {
         $cmd = "find {$this->ioConfigProvider->getRootDir()}/original/application -type f 2> /dev/null;";
@@ -125,6 +128,7 @@ class IntegrityService
             ->from('ezbinaryfile', 'f')
             ->leftJoin('f', 'ezcontentobject_attribute', 'a', 'f.contentobject_attribute_id = a.id')
             ->where('f.filename = :filename')
+            ->setMaxResults(1)
         ;
 
         $unusedApplicationFiles = [];
@@ -146,12 +150,47 @@ class IntegrityService
 
     public function findMissingImageFiles()
     {
-        throw new NotImplementedException(); //TODO
+        $cmd = "find {$this->ioConfigProvider->getRootDir()}/images -mindepth 5 -type d 2> /dev/null;";
+        $statement = $this->dbalConnection->createQueryBuilder()
+            ->select('oa.id, oa.contentobject_id, oa.version, oa.language_code, ca.identifier, oa.data_text')
+            ->from('ezcontentobject_attribute', 'oa')
+            ->join('oa', 'ezcontentclass_attribute', 'ca', 'oa.contentclassattribute_id = ca.id')
+            ->where('oa.data_type_string = \'ezimage\'')
+            ->execute()
+        ;
+
+        $contentsWithMissingImage = [];
+        while($ezimageAttributeRow = $statement->fetch()) {
+            preg_match('@dirpath="(?<dirpath>[^"]+)"@', $ezimageAttributeRow['data_text'], $matches);
+
+            if (count($matches) && '' !== $matches['dirpath']) {
+                if (!file_exists("./public/{$matches['dirpath']}")) {
+                    $contentId = $ezimageAttributeRow['contentobject_id'];
+                    $version = $ezimageAttributeRow['version'];
+                    $languageCode = $ezimageAttributeRow['language_code'];
+                    $fieldIdentifier = $ezimageAttributeRow['identifier'];
+                    $key = "$contentId-$version-$languageCode";
+                    if (array_key_exists($key, $contentsWithMissingImage)) {
+                        $contentsWithMissingImage[$key]['fields_with_wissing_image'][] = $fieldIdentifier;
+                    } else {
+                        $contentsWithMissingImage[$key] = [
+                            'content' => $this->container->get('ezpublish.api.service.content')->loadContent($contentId, [$languageCode], $version),//TODO: dependecy injection
+                            'id' => $contentId,
+                            'version' => $version,
+                            'language_code' => $languageCode,
+                            'fields_with_wissing_image' => [$fieldIdentifier],
+                        ];
+                    }
+                }
+            }
+        }
+        ksort($contentsWithMissingImage);
+        return $contentsWithMissingImage;
     }
 
     public function findMissingBinaryFiles()
     {
-        throw new NotImplementedException(); //TODO
+        throw new NotImplementedException('Not yet implemented \AdrienDupuis\EzPlatformAdminBundle\Service\IntegrityService::findMissingBinaryFiles'); //TODO
     }
 
     private function getPathListFromCmd($cmd)

@@ -11,8 +11,10 @@ class CheckIntegrityCommand extends Command
 {
     protected static $defaultName = 'integrity:check';
 
+    const SUCCESS = 0;
+
     public $otherNameSpaceCommandNameList = [
-        'ezplatform:storage:remove-unused-files',
+        //'ezplatform:storage:remove-unused-files',
     ]; //TODO: Maybe use a service tag or a parameter?
 
     protected function configure()
@@ -24,7 +26,7 @@ class CheckIntegrityCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $status = 0;
+        $status = self::SUCCESS;
 
         /** @var Command $command */
         foreach ($this->getApplication()->all(self::$defaultName) as $command) {
