@@ -68,7 +68,7 @@ class RemoveUnusedFilesFromStorageCommand extends Command
                     $output->writeln('; It could be removed as well as its aliases.');
                 }
             } else {
-                $output->writeln("; Remove it and its aliases…");
+                $output->writeln('; Remove it and its aliases…');
                 $output->writeln(trim(shell_exec('rm -r'.($output->isVerbose() ? 'v' : '')."f $dirPath $aliasesDirPath;")));
             }
         }
