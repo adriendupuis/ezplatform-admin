@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class RemoveUnusedFilesFromStorageCommand extends Command
 {
-    protected static $defaultName = 'ezplatform:storage:remove-unused-files';
+    protected static $defaultName = 'ezplatform:storage:remove-unused-files'; //TODO: integrity:fix:storage-unused-files?
 
     public const SUCCESS = 0; //TODO: When unused files are successfully removed or when there was nothing to remove?
     public const WARNING = 1;
@@ -49,12 +49,27 @@ class RemoveUnusedFilesFromStorageCommand extends Command
     {
         foreach ($this->integrityService->findUnusedImageDirectories() as $dirPath) {
             $output->write("$dirPath is not used");
+            $aliasesDirPath = str_replace('/images/', '/images/_aliases/*/', $dirPath);
             if ($input->getOption('dry-run')) {
-                $output->writeln('.');
+                if ($output->isVerbose()) {
+                    $output->writeln(': ');
+                    foreach (explode(PHP_EOL, shell_exec("find $dirPath -type f;")) as $filePath) {
+                        if ($filePath) {
+                            $output->writeln("$filePath could be removed.");
+                        }
+                    }
+                    $output->writeln("$dirPath could be removed.");
+                    foreach (explode(PHP_EOL, shell_exec("find ./public/var/ -path $dirPath;")) as $filePath) {
+                        if ($filePath) {
+                            $output->writeln("$filePath could be removed.");
+                        }
+                    }
+                } else {
+                    $output->writeln('; It could be removed as well as its aliases.');
+                }
             } else {
-                $output->writeln("; Remove {$dirPath} and its aliases…");
-                shell_exec('rm -r'.($output->isVerbose() ? 'v' : '')."f $dirPath "
-                    .str_replace('/images/', '/images/_aliases/*/', $dirPath));
+                $output->writeln("; Remove it and its aliases…");
+                $output->writeln(trim(shell_exec('rm -r'.($output->isVerbose() ? 'v' : '')."f $dirPath $aliasesDirPath;")));
             }
         }
 
