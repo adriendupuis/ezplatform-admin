@@ -84,6 +84,8 @@ class ExampleFinder {
     resetSearch() {
         this.offset = 0;
         this.examples = {};
+        this.fieldUsage = {};
+        this.progressCount = 0;
         this.abortSearch();
         return this;
     }
@@ -136,6 +138,26 @@ class ExampleFinder {
         }).html(example.name);
     }
 
+    mergeFieldUsage(fieldUsage, sliceCount) {
+        for (let fieldDefIdentifier in fieldUsage) {
+            if ('undefined' === typeof this.fieldUsage[fieldDefIdentifier]) {
+                this.fieldUsage[fieldDefIdentifier] = 0;
+            }
+            this.fieldUsage[fieldDefIdentifier] += fieldUsage[fieldDefIdentifier];
+        }
+        this.progressCount += sliceCount;
+        return this;
+    }
+
+    displayFieldUsage() {
+        for (let fieldDefIdentifier in this.fieldUsage) {
+            let percent = Math.floor(100 * this.fieldUsage[fieldDefIdentifier] / this.progressCount) + '%',
+                ratio = this.fieldUsage[fieldDefIdentifier] + '/' + this.progressCount;
+            $('#' + fieldDefIdentifier).find('.usage').empty().append('<span class="percent">'+percent+'</span> <small>('+ratio+')</small>');
+        }
+        return this;
+    }
+
     search() {
         let url = this.searchBaseUrl + this.contentType + '/' + this.offset + '/' + this.limit;
         if (this.languageCodeSelect.val()) {
@@ -146,6 +168,7 @@ class ExampleFinder {
             if (data.totalCount) {
                 this.setTotalCount(data.totalCount);
                 this.mergeExamples(data.examples).displayExamples();
+                this.mergeFieldUsage(data.fieldUsage, data.sliceCount).displayFieldUsage();
                 if (this.increaseOffset() < data.totalCount) {
                     this.search();
                 } else {
