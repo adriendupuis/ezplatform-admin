@@ -81,15 +81,15 @@
         <target>Location ID</target>
         <note>key: identification.table.location.id</note>
       </trans-unit>
-      <trans-unit id="fae9fd39301eb7e657d4dad32a828cda5d7399e5" resname="identifier">
-        <source>Identifier</source>
-        <target>Identifier</target>
-        <note>key: identifier</note>
-      </trans-unit>
       <trans-unit id="d88cc75e1b9dc631d651f31db9f4228eaf97a1f4" resname="identifier.help">
         <source>(TODO: Form identifier help)</source>
         <target>Identifier can be an integer ID, or, a string identifier with eventually wildcards ‘*’ (asterisk characters)</target>
         <note>key: identifier.help</note>
+      </trans-unit>
+      <trans-unit id="a24b22fee586aeaacd766b6b0c39ce4a5d0a9294" resname="identifier.label">
+        <source>identifier.label</source>
+        <target>identifier:</target>
+        <note>key: identifier.label</note>
       </trans-unit>
       <trans-unit id="9bf0f8ff5f5d8bcbffb9d51c976bcda496989364" resname="identify">
         <source>Identify</source>

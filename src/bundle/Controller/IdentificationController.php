@@ -36,6 +36,9 @@ class IdentificationController extends Controller
                     'id' => $identifier,
                 ], [
                     'csrf_protection' => false,
+                    'attr' => [
+                        'name' => 'identification',
+                    ],
                 ])
                 ->setMethod('GET')
                 ->setAction($this->generateUrl('ad_admin.identification'))

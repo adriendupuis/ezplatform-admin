@@ -81,18 +81,18 @@
         <target>ID d'emplacement</target>
         <note>key: identification.table.location.id</note>
       </trans-unit>
-      <trans-unit id="fae9fd39301eb7e657d4dad32a828cda5d7399e5" resname="identifier">
-        <source>identifier</source>
-        <target>Identifiant</target>
-        <note>key: identifier</note>
-      </trans-unit>
       <trans-unit id="d88cc75e1b9dc631d651f31db9f4228eaf97a1f4" resname="identifier.help">
         <source>(TODO: Form identifier help)</source>
         <target>L'identifiant peut-être un entier (ID), ou, une chaîne avec éventuellement des jokers ‘*’ (astérisque)</target>
         <note>key: identifier.help</note>
       </trans-unit>
+      <trans-unit id="a24b22fee586aeaacd766b6b0c39ce4a5d0a9294" resname="identifier.label">
+        <source>identifier.label</source>
+        <target>Identifiant :</target>
+        <note>key: identifier.label</note>
+      </trans-unit>
       <trans-unit id="9bf0f8ff5f5d8bcbffb9d51c976bcda496989364" resname="identify">
-        <source>identify</source>
+        <source>Identify</source>
         <target>Identifier</target>
         <note>key: identify</note>
       </trans-unit>

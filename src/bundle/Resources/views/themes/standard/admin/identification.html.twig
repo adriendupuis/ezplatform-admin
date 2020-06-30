@@ -2,6 +2,10 @@
 
 {% trans_default_domain 'ad_admin_identification' %}
 
+{% block stylesheets %}
+    {{ encore_entry_link_tags('ad-admin-identification-css', null, 'ezplatform') }}
+{% endblock %}
+
 {% block breadcrumbs %}
     {% include '@ezdesign/ui/breadcrumbs.html.twig' with { items: [
         { value: 'breadcrumb.admin'|trans(domain='messages')|desc('Admin') },

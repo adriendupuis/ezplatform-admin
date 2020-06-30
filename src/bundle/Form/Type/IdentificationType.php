@@ -24,7 +24,7 @@ class IdentificationType extends AbstractType
         $builder
             ->add('id', TextType::class, [
                 'required' => true,
-                'label' => 'identifier',
+                'label' => 'identifier.label',
                 //'help' => 'identifier.help', // Not automatically extracted nor translated
                 'help' => $this->translator->trans('identifier.help', [], 'ad_admin_identification'),
                 'translation_domain' => 'ad_admin_identification',
@@ -32,6 +32,9 @@ class IdentificationType extends AbstractType
             ->add('identify', SubmitType::class, [
                 'label' => 'identify',
                 'translation_domain' => 'ad_admin_identification',
+                'attr' => [
+                    'class' => 'btn-secondary',
+                ],
             ])
         ;
     }
