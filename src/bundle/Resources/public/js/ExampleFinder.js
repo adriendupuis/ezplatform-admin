@@ -153,7 +153,7 @@ class ExampleFinder {
         for (let fieldDefIdentifier in this.fieldUsage) {
             let percent = Math.floor(100 * this.fieldUsage[fieldDefIdentifier] / this.progressCount) + '%',
                 ratio = this.fieldUsage[fieldDefIdentifier] + '/' + this.progressCount;
-            $('#' + fieldDefIdentifier).find('.usage').empty().append('<span class="percent">'+percent+'</span> <small>('+ratio+')</small>');
+            $('#' + fieldDefIdentifier).find('.usage').empty().append('<span title="'+ratio+'">'+percent+'</span>');
         }
         return this;
     }

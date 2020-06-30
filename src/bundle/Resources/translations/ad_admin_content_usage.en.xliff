@@ -102,6 +102,11 @@
         <target>Field Type</target>
         <note>key: example_finder.field_type</note>
       </trans-unit>
+      <trans-unit id="3dbee12468b02063ac2cd3cf7afa8ae97a1718fd" resname="example_finder.field_usage">
+        <source>Field Usage</source>
+        <target>Usage</target>
+        <note>key: example_finder.field_usage</note>
+      </trans-unit>
       <trans-unit id="3c477969bdd2b720a2ac2cb4fc2fe934009caf72" resname="example_finder.irrelevant">
         <source>irrelevant</source>
         <target>irrelevant</target>
