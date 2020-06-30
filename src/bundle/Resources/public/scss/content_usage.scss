@@ -5,44 +5,46 @@
 }
 
 #example_finder_form {
-    overflow: hidden;/* to have the same height than the floating elements */
+    overflow: hidden; /* to have the same height than the floating elements */
     margin-bottom: 20px;
-}
 
-#example_finder_form .form-group > div {
-    float: left;
-    width: 50%;
-}
+    .form-group > div {
+        float: left;
+        width: 50%;
+    }
 
-#example_finder_form select {
-    width: auto;
-}
+    select {
+        width: auto;
+    }
 
-#example_finder_result .bad-examples ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
+    .bad-examples ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
 }
 
 .missing_language {
     margin-bottom: 20px;
     padding: 10px;
+
+    .warning {
+        border: 3px solid $ez-color-warning;
+    }
+
+    .danger {
+        border: 3px solid $ez-color-danger;
+    }
 }
 
-.missing_language.warning {
-    border: 3px solid $ez-color-warning;
-}
+table.language-usage {
+    td.disabled {
+        text-decoration: line-through;
+        opacity: 0.5;
+    }
 
-.missing_language.danger {
-    border: 3px solid $ez-color-danger;
-}
-
-table.language-usage td.disabled {
-    text-decoration: line-through;
-    opacity: 0.5;
-}
-
-table.language-usage td.nonexistent {
-    background-color: $ez-color-danger;
-    color: white;
+    td.nonexistent {
+        background-color: $ez-color-danger;
+        color: white;
+    }
 }
