@@ -24,13 +24,13 @@
         {% if identified_list is not null %}
             {% if identified_list.content is not null %}
                 <div class="ez-table-header">
-                    <div class="ez-table-header__headline">Content</div>
+                    <div class="ez-table-header__headline">{{ 'identification.headline.content'|trans|desc('Content') }}</div>
                 </div>
                 <table class="ez-table table mb-3">
                     <thead>
                     <tr>
-                        <th>Content</th>
-                        <th>Content ID</th>
+                        <th>{{ 'identification.table.content'|trans|desc('Content') }}</th>
+                        <th>{{ 'identification.table.content.id'|trans|desc('Content ID') }}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -47,14 +47,14 @@
             {% endif %}
             {% if identified_list.location is not null %}
                 <div class="ez-table-header">
-                    <div class="ez-table-header__headline">Location</div>
+                    <div class="ez-table-header__headline">{{ 'identification.headline.location'|trans|desc('Location') }}</div>
                 </div>
                 <table class="ez-table table mb-3">
                     <thead>
                     <tr>
-                        <th>Content</th>
-                        <th>Content ID</th>
-                        <th>Location ID</th>
+                        <th>{{ 'identification.table.content'|trans|desc('Content') }}</th>
+                        <th>{{ 'identification.table.content.id'|trans|desc('Content ID') }}</th>
+                        <th>{{ 'identification.table.location.id'|trans|desc('Location ID') }}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -72,14 +72,14 @@
             {% endif %}
             {% if identified_list.content_type_list|length %}
                 <div class="ez-table-header">
-                    <div class="ez-table-header__headline">Content Types</div>
+                    <div class="ez-table-header__headline">{{ 'identification.headline.content_types'|trans|desc('Content Types') }}</div>
                 </div>
                 <table class="ez-table table mb-3">
                     <thead>
                     <tr>
-                        <th>Content Type</th>
-                        <th>Content Type ID</th>
-                        <th>Content Type Identifier</th>
+                        <th>{{ 'identification.table.content_type'|trans|desc('Content Type') }}</th>
+                        <th>{{ 'identification.table.content_type.id'|trans|desc('Content Type ID') }}</th>
+                        <th>{{ 'identification.table.content_type.identifier'|trans|desc('Content Type Identifier') }}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -105,16 +105,16 @@
             {% endif %}
             {% if identified_list.content_type_field_list|length %}
                 <div class="ez-table-header">
-                    <div class="ez-table-header__headline">Fields</div>
+                    <div class="ez-table-header__headline">{{ 'identification.headline.content_type_fields'|trans|desc('Fields') }}</div>
                 </div>
                 <table class="ez-table table mb-3">
                     <thead>
                     <tr>
-                        <th>Content Type</th>
-                        <th>Field Name</th>
-                        <th>Field ID</th>
-                        <th>Field Identifier</th>
-                        <th>Field Type</th>
+                        <th>{{ 'identification.table.content_type'|trans|desc('Content Type') }}</th>
+                        <th>{{ 'identification.table.content_type_field.name'|trans|desc('Field Name') }}</th>
+                        <th>{{ 'identification.table.content_type_field.id'|trans|desc('Field ID') }}</th>
+                        <th>{{ 'identification.table.content_type_field.identifier'|trans|desc('Field Identifier') }}</th>
+                        <th>{{ 'identification.table.content_type_field.type'|trans|desc('Field Type') }}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -138,7 +138,6 @@
                                 {{ (field.field_definition.fieldTypeIdentifier ~ '.name')|trans(domain='fieldtypes') }}
                                 <small>({{ field.field_definition.fieldTypeIdentifier }})</small>
                             </td>
-                            {#        return $this->translator->trans(/** @Ignore */$fieldTypeIdentifier.'.name', [], 'fieldtypes');#}
                         </tr>
                     {% endfor %}
                     </tbody>

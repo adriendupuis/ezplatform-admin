@@ -18,17 +18,12 @@ class IdentificationController extends Controller
     /** @var FormFactoryInterface */
     private $formFactory;
 
-    /** @var TranslatorInterface */
-    private $translator;
-
     public function __construct(
         ContentUsageService $contentUsageService,
-        FormFactoryInterface $formFactory,
-        TranslatorInterface $translator
+        FormFactoryInterface $formFactory
     ) {
         $this->contentUsageService = $contentUsageService;
         $this->formFactory = $formFactory;
-        $this->translator = $translator;
     }
 
     public function identificationAction(Request $request): Response
