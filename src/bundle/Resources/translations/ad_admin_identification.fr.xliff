@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="not.available">
+    <header>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
+    </header>
+    <body>
+      <trans-unit id="2b4a5042819e288b7637b9ab286cf8918d62b6c8" resname="identification">
+        <source>Identification</source>
+        <target state="new">Identification</target>
+        <note>key: identification</note>
+      </trans-unit>
+      <trans-unit id="fae9fd39301eb7e657d4dad32a828cda5d7399e5" resname="identifier">
+        <source>identifier</source>
+        <target>Identifiant</target>
+        <note>key: identifier</note>
+      </trans-unit>
+      <trans-unit id="d88cc75e1b9dc631d651f31db9f4228eaf97a1f4" resname="identifier.help">
+        <source>(TODO: Form identifier help)</source>
+        <target state="new">L'identifiant peut-être un entier (ID), ou, une chaîne avec éventuellement des jokers ‘*’ (astérisque)</target>
+        <note>key: identifier.help</note>
+      </trans-unit>
+      <trans-unit id="9bf0f8ff5f5d8bcbffb9d51c976bcda496989364" resname="identify">
+        <source>identify</source>
+        <target>Identifier</target>
+        <note>key: identify</note>
+      </trans-unit>
+      <trans-unit id="a8a250882b655feb6d84aaeca378b80799186f19" resname="main__admin__identification">
+        <source>Identification</source>
+        <target state="new">Identification</target>
+        <note>key: main__admin__identification</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

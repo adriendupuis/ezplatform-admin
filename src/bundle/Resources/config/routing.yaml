@@ -15,3 +15,8 @@ ad_admin.content_usage.example_finder.search:
         offset: 0
         limit: 25
         language: null
+
+ad_admin.identification:
+    path: /identification
+    defaults:
+        _controller: AdrienDupuis\EzPlatformAdminBundle\Controller\IdentificationController::identificationAction

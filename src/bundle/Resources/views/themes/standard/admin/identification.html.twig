@@ -1,0 +1,149 @@
+{% extends "@ezdesign/ui/layout.html.twig" %}
+
+{% trans_default_domain 'ad_admin_identification' %}
+
+{% block breadcrumbs %}
+    {% include '@ezdesign/ui/breadcrumbs.html.twig' with { items: [
+        { value: 'breadcrumb.admin'|trans(domain='messages')|desc('Admin') },
+        { value: 'main__admin__identification'|trans|desc('Identification') }
+    ]} %}
+{% endblock %}
+
+{% block page_title %}
+    {% include '@ezdesign/ui/page_title.html.twig' with {
+        title: 'identification'|trans|desc('Identification'),
+        icon_name: 'information'
+    } %}
+{% endblock %}
+
+{% block content %}
+    <section class="container mt-4 px-5">
+        {{ form(form) }}
+    </section>
+    <section class="container mt-4 px-5">
+        {% if identified_list is not null %}
+            {% if identified_list.content is not null %}
+                <div class="ez-table-header">
+                    <div class="ez-table-header__headline">Content</div>
+                </div>
+                <table class="ez-table table mb-3">
+                    <thead>
+                    <tr>
+                        <th>Content</th>
+                        <th>Content ID</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="ez-table__cell">
+                            <a href="{{ ez_path(identified_list.content) }}">
+                                {{ ez_content_name(identified_list.content) }}
+                            </a>
+                        </td>
+                        <td class="ez-table__cell">{{ identified_list.content.id }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            {% endif %}
+            {% if identified_list.location is not null %}
+                <div class="ez-table-header">
+                    <div class="ez-table-header__headline">Location</div>
+                </div>
+                <table class="ez-table table mb-3">
+                    <thead>
+                    <tr>
+                        <th>Content</th>
+                        <th>Content ID</th>
+                        <th>Location ID</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="ez-table__cell">
+                            <a href="{{ ez_path(identified_list.location) }}">
+                                {{ ez_content_name(identified_list.location.content) }}
+                            </a>
+                        </td>
+                        <td class="ez-table__cell">{{ identified_list.location.content.id }}</td>
+                        <td class="ez-table__cell">{{ identified_list.location.id }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            {% endif %}
+            {% if identified_list.content_type_list|length %}
+                <div class="ez-table-header">
+                    <div class="ez-table-header__headline">Content Types</div>
+                </div>
+                <table class="ez-table table mb-3">
+                    <thead>
+                    <tr>
+                        <th>Content Type</th>
+                        <th>Content Type ID</th>
+                        <th>Content Type Identifier</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for content_type in identified_list.content_type_list %}
+                        <tr>
+                            <td class="ez-table__cell">
+                                <svg class="ez-icon ez-icon--small">
+                                    <use xlink:href="{{ ez_content_type_icon(content_type.identifier) }}"></use>
+                                </svg>
+                                <a href="{{ path('ezplatform.content_type.view', {
+                                    'contentTypeGroupId': content_type.contentTypeGroups.0.id,
+                                    'contentTypeId': content_type.id
+                                }) }}" title="">
+                                    {{ content_type.name }}
+                                </a>
+                            </td>
+                            <td class="ez-table__cell">{{ content_type.id }}</td>
+                            <td class="ez-table__cell">{{ content_type.identifier }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+            {% if identified_list.content_type_field_list|length %}
+                <div class="ez-table-header">
+                    <div class="ez-table-header__headline">Fields</div>
+                </div>
+                <table class="ez-table table mb-3">
+                    <thead>
+                    <tr>
+                        <th>Content Type</th>
+                        <th>Field Name</th>
+                        <th>Field ID</th>
+                        <th>Field Identifier</th>
+                        <th>Field Type</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for field in identified_list.content_type_field_list %}
+                        <tr>
+                            <td class="ez-table__cell">
+                                <svg class="ez-icon ez-icon--small">
+                                    <use xlink:href="{{ ez_content_type_icon(field.content_type.identifier) }}"></use>
+                                </svg>
+                                <a href="{{ path('ezplatform.content_type.view', {
+                                    'contentTypeGroupId': field.content_type.contentTypeGroups.0.id,
+                                    'contentTypeId': field.content_type.id
+                                }) }}" title="ID: {{ field.content_type.id }}; Identifier:{{ field.content_type.identifier }}">
+                                    {{ field.content_type.name }}
+                                </a>
+                            </td>
+                            <td class="ez-table__cell">{{ field.field_definition.name }}</td>
+                            <td class="ez-table__cell">{{ field.field_definition.id }}</td>
+                            <td class="ez-table__cell">{{ field.field_definition.identifier }}</td>
+                            <td class="ez-table__cell">
+                                {{ (field.field_definition.fieldTypeIdentifier ~ '.name')|trans(domain='fieldtypes') }}
+                                <small>({{ field.field_definition.fieldTypeIdentifier }})</small>
+                            </td>
+                            {#        return $this->translator->trans(/** @Ignore */$fieldTypeIdentifier.'.name', [], 'fieldtypes');#}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        {% endif %}
+    </section>
+{% endblock %}

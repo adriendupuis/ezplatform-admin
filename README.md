@@ -31,8 +31,18 @@ Features
   - Tab Opener: Open a tab according to URL hash. Examples: Right-click on a tab and open it in a new window, the tab is active; Reload a page, tab is still active.
 
 
-TODO
-----
+Contribute
+----------
+
+### Translations
+
+extract:
+```shell
+bin/console translation:extract en --bundle AdrienDupuisEzPlatformAdminBundle --domain ad_admin_content_usage --output-dir vendor/adriendupuis/ezplatform-admin/src/bundle/Resources/translations/ --bundle AdrienDupuisEzPlatformAdminBundle;
+bin/console translation:extract en --bundle AdrienDupuisEzPlatformAdminBundle --domain ad_admin_identification --output-dir vendor/adriendupuis/ezplatform-admin/src/bundle/Resources/translations/ --bundle AdrienDupuisEzPlatformAdminBundle;
+```
+
+### TODO
 
 * Features
   * Users
