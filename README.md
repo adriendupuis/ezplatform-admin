@@ -27,6 +27,8 @@ Features
   - Content Type Usage: Content count per content type.
   - Example Finder: Find best and bad content examples for each field of a content type.
   - Language Usage: Content count per language.
+* Admin
+  - Identification: Find content, location, content type or content type field definitions from an ID or an identifier (`1`, `user*`, `ez*text`, etc.)
 * Navigation
   - Tab Opener: Open a tab according to URL hash. Examples: Right-click on a tab and open it in a new window, the tab is active; Reload a page, tab is still active.
 
