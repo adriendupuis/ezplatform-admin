@@ -25,7 +25,7 @@ Features
 
 * Content Usage
   - Content Type Usage: Content count per content type.
-  - Example Finder: Find best and bad content examples for each field of a content type.
+  - Example Finder: Find best and bad content examples for each field of a content type, and report field usage statistics.
   - Language Usage: Content count per language.
 * Navigation
   - Tab Opener: Open a tab according to URL hash. Examples: Right-click on a tab and open it in a new window, the tab is active; Reload a page, tab is still active.
