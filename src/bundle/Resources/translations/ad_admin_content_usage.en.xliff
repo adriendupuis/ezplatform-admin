@@ -43,7 +43,7 @@
       </trans-unit>
       <trans-unit id="a7b10fb4ba0b461f36a554a25ee3583f9eb19f5c" resname="example_finder">
         <source>Example Finder</source>
-        <target>Example Finder</target>
+        <target>Field Usage (Example Finder)</target>
         <note>key: example_finder</note>
       </trans-unit>
       <trans-unit id="d4468527d7edfe8d2f3e0278897969b7f8bf01ef" resname="example_finder.all_languages">
