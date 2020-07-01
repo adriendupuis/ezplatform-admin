@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="not.available">
+    <header>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
+    </header>
+    <body>
+      <trans-unit id="2b4a5042819e288b7637b9ab286cf8918d62b6c8" resname="identification">
+        <source>Identification</source>
+        <target>Identification</target>
+        <note>key: identification</note>
+      </trans-unit>
+      <trans-unit id="de882134bfdf17a7fe25becf7e703a33035a1ea7" resname="identification.headline.content">
+        <source>Content</source>
+        <target state="new">Content</target>
+        <note>key: identification.headline.content</note>
+      </trans-unit>
+      <trans-unit id="406bb5cfaef2d47949aaa3b7e111b3bc264becfe" resname="identification.headline.content_type_fields">
+        <source>Fields</source>
+        <target>Fields</target>
+        <note>key: identification.headline.content_type_fields</note>
+      </trans-unit>
+      <trans-unit id="6a6beac13879c19b13f81a1d04021a3e2a13bd1d" resname="identification.headline.content_types">
+        <source>Content Types</source>
+        <target>Content Types</target>
+        <note>key: identification.headline.content_types</note>
+      </trans-unit>
+      <trans-unit id="3d1bf49eaf419b01e7d05fdd7501b0c272287b89" resname="identification.headline.location">
+        <source>Location</source>
+        <target>Location</target>
+        <note>key: identification.headline.location</note>
+      </trans-unit>
+      <trans-unit id="a6b77f4da1ce41ea7b0db748705d2c6bbcad6c27" resname="identification.table.content">
+        <source>Content</source>
+        <target>Content</target>
+        <note>key: identification.table.content</note>
+      </trans-unit>
+      <trans-unit id="7b2e6c600c1ab46d05e7bd626712a0d32fdff71e" resname="identification.table.content.id">
+        <source>Content ID</source>
+        <target>Content ID</target>
+        <note>key: identification.table.content.id</note>
+      </trans-unit>
+      <trans-unit id="112fe005311cb49f5cd6eb1e1e4a05440d02f172" resname="identification.table.content_type">
+        <source>Content Type</source>
+        <target>Content Type</target>
+        <note>key: identification.table.content_type</note>
+      </trans-unit>
+      <trans-unit id="e4cfa8ecc34527ec959ef9774534354b9f107667" resname="identification.table.content_type.id">
+        <source>Content Type ID</source>
+        <target>Content Type ID</target>
+        <note>key: identification.table.content_type.id</note>
+      </trans-unit>
+      <trans-unit id="47f38f04d0a07bcbe2cef969b69d94164faeeac6" resname="identification.table.content_type.identifier">
+        <source>Content Type Identifier</source>
+        <target>Content Type Identifier</target>
+        <note>key: identification.table.content_type.identifier</note>
+      </trans-unit>
+      <trans-unit id="1e9d0af0ef8fff99e7766ed442e398062b2649c2" resname="identification.table.content_type_field.id">
+        <source>Field ID</source>
+        <target>Field ID</target>
+        <note>key: identification.table.content_type_field.id</note>
+      </trans-unit>
+      <trans-unit id="b69d18d50024e569b2e6ad36ed9de718db8329bf" resname="identification.table.content_type_field.identifier">
+        <source>Field Identifier</source>
+        <target>Field Identifier</target>
+        <note>key: identification.table.content_type_field.identifier</note>
+      </trans-unit>
+      <trans-unit id="30c75efc0c8d0e52f379dadc1f7d0254463f8156" resname="identification.table.content_type_field.name">
+        <source>Field Name</source>
+        <target>Field Name</target>
+        <note>key: identification.table.content_type_field.name</note>
+      </trans-unit>
+      <trans-unit id="3e3ae03d36e0e948eb1186a13f5ee1638f2deba6" resname="identification.table.content_type_field.type">
+        <source>Field Type</source>
+        <target>Field Type</target>
+        <note>key: identification.table.content_type_field.type</note>
+      </trans-unit>
+      <trans-unit id="fa3c1181a910b71e581fbf5167d5d4a8800ab4db" resname="identification.table.location.id">
+        <source>Location ID</source>
+        <target>Location ID</target>
+        <note>key: identification.table.location.id</note>
+      </trans-unit>
+      <trans-unit id="d88cc75e1b9dc631d651f31db9f4228eaf97a1f4" resname="identifier.help">
+        <source>(TODO: Form identifier help)</source>
+        <target>Identifier can be an integer ID, or, a string identifier with eventually wildcards ‘*’ (asterisk characters)</target>
+        <note>key: identifier.help</note>
+      </trans-unit>
+      <trans-unit id="a24b22fee586aeaacd766b6b0c39ce4a5d0a9294" resname="identifier.label">
+        <source>identifier.label</source>
+        <target>identifier:</target>
+        <note>key: identifier.label</note>
+      </trans-unit>
+      <trans-unit id="9bf0f8ff5f5d8bcbffb9d51c976bcda496989364" resname="identify">
+        <source>Identify</source>
+        <target>Identify</target>
+        <note>key: identify</note>
+      </trans-unit>
+      <trans-unit id="a8a250882b655feb6d84aaeca378b80799186f19" resname="main__admin__identification">
+        <source>Identification</source>
+        <target>Identification</target>
+        <note>key: main__admin__identification</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
