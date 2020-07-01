@@ -33,7 +33,6 @@ class IdentificationMenuSubscriber implements EventSubscriberInterface, Translat
                 'route' => 'ad_admin.identification',
                 'extras' => [
                     'translation_domain' => 'ad_admin_identification',
-                    'orderNumber' => 666, //TODO
                 ],
             ]
         );
