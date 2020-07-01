@@ -3,10 +3,8 @@
 {% trans_default_domain 'ad_admin_content_usage' %}
 
 {% block stylesheets %}
-    {{ encore_entry_link_tags('ad-admin-css', null, 'ezplatform') }}
+    {{ encore_entry_link_tags('ad-admin-content-usage-css', null, 'ezplatform') }}
 {% endblock %}
-
-{% block body_class %}{% endblock %}
 
 {% block breadcrumbs %}
     {% include '@ezdesign/ui/breadcrumbs.html.twig' with { items: [
@@ -26,6 +24,6 @@
 {% endblock %}
 
 {% block javascripts %}
-    {{ encore_entry_script_tags('ad-admin-js', null, 'ezplatform') }}
+    {{ encore_entry_script_tags('ad-admin-content-usage-js', null, 'ezplatform') }}
     <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'ad_admin_content_usage' }) }}"></script>
 {% endblock %}
