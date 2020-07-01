@@ -83,7 +83,7 @@
       </trans-unit>
       <trans-unit id="d88cc75e1b9dc631d651f31db9f4228eaf97a1f4" resname="identifier.help">
         <source>(TODO: Form identifier help)</source>
-        <target>L'identifiant peut-être un entier (ID), ou, une chaîne avec éventuellement des jokers ‘*’ (astérisque)</target>
+        <target>L'identifiant peut-être un entier (ID), ou, une chaîne (identifiant) avec éventuellement des jokers ‘*’ (astérisque)</target>
         <note>key: identifier.help</note>
       </trans-unit>
       <trans-unit id="a24b22fee586aeaacd766b6b0c39ce4a5d0a9294" resname="identifier.label">
