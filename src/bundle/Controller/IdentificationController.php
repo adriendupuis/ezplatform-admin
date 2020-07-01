@@ -8,7 +8,6 @@ use EzSystems\EzPlatformAdminUiBundle\Controller\Controller;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class IdentificationController extends Controller
 {
