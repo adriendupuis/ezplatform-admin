@@ -19,18 +19,12 @@ class ExampleFinder {
         this
             .setLimit(limit)
             .resetSearch()
-            .setEventHandlers()
+            .configContentTypeSelect()
+            .configLanguageCodeSelect()
         ;
     }
 
-    setEventHandlers() {
-        this
-            .setContentTypeSelectEventHandler()
-            .setLanguageCodeSelectEventHandler()
-        ;
-    }
-
-    setContentTypeSelectEventHandler() {
+    configContentTypeSelect() {
         this.contentTypeSelect.val('').change(function () {
             this.abortSearch();
             let contentType = this.contentTypeSelect.val();
@@ -53,7 +47,12 @@ class ExampleFinder {
         return this;
     }
 
-    setLanguageCodeSelectEventHandler() {
+    configLanguageCodeSelect() {
+        if (2 === this.languageCodeSelect.find('option').length) {
+            /* When the two only options are 'All Languges' an an unique language */
+            this.languageCodeSelect.parent().hide();
+            return this
+        }
         this.languageCodeSelect.val('').change(function () {
             // Clean previous language's examples by reloading the table and running a new search.
             this.contentTypeSelect.change();
