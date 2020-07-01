@@ -227,15 +227,19 @@ class ContentUsageService
 
     public function getLanguageUsage(): array
     {
-        return $this->dbalConnection->createQueryBuilder()
+        $contentCounts = [];
+        foreach ($this->dbalConnection->createQueryBuilder()
             ->select(['l.locale AS language_code', 'COUNT(o.id) AS content_count'])
             ->from('ezcontentobject', 'o')
             ->leftJoin('o', 'ezcontent_language', 'l', 'o.language_mask & l.id = l.id')
             ->groupBy('l.id')
             ->orderBy('content_count', 'DESC')
             ->execute()
-            ->fetchAll()
-        ;
+            ->fetchAll() as $row) {
+            $contentCounts[$row['language_code']] = $row['content_count'];
+        }
+
+        return $contentCounts;
     }
 
     /** @param mixed $identifier */

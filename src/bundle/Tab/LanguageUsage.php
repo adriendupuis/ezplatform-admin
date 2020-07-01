@@ -40,6 +40,11 @@ class LanguageUsage extends AbstractTab
     {
         $languageUsage = $this->integrityService->getAvailableAndMissingLanguages();
         $languageUsage['content_count_list'] = $this->contentUsageService->getLanguageUsage();
+        $unusedLanguage = array_diff($languageUsage['available_languages'], array_keys($languageUsage['content_count_list']));
+        $languageUsage['content_count_list'] = array_merge(
+            $languageUsage['content_count_list'],
+            array_combine($unusedLanguage, array_fill(0, count($unusedLanguage), 0))
+        );
 
         return $this->twig->render('@ezdesign/tab/language_usage.html.twig', $languageUsage);
     }

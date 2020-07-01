@@ -40,18 +40,20 @@
     </tr>
     </thead>
     <tbody>
-    {% for content_count in content_count_list %}
+    {% for language_code, content_count in content_count_list %}
         <tr>
-            {% if content_count.language_code is null %}
+            {% if language_code is empty %}
                 <td class="nonexistent" title="{{ 'language_usage.nonexistent_language_explanation'|trans }}">
                     ({{ 'language_usage.nonexistent_language'|trans|desc('Nonexistent language') }})
                 </td>
             {% else %}
-                <td class="{{ language_map[content_count.language_code].enabled ? 'enabled' : ('disabled" title="'~'language_usage.disabled_language'|trans|desc('Disabled language'))|raw }}">
-                    {{ language_map[content_count.language_code].name }}
+                <td class="{{ language_map[language_code].enabled ? 'enabled' : ('disabled" title="'~'language_usage.disabled_language'|trans|desc('Disabled language'))|raw }}">
+                    <a href="{{ path('ezplatform.language.view', {languageId: language_map[language_code].id}) }}">
+                        {{ language_map[language_code].name }}
+                    </a>
                 </td>
             {% endif %}
-            <td align="right">{{ content_count.content_count }}</td>
+            <td align="right">{{ content_count }}</td>
         </tr>
     {% endfor %}
     </tbody>
