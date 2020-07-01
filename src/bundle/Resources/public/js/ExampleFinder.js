@@ -19,18 +19,12 @@ class ExampleFinder {
         this
             .setLimit(limit)
             .resetSearch()
-            .setEventHandlers()
+            .configContentTypeSelect()
+            .configLanguageCodeSelect()
         ;
     }
 
-    setEventHandlers() {
-        this
-            .setContentTypeSelectEventHandler()
-            .setLanguageCodeSelectEventHandler()
-        ;
-    }
-
-    setContentTypeSelectEventHandler() {
+    configContentTypeSelect() {
         this.contentTypeSelect.val('').change(function () {
             this.abortSearch();
             let contentType = this.contentTypeSelect.val();
@@ -53,7 +47,12 @@ class ExampleFinder {
         return this;
     }
 
-    setLanguageCodeSelectEventHandler() {
+    configLanguageCodeSelect() {
+        if (2 === this.languageCodeSelect.find('option').length) {
+            /* When the two only options are 'All Languges' an an unique language */
+            this.languageCodeSelect.parent().hide();
+            return this
+        }
         this.languageCodeSelect.val('').change(function () {
             // Clean previous language's examples by reloading the table and running a new search.
             this.contentTypeSelect.change();
@@ -84,12 +83,15 @@ class ExampleFinder {
     resetSearch() {
         this.offset = 0;
         this.examples = {};
+        this.fieldUsage = {};
+        this.progressCount = 0;
         this.abortSearch();
         return this;
     }
 
     setTotalCount(totalCount) {
         this.totalCount = totalCount;
+        return this;
     }
 
     mergeExamples(examples) {
@@ -136,6 +138,29 @@ class ExampleFinder {
         }).html(example.name);
     }
 
+    mergeFieldUsage(fieldUsage, sliceCount) {
+        for (let fieldDefIdentifier in fieldUsage) {
+            if ('undefined' === typeof this.fieldUsage[fieldDefIdentifier]) {
+                this.fieldUsage[fieldDefIdentifier] = 0;
+            }
+            this.fieldUsage[fieldDefIdentifier] += fieldUsage[fieldDefIdentifier];
+        }
+        this.progressCount += sliceCount;
+        return this;
+    }
+
+    displayFieldUsage() {
+        for (let fieldDefIdentifier in this.fieldUsage) {
+            let percent = Math.floor(100 * this.fieldUsage[fieldDefIdentifier] / this.progressCount) + '&#8239;%',
+                ratio = this.fieldUsage[fieldDefIdentifier] + '/' + this.progressCount;
+            $('#' + fieldDefIdentifier).find('.usage')
+                .html(percent)
+                .attr('title', ratio)
+            ;
+        }
+        return this;
+    }
+
     search() {
         let url = this.searchBaseUrl + this.contentType + '/' + this.offset + '/' + this.limit;
         if (this.languageCodeSelect.val()) {
@@ -144,8 +169,13 @@ class ExampleFinder {
         this.displayStatus(Translator.trans(/*@Desc("Searching…")*/ 'example_finder.status.searching', {}, 'ad_admin_content_usage'), true);
         this.xhr = $.getJSON(url, function (data) {
             if (data.totalCount) {
-                this.setTotalCount(data.totalCount);
-                this.mergeExamples(data.examples).displayExamples();
+                this
+                    .setTotalCount(data.totalCount)
+                    .mergeExamples(data.examples)
+                    .displayExamples()
+                    .mergeFieldUsage(data.fieldUsage, data.sliceCount)
+                    .displayFieldUsage()
+                ;
                 if (this.increaseOffset() < data.totalCount) {
                     this.search();
                 } else {

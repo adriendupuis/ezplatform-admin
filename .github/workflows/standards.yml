@@ -24,8 +24,13 @@ jobs:
         run: composer require friendsofphp/php-cs-fixer --dev --no-interaction
 
       - name: Remove JMSTranslationBundle Ignore annotation
-        # …Because this annotation's syntax isn't compatible with PHP CS Fixer `@Symfony` rules (tested w/ “Yellow Bird” 2.16.3)
+        # …Because this annotation's syntax isn't compatible with PHP CS Fixer `@Symfony` rules (tested w/ “Yellow Bird” 2.16.4)
         run: php -r "\$filename='src/bundle/Controller/ContentUsageController.php'; file_put_contents(\$filename, str_replace('/** @Ignore */', '', file_get_contents(\$filename)));"
+
+      - name: Fix JMSTranslationBundle Desc annotation
+        # …Because this annotation's syntax isn't compatible with PHP CS Fixer `@Symfony` rules (tested w/ “Yellow Bird” 2.16.4)
+        run: php -r "\$dir='src/bundle/Tab/'; foreach (['ContentTypeUsage.php', 'ExampleFinder.php', 'LanguageUsage.php'] as \$filename) { file_put_contents(\$dir.\$filename, str_replace('/** @Desc(', '/* @Desc(', file_get_contents(\$dir.\$filename))); }"
+
 
       - name: Validate coding standards in source
         run: vendor/bin/php-cs-fixer fix --dry-run --rules=@Symfony src/

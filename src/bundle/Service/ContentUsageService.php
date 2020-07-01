@@ -3,12 +3,17 @@
 namespace AdrienDupuis\EzPlatformAdminBundle\Service;
 
 use Doctrine\DBAL\Connection;
+use eZ\Publish\API\Repository\ContentService;
 use eZ\Publish\API\Repository\ContentTypeService;
+use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use eZ\Publish\API\Repository\FieldTypeService;
+use eZ\Publish\API\Repository\LocationService;
 use eZ\Publish\API\Repository\SearchService;
 use eZ\Publish\API\Repository\Values\Content\Content;
+use eZ\Publish\API\Repository\Values\Content\Location;
 use eZ\Publish\API\Repository\Values\Content\Query;
 use eZ\Publish\API\Repository\Values\ContentType\ContentType;
+use eZ\Publish\Core\Base\Exceptions\InvalidArgumentException;
 use Symfony\Component\Routing\RouterInterface;
 
 class ContentUsageService
@@ -27,6 +32,12 @@ class ContentUsageService
     /** @var Connection */
     private $dbalConnection;
 
+    /** @var ContentService */
+    private $contentService;
+
+    /** @var LocationService */
+    private $locationService;
+
     /** @var ContentTypeService */
     private $contentTypeService;
 
@@ -41,12 +52,16 @@ class ContentUsageService
 
     public function __construct(
         Connection $connection,
+        ContentService $contentService,
+        LocationService $locationService,
         ContentTypeService $contentTypeService,
         FieldTypeService $fieldTypeService,
         SearchService $searchService,
         RouterInterface $router
     ) {
         $this->dbalConnection = $connection;
+        $this->contentService = $contentService;
+        $this->locationService = $locationService;
         $this->contentTypeService = $contentTypeService;
         $this->fieldTypeService = $fieldTypeService;
         $this->searchService = $searchService;
@@ -142,6 +157,7 @@ class ContentUsageService
         }
 
         $examples = [];
+        $fieldUsage = [];
 
         foreach ($searchResult->searchHits as $searchHit) {
             /** @var Content $content */
@@ -155,8 +171,12 @@ class ContentUsageService
                 if (\in_array($field->fieldTypeIdentifier, $this->neverEmptyFieldTypeIdentifierList)) {
                     continue;
                 }
+                if (!\array_key_exists($field->fieldDefIdentifier, $fieldUsage)) {
+                    $fieldUsage[$field->fieldDefIdentifier] = 0;
+                }
                 $isRequired = $contentType->getFieldDefinition($field->fieldDefIdentifier)->isRequired;
                 $isEmpty = $this->fieldTypeService->getFieldType($field->fieldTypeIdentifier)->isEmptyValue($field->value);
+                $fieldUsage[$field->fieldDefIdentifier] += $isEmpty ? 0 : 1;
                 if ($isRequired && $isEmpty) {
                     // Bad example
                     ++$worstExampleScore;
@@ -198,21 +218,161 @@ class ContentUsageService
         }
 
         return [
+            'sliceCount' => count($searchResult->searchHits),
             'totalCount' => $searchResult->totalCount,
             'examples' => $examples,
+            'fieldUsage' => $fieldUsage,
         ];
     }
 
     public function getLanguageUsage(): array
     {
-        return $this->dbalConnection->createQueryBuilder()
+        $contentCounts = [];
+        foreach ($this->dbalConnection->createQueryBuilder()
             ->select(['l.locale AS language_code', 'COUNT(o.id) AS content_count'])
             ->from('ezcontentobject', 'o')
             ->leftJoin('o', 'ezcontent_language', 'l', 'o.language_mask & l.id = l.id')
             ->groupBy('l.id')
             ->orderBy('content_count', 'DESC')
             ->execute()
+            ->fetchAll() as $row) {
+            $contentCounts[$row['language_code']] = $row['content_count'];
+        }
+
+        return $contentCounts;
+    }
+
+    /** @param mixed $identifier */
+    public function isId($identifier): bool
+    {
+        $id = (int) $identifier;
+
+        return 0 < $id && (is_int($identifier) || $identifier === (string) $id);
+    }
+
+    /**
+     * Return a content if parameter corresponds to one, null otherwise.
+     *
+     * @param int|string $identifier
+     */
+    public function findContent($identifier): ?Content
+    {
+        if ($this->isId($identifier)) {
+            try {
+                return $this->contentService->loadContent($identifier);
+            } catch (NotFoundException $e) {
+                return null;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Return a location if parameter corresponds to one, null otherwise.
+     *
+     * @param int|string $identifier
+     */
+    public function findLocation($identifier): ?Location
+    {
+        if ($this->isId($identifier)) {
+            try {
+                return $this->locationService->loadLocation($identifier);
+            } catch (NotFoundException $e) {
+                return null;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Return content types according to identifier (can be an ID, an identifier, an identifier with wildcards).
+     *
+     * @param int|string $identifier Can content the wildcard `*` (for example 'user*')
+     */
+    public function findContentType($identifier): array
+    {
+        try {
+            if ($this->isId($identifier)) {
+                return [$this->contentTypeService->loadContentType($identifier)];
+            } elseif (is_string($identifier)) {
+                if (false === strpos($identifier, '*')) {
+                    return [$this->contentTypeService->loadContentTypeByIdentifier($identifier)];
+                } else {
+                    $identifier = str_replace('*', '%', $identifier);
+                    $contentTypeIds = array_map(function ($row) {
+                        return $row['id'];
+                    }, $this->dbalConnection->createQueryBuilder()
+                        ->select('c.id')
+                        ->from('ezcontentclass', 'c')
+                        ->where('c.identifier LIKE :identifier')
+                        ->setParameter('identifier', $identifier)
+                        ->execute()
+                        ->fetchAll()
+                    );
+                    if (count($contentTypeIds)) {
+                        return $this->contentTypeService->loadContentTypeList($contentTypeIds);
+                    } else {
+                        return [];
+                    }
+                }
+            } else {
+                throw new InvalidArgumentException('$identifier', 'must be an integer (id) or a string (identifier)');
+            }
+        } catch (NotFoundException $e) {
+            return [];
+        }
+    }
+
+    /**
+     * Return field definitions (and their content types) according to identifier.
+     *
+     * @param $identifier Can content the wildcard `*` (for example 'ez*text')
+     */
+    public function findContentTypeField($identifier): array
+    {
+        $queryBuilder = $this->dbalConnection->createQueryBuilder()
+            ->select('a.contentclass_id, a.identifier')
+            ->from('ezcontentclass_attribute', 'a')
+            ;
+        if ($this->isId($identifier)) {
+            $queryBuilder->where('a.id = :identifier');
+        } elseif (is_string($identifier)) {
+            if (false === strpos($identifier, '*')) {
+                $queryBuilder->where('a.identifier = :identifier');
+                $queryBuilder->orWhere('a.data_type_string = :identifier');
+            } else {
+                $identifier = str_replace('*', '%', $identifier);
+                $queryBuilder->where('a.identifier LIKE :identifier');
+                $queryBuilder->orWhere('a.data_type_string LIKE :identifier');
+            }
+        } else {
+            throw new InvalidArgumentException('$identifier', 'must be an integer (id) or a string (identifier)');
+        }
+
+        $contentTypeFieldRows = $queryBuilder
+            ->setParameter('identifier', $identifier)
+            ->execute()
             ->fetchAll()
         ;
+        $contentTypes = [];
+        $contentTypeFields = [];
+        foreach ($contentTypeFieldRows as $contentTypeFieldRow) {
+            $contentTypeId = (int) $contentTypeFieldRow['contentclass_id'];
+            $contentTypeFieldIdentifier = $contentTypeFieldRow['identifier'];
+            if (array_key_exists($contentTypeId, $contentTypes)) {
+                $contentType = $contentTypes[$contentTypeId];
+            } else {
+                $contentTypes[$contentTypeId] = $contentType = $this->contentTypeService->loadContentType($contentTypeId);
+            }
+            $contentTypeFields["{$contentType->identifier}/$contentTypeFieldIdentifier"] = [
+                'content_type' => $contentType,
+                'field_definition' => $contentType->getFieldDefinition($contentTypeFieldIdentifier),
+            ];
+        }
+        ksort($contentTypeFields);
+
+        return $contentTypeFields;
     }
 }

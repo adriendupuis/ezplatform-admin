@@ -28,7 +28,7 @@ class ContentTypeUsage extends AbstractTab
 
     public function getName(): string
     {
-        return /* @Desc("Content Type Usage Tab") */
+        return /** @Desc("Content Type Usage Tab") */
             $this->translator->trans('content_type_usage', [], 'ad_admin_content_usage');
     }
 

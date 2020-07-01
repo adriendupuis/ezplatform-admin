@@ -25,14 +25,26 @@ Features
 
 * Content Usage
   - Content Type Usage: Content count per content type.
-  - Example Finder: Find best and bad content examples for each field of a content type.
+  - Example Finder: Find best and bad content examples for each field of a content type, and report field usage statistics.
   - Language Usage: Content count per language.
+* Admin
+  - Identification: Find content, location, content type or content type field definitions from an ID or an identifier (like `1`, `folder`, `user*` or `ez*text`)
 * Navigation
   - Tab Opener: Open a tab according to URL hash. Examples: Right-click on a tab and open it in a new window, the tab is active; Reload a page, tab is still active.
 
 
-TODO
-----
+Contribute
+----------
+
+### Translations
+
+extract:
+```shell
+bin/console translation:extract en --bundle AdrienDupuisEzPlatformAdminBundle --domain ad_admin_content_usage --output-dir vendor/adriendupuis/ezplatform-admin/src/bundle/Resources/translations/ --bundle AdrienDupuisEzPlatformAdminBundle;
+bin/console translation:extract en --bundle AdrienDupuisEzPlatformAdminBundle --domain ad_admin_identification --output-dir vendor/adriendupuis/ezplatform-admin/src/bundle/Resources/translations/ --bundle AdrienDupuisEzPlatformAdminBundle;
+```
+
+### TODO
 
 * Features
   * Users

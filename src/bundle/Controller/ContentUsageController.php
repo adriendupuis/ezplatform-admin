@@ -22,6 +22,9 @@ class ContentUsageController extends Controller
     /** @var ContentUsageServiceService */
     private $contentUsageService;
 
+    /** @var TranslatorInterface */
+    private $translator;
+
     public function __construct(
         ContentTypeService $contentTypeService,
         ContentUsageService $contentUsageService,
