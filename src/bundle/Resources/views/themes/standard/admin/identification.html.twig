@@ -22,7 +22,11 @@
 
 {% block content %}
     <section class="container mt-4 px-5">
-        {{ form(form) }}
+        <div class="card ez-card">
+            <div class="card-body">
+                {{ form(form) }}
+            </div>
+        </div>
     </section>
     <section class="container mt-4 px-5">
         {% if identified_list is not null %}
