@@ -91,6 +91,7 @@ class ExampleFinder {
 
     setTotalCount(totalCount) {
         this.totalCount = totalCount;
+        return this;
     }
 
     mergeExamples(examples) {
