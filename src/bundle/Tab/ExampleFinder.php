@@ -29,7 +29,7 @@ class ExampleFinder extends AbstractTab
 
     public function getName(): string
     {
-        return /* @Desc("Example Finder Tab") */
+        return /** @Desc("Example Finder Tab") */
             $this->translator->trans('example_finder', [], 'ad_admin_content_usage');
     }
 
