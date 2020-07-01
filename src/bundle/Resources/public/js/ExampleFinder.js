@@ -168,9 +168,13 @@ class ExampleFinder {
         this.displayStatus(Translator.trans(/*@Desc("Searching…")*/ 'example_finder.status.searching', {}, 'ad_admin_content_usage'), true);
         this.xhr = $.getJSON(url, function (data) {
             if (data.totalCount) {
-                this.setTotalCount(data.totalCount);
-                this.mergeExamples(data.examples).displayExamples();
-                this.mergeFieldUsage(data.fieldUsage, data.sliceCount).displayFieldUsage();
+                this
+                    .setTotalCount(data.totalCount)
+                    .mergeExamples(data.examples)
+                    .displayExamples()
+                    .mergeFieldUsage(data.fieldUsage, data.sliceCount)
+                    .displayFieldUsage()
+                ;
                 if (this.increaseOffset() < data.totalCount) {
                     this.search();
                 } else {
