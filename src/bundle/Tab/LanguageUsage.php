@@ -32,7 +32,7 @@ class LanguageUsage extends AbstractTab
 
     public function getName(): string
     {
-        return /* @Desc("Language Usage Tab") */
+        return /** @Desc("Language Usage Tab") */
             $this->translator->trans('language_usage', [], 'ad_admin_content_usage');
     }
 

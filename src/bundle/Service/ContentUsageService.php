@@ -157,6 +157,7 @@ class ContentUsageService
         }
 
         $examples = [];
+        $fieldUsage = [];
 
         foreach ($searchResult->searchHits as $searchHit) {
             /** @var Content $content */
@@ -170,8 +171,12 @@ class ContentUsageService
                 if (\in_array($field->fieldTypeIdentifier, $this->neverEmptyFieldTypeIdentifierList)) {
                     continue;
                 }
+                if (!\array_key_exists($field->fieldDefIdentifier, $fieldUsage)) {
+                    $fieldUsage[$field->fieldDefIdentifier] = 0;
+                }
                 $isRequired = $contentType->getFieldDefinition($field->fieldDefIdentifier)->isRequired;
                 $isEmpty = $this->fieldTypeService->getFieldType($field->fieldTypeIdentifier)->isEmptyValue($field->value);
+                $fieldUsage[$field->fieldDefIdentifier] += $isEmpty ? 0 : 1;
                 if ($isRequired && $isEmpty) {
                     // Bad example
                     ++$worstExampleScore;
@@ -213,8 +218,10 @@ class ContentUsageService
         }
 
         return [
+            'sliceCount' => count($searchResult->searchHits),
             'totalCount' => $searchResult->totalCount,
             'examples' => $examples,
+            'fieldUsage' => $fieldUsage,
         ];
     }
 

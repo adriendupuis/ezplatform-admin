@@ -25,7 +25,7 @@ Features
 
 * Content Usage
   - Content Type Usage: Content count per content type.
-  - Example Finder: Find best and bad content examples for each field of a content type.
+  - Example Finder: Find best and bad content examples for each field of a content type, and report field usage statistics.
   - Language Usage: Content count per language.
 * Admin
   - Identification: Find content, location, content type or content type field definitions from an ID or an identifier (like `1`, `folder`, `user*` or `ez*text`)
