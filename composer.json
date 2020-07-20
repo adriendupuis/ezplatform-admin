@@ -7,6 +7,6 @@
     }
   },
   "require": {
-    "ezsystems/ezplatform-admin-ui": "~2.0.0"
+    "ezsystems/ezplatform-admin-ui": "^2.0.0"
   }
 }
