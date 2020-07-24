@@ -48,3 +48,27 @@ services:
         public: false
         tags:
             - { name: ezplatform.tab, group: ad-admin-content-usage }
+
+    adriendupuis.ezplatform.admin.monitor.tab_groups:
+        parent: EzSystems\EzPlatformAdminUi\Component\TabsComponent
+        autowire: true
+        autoconfigure: false
+        public: false
+        arguments:
+            $template: '@@ezdesign/ui/tab/system_info.html.twig'
+            #$template: '@@ezdesign/ui/tab/default.html.twig'
+            $groupIdentifier: 'ad-admin-monitor'
+        tags:
+            - { name: ezplatform.admin_ui.component, group: ad-admin-monitor-tab-groups }
+
+    AdrienDupuis\EzPlatformAdminBundle\Tab\SearchEngineMonitor:
+        parent: EzSystems\EzPlatformAdminUi\Tab\AbstractTab
+        autowire: true
+        autoconfigure: false
+        public: false
+        arguments:
+            $searchEngine: '%search_engine%'
+            $solrDsn: '%solr_dsn%'
+            $elasticsearchDsn: '%elasticsearch_dsn%'
+        tags:
+            - { name: ezplatform.tab, group: ad-admin-monitor }

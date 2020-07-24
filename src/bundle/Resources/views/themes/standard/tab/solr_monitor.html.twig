@@ -1,0 +1,33 @@
+{% trans_default_domain 'ad_admin_monitor' %}
+
+{% set width = 300 %}
+
+<div>
+    <h3>Physical Memory</h3>
+    <div id="total_physical_memory" style="width: {{ width }}px; height: 10px; background: red;">
+        <div id="free_physical_memory" style="width:{{ (width * free_physical_memory/total_physical_memory)|round }}px; height: 10px; background: green; float: right;"></div>
+    </div>
+    <dl>
+        <dt>Used</dt>
+        <dd>{{ used_physical_memory_human_readable }}</dd>
+        <dt>Total</dt>
+        <dd>{{ total_physical_memory_human_readable }}</dd>
+        <dt>Free</dt>
+        <dd>{{ free_physical_memory_human_readable }}</dd>
+    </dl>
+</div>
+
+<div>
+    <h3>Swap Space</h3>
+    <div id="total_swap_space" style="width: {{ width }}px; height: 10px; background: red;">
+        <div id="free_swap_space" style="width:{{ (width * free_swap_space/total_swap_space)|round }}px; height: 10px; background: green; float: right;"></div>
+    </div>
+    <dl>
+        <dt>Used</dt>
+        <dd>{{ used_swap_space_human_readable }}</dd>
+        <dt>Total</dt>
+        <dd>{{ total_swap_space_human_readable }}</dd>
+        <dt>Free</dt>
+        <dd>{{ free_swap_space_human_readable }}</dd>
+    </dl>
+</div>
