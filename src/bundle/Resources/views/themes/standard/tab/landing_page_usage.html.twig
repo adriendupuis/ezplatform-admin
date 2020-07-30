@@ -1,0 +1,65 @@
+<table class="ez-table table" style="width: auto;">
+    <thead>
+    <tr>
+        <th scope="col">Layout</th>
+        <th scope="col">Count</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for layout_count in layout_count_list %}
+        <tr>
+            {% if layout_definitions[layout_count.layout] is defined %}
+                {% set class = '' %}
+                {% set title = layout_definitions[layout_count.layout].description %}
+                {% set name = layout_definitions[layout_count.layout].name %}
+                {% set thumbnail = '<img src="' ~ layout_definitions[layout_count.layout].thumbnail ~ '" style="max-width:16px;max-height:16px;" />' %}
+            {% else %}
+                {% set class = 'nonexistent' %}
+                {% set title = 'Undefined layout' %}
+                {% set name = layout_count.layout %}
+                {% set thumbnail = '' %}
+            {% endif %}
+            <td class="{{ class }}" title="{{ title }}">
+                {{ thumbnail|raw }}
+                {{ name }}
+            </td>
+            <td>
+                {{ layout_count.layout_count }}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<table class="ez-table table" style="width: auto;">
+    <thead>
+    <tr>
+        <th scope="col">Block</th>
+        <th scope="col">Count</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for block_count in block_count_list %}
+        <tr>
+            {% if block_definitions[block_count.block] is defined %}
+                {% set class = '' %}
+                {% set title = '' %}
+                {% set name = block_definitions[block_count.block].name %}
+                {% set thumbnail = '<svg class="ez-icon ez-icon--small"><use xlink:href="' ~ block_definitions[block_count.block].thumbnail ~ '"></use></svg>' %}
+            {% else %}
+                {% set class = 'nonexistent' %}
+                {% set title = 'Undefined block' %}
+                {% set name = block_count.block %}
+                {% set thumbnail = '' %}
+            {% endif %}
+            <td class="{{ class }}" title="{{ title }}">
+                {{ thumbnail|raw }}
+                {{ name }}
+            </td>
+            <td>
+                {{ block_count.block_count }}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
