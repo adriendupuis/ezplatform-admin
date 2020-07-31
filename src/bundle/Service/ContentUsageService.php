@@ -255,7 +255,7 @@ class ContentUsageService
             $usedLayouts[] = $layoutCount['layout'];
         }
         $unusedLayouts = array_diff(array_keys($layoutDefinitions), $usedLayouts);
-        foreach($unusedLayouts as $unusedLayout) {
+        foreach ($unusedLayouts as $unusedLayout) {
             $layoutCountList[] = [
                 'layout' => $unusedLayout,
                 'count' => 0,
@@ -292,13 +292,12 @@ class ContentUsageService
             $usedBlocks[] = $blockCount['block'];
         }
         $unusedBlocks = array_diff(array_keys($blockDefinitions), $usedBlocks);
-        foreach($unusedBlocks as $unusedBlock) {
+        foreach ($unusedBlocks as $unusedBlock) {
             $blockCountList[] = [
                 'block' => $unusedBlock,
                 'count' => 0,
             ];
         }
-
 
         return [
             'block_definitions' => $blockDefinitions,
