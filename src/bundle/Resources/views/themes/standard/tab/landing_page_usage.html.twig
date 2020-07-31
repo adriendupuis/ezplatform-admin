@@ -43,7 +43,7 @@
         <tr>
             {% if block_definitions[block_count.block] is defined %}
                 {% set class = '' %}
-                {% set title = 'Category: ' ~ block_definitions[block_count.block].category
+                {% set title = 'Category: ' ~ block_definitions[block_count.block].category %}
                 {% set name = block_definitions[block_count.block].name %}
                 {% set thumbnail = '<svg class="ez-icon ez-icon--small"><use xlink:href="' ~ block_definitions[block_count.block].thumbnail ~ '"></use></svg>' %}
             {% else %}
