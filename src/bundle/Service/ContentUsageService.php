@@ -240,31 +240,31 @@ class ContentUsageService
     public function getLayoutUsage()
     {
         $layoutDefinitions = $this->layoutDefinitionRegistry->getLayoutDefinitions();
-        $layoutCountList = $this->dbalConnection->createQueryBuilder()
-            ->select('p.layout, COUNT(o.id) as count')
+        $contentCountList = $this->dbalConnection->createQueryBuilder()
+            ->select('p.layout, COUNT(o.id) as content_count')
             ->from('ezpage_pages', 'p')
             ->join('p', 'ezcontentobject', 'o', 'p.content_id = o.id AND p.version_no = o.current_version')
             ->groupBy('p.layout')
-            ->orderBy('count', 'DESC')
+            ->orderBy('content_count', 'DESC')
             ->execute()
             ->fetchAll()
         ;
 
         $usedLayouts = [];
-        foreach ($layoutCountList as $layoutCount) {
-            $usedLayouts[] = $layoutCount['layout'];
+        foreach ($contentCountList as $contentCount) {
+            $usedLayouts[] = $contentCount['layout'];
         }
         $unusedLayouts = array_diff(array_keys($layoutDefinitions), $usedLayouts);
         foreach ($unusedLayouts as $unusedLayout) {
-            $layoutCountList[] = [
+            $contentCountList[] = [
                 'layout' => $unusedLayout,
-                'count' => 0,
+                'content_count' => 0,
             ];
         }
 
         return [
             'layout_definitions' => $layoutDefinitions,
-            'layout_count_list' => $layoutCountList,
+            'layout_content_count_list' => $contentCountList,
         ];
     }
 
@@ -274,34 +274,34 @@ class ContentUsageService
         foreach ($this->blockDefinitionFactory->getBlockIdentifiers() as $blockIdentifier) {
             $blockDefinitions[$blockIdentifier] = $this->blockDefinitionFactory->getBlockDefinition($blockIdentifier);
         }
-        $blockCountList = $this->dbalConnection->createQueryBuilder()
-            ->select('b.type AS block, COUNT(o.id) AS count')
+        $contentCountList = $this->dbalConnection->createQueryBuilder()
+            ->select('b.type AS block, COUNT(o.id) AS content_count')
             ->from('ezpage_blocks', 'b')
             ->join('b', 'ezpage_map_blocks_zones', 'bz', 'b.id = bz.block_id')
             ->join('bz', 'ezpage_map_zones_pages', 'zp', 'bz.zone_id = zp.zone_id')
             ->join('zp', 'ezpage_pages', 'p', 'zp.page_id = p.id')
             ->join('p', 'ezcontentobject', 'o', 'p.content_id = o.id AND p.version_no = o.current_version')
             ->groupBy('b.type')
-            ->orderBy('count', 'DESC')
+            ->orderBy('content_count', 'DESC')
             ->execute()
             ->fetchAll()
         ;
 
         $usedBlocks = [];
-        foreach ($blockCountList as $blockCount) {
-            $usedBlocks[] = $blockCount['block'];
+        foreach ($contentCountList as $contentCount) {
+            $usedBlocks[] = $contentCount['block'];
         }
         $unusedBlocks = array_diff(array_keys($blockDefinitions), $usedBlocks);
         foreach ($unusedBlocks as $unusedBlock) {
-            $blockCountList[] = [
+            $contentCountList[] = [
                 'block' => $unusedBlock,
-                'count' => 0,
+                'content_count' => 0,
             ];
         }
 
         return [
             'block_definitions' => $blockDefinitions,
-            'block_count_list' => $blockCountList,
+            'block_content_count_list' => $contentCountList,
         ];
     }
 
