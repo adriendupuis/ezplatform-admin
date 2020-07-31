@@ -43,7 +43,7 @@
       </trans-unit>
       <trans-unit id="a7b10fb4ba0b461f36a554a25ee3583f9eb19f5c" resname="example_finder">
         <source>Example Finder</source>
-        <target>Field Usage (Example Finder)</target>
+        <target>Field Usage</target>
         <note>key: example_finder</note>
       </trans-unit>
       <trans-unit id="d4468527d7edfe8d2f3e0278897969b7f8bf01ef" resname="example_finder.all_languages">
@@ -201,6 +201,11 @@
         <source>Waiting for Content Type selection…</source>
         <target>Waiting for Content Type selection…</target>
         <note>key: example_finder.status.waiting_selection</note>
+      </trans-unit>
+      <trans-unit id="6b93843b28e098a3c1fc7669ed84dd80a94ba014" resname="landing_page_usage">
+        <source>landing_page_usage</source>
+        <target>Landing Page Usage</target>
+        <note>key: landing_page_usage</note>
       </trans-unit>
       <trans-unit id="4a3261979f840e0bbc651a7bfbadf11827eebd49" resname="language_usage">
         <source>Language Usage</source>
