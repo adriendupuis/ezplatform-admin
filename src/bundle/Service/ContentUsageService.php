@@ -239,18 +239,31 @@ class ContentUsageService
 
     public function getLayoutUsage()
     {
+        $layoutDefinitions = $this->layoutDefinitionRegistry->getLayoutDefinitions();
         $layoutCountList = $this->dbalConnection->createQueryBuilder()
-            ->select('p.layout, COUNT(o.id) as layout_count')
+            ->select('p.layout, COUNT(o.id) as count')
             ->from('ezpage_pages', 'p')
             ->join('p', 'ezcontentobject', 'o', 'p.content_id = o.id AND p.version_no = o.current_version')
             ->groupBy('p.layout')
-            ->orderBy('layout_count', 'DESC')
+            ->orderBy('count', 'DESC')
             ->execute()
             ->fetchAll()
         ;
 
+        $usedLayouts = [];
+        foreach ($layoutCountList as $layoutCount) {
+            $usedLayouts[] = $layoutCount['layout'];
+        }
+        $unusedLayouts = array_diff(array_keys($layoutDefinitions), $usedLayouts);
+        foreach($unusedLayouts as $unusedLayout) {
+            $layoutCountList[] = [
+                'layout' => $unusedLayout,
+                'count' => 0,
+            ];
+        }
+
         return [
-            'layout_definitions' => $this->layoutDefinitionRegistry->getLayoutDefinitions(),
+            'layout_definitions' => $layoutDefinitions,
             'layout_count_list' => $layoutCountList,
         ];
     }
@@ -261,19 +274,31 @@ class ContentUsageService
         foreach ($this->blockDefinitionFactory->getBlockIdentifiers() as $blockIdentifier) {
             $blockDefinitions[$blockIdentifier] = $this->blockDefinitionFactory->getBlockDefinition($blockIdentifier);
         }
-
         $blockCountList = $this->dbalConnection->createQueryBuilder()
-            ->select('b.type AS block, COUNT(o.id) AS block_count')
+            ->select('b.type AS block, COUNT(o.id) AS count')
             ->from('ezpage_blocks', 'b')
             ->join('b', 'ezpage_map_blocks_zones', 'bz', 'b.id = bz.block_id')
             ->join('bz', 'ezpage_map_zones_pages', 'zp', 'bz.zone_id = zp.zone_id')
             ->join('zp', 'ezpage_pages', 'p', 'zp.page_id = p.id')
             ->join('p', 'ezcontentobject', 'o', 'p.content_id = o.id AND p.version_no = o.current_version')
             ->groupBy('b.type')
-            ->orderBy('block_count', 'DESC')
+            ->orderBy('count', 'DESC')
             ->execute()
             ->fetchAll()
         ;
+
+        $usedBlocks = [];
+        foreach ($blockCountList as $blockCount) {
+            $usedBlocks[] = $blockCount['block'];
+        }
+        $unusedBlocks = array_diff(array_keys($blockDefinitions), $usedBlocks);
+        foreach($unusedBlocks as $unusedBlock) {
+            $blockCountList[] = [
+                'block' => $unusedBlock,
+                'count' => 0,
+            ];
+        }
+
 
         return [
             'block_definitions' => $blockDefinitions,
