@@ -9,6 +9,8 @@ use Twig\Environment;
 
 class LandingPageUsage extends AbstractTab
 {
+    public const IDENTIFIER = 'ad-admin-landing-page-usage-tab';
+
     /** @var ContentUsageService */
     private $contentUsageService;
 
@@ -23,7 +25,7 @@ class LandingPageUsage extends AbstractTab
 
     public function getIdentifier(): string
     {
-        return 'ad-admin-landing-page-usage-tab';
+        return self::IDENTIFIER;
     }
 
     public function getName(): string
