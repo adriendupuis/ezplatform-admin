@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class MonitorMenuSubscriber implements EventSubscriberInterface, TranslationContainerInterface
 {
-    const ITEM_ADMIN__IDENTIFICATION = 'main__admin__monitor';
+    const ITEM_ADMIN__MONITOR = 'main__admin__monitor';
 
     public static function getSubscribedEvents(): array
     {
@@ -28,7 +28,7 @@ class MonitorMenuSubscriber implements EventSubscriberInterface, TranslationCont
         $menuItem = $menu[MainMenuBuilder::ITEM_ADMIN];
 
         $menuItem->addChild(
-            self::ITEM_ADMIN__IDENTIFICATION,
+            self::ITEM_ADMIN__MONITOR,
             [
                 'route' => 'ad_admin.monitor',
                 'extras' => [
@@ -41,7 +41,7 @@ class MonitorMenuSubscriber implements EventSubscriberInterface, TranslationCont
     public static function getTranslationMessages(): array
     {
         return [
-            (new Message(self::ITEM_ADMIN__IDENTIFICATION, 'ad_admin_monitor'))->setDesc('Monitor'),
+            (new Message(self::ITEM_ADMIN__MONITOR, 'ad_admin_monitor'))->setDesc('Monitor'),
         ];
     }
 }
