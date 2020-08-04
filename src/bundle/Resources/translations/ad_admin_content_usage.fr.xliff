@@ -203,8 +203,8 @@
         <note>key: example_finder.status.waiting_selection</note>
       </trans-unit>
       <trans-unit id="6b93843b28e098a3c1fc7669ed84dd80a94ba014" resname="landing_page_usage">
-        <source>landing_page_usage</source>
-        <target>Utilisations des Landing Pages</target>
+        <source>Landing Page Usage</source>
+        <target>Utilisations des pages d'accueil</target>
         <note>key: landing_page_usage</note>
       </trans-unit>
       <trans-unit id="4a3261979f840e0bbc651a7bfbadf11827eebd49" resname="language_usage">
@@ -236,6 +236,31 @@
         <source>Usage</source>
         <target>Utilisation</target>
         <note>key: main__content__content_usage</note>
+      </trans-unit>
+      <trans-unit id="9a055f01a4f457b2edaf3a4566cf013db83f93de" resname="page.block_category">
+        <source>Block Category</source>
+        <target>Catégorie du bloc</target>
+        <note>key: page.block_category</note>
+      </trans-unit>
+      <trans-unit id="2a116f10c4960de5afd66ec08bc7c457ebc52b6f" resname="page.block_identifier.tooltip">
+        <source>Identifier: </source>
+        <target>Identifiant : </target>
+        <note>key: page.block_identifier.tooltip</note>
+      </trans-unit>
+      <trans-unit id="b0b47cf8b80ccdf745400ea749cbc0e11076904c" resname="page.block_identifier.tooltip.undefined_notice">
+        <source>(undefined block)</source>
+        <target>(bloc indéfini)</target>
+        <note>key: page.block_identifier.tooltip.undefined_notice</note>
+      </trans-unit>
+      <trans-unit id="ae3ceed95faa22f579f55422fffec95478689879" resname="page.block_name">
+        <source>Block Name</source>
+        <target>Nom du bloc</target>
+        <note>key: page.block_name</note>
+      </trans-unit>
+      <trans-unit id="0ab8b8c9ded10b7569530807d0b4c208fa301a83" resname="page.layout_name">
+        <source>Layout Name</source>
+        <target>Nom de la mise-en-page</target>
+        <note>key: page.layout_name</note>
       </trans-unit>
       <trans-unit id="de5f38f240755bdc4b43e5e464f0f27909b4bfe4" resname="tab_opener.modal_body">
         <source>Redirecting to tab</source>
