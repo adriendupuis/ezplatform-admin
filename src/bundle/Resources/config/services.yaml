@@ -61,6 +61,10 @@ services:
         tags:
             - { name: ezplatform.admin_ui.component, group: ad-admin-monitor-tab-groups }
 
+    AdrienDupuis\EzPlatformAdminBundle\EventSubscriber\ContentUsageTabGroupSubscriber:
+        arguments:
+            $searchEngine: '%search_engine%'
+
     AdrienDupuis\EzPlatformAdminBundle\Tab\SearchEngineMonitor:
         parent: EzSystems\EzPlatformAdminUi\Tab\AbstractTab
         autowire: true
@@ -72,3 +76,4 @@ services:
             $elasticsearchDsn: '%elasticsearch_dsn%'
         tags:
             - { name: ezplatform.tab, group: ad-admin-monitor }
+
