@@ -3,13 +3,14 @@
 namespace AdrienDupuis\EzPlatformAdminBundle\Tab;
 
 use AdrienDupuis\EzPlatformAdminBundle\Service\MonitorService;
-use eZ\Publish\Core\MVC\ConfigResolverInterface;
 use EzSystems\EzPlatformAdminUi\Tab\AbstractTab;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 class SearchEngineMonitor extends AbstractTab
 {
+    public const IDENTIFIER = 'ad-admin-monitor-search-engine-tab';
+
     /** @var MonitorService */
     private $monitorService;
 
@@ -30,7 +31,7 @@ class SearchEngineMonitor extends AbstractTab
         parent::__construct($twig, $translator);
         $this->monitorService = $monitorService;
         $this->searchEngine = $searchEngine;
-        switch($this->searchEngine) {
+        switch ($this->searchEngine) {
             case 'solr':
                 $this->searchDsn = $solrDsn;
                 break;
@@ -38,24 +39,46 @@ class SearchEngineMonitor extends AbstractTab
                 $this->searchDsn = $elasticsearchDsn;
         }
     }
+
     public function getIdentifier(): string
     {
-        return 'ad-admin-monitor-search-engine-tab';
+        return self::IDENTIFIER;
     }
 
     public function getName(): string
     {
-        return ucfirst($this->searchEngine) . ' Monitor';
+        return /** @Desc("%search_engine_name% Monitor") */
+            $this->translator->trans('monitor.tab_name', [
+                '%search_engine_name%' => $this->getSearchEngineName($this->searchEngine),
+            ], 'ad_admin_monitor');
     }
 
     public function renderView(array $parameters): string
     {
-        switch($this->searchEngine) {
+        switch ($this->searchEngine) {
             case 'solr':
-                return $this->twig->render('@ezdesign/tab/solr_monitor.html.twig', $this->monitorService->getSolrJvmOsMetrics($this->searchDsn));;
+                return $this->twig->render('@ezdesign/tab/solr_monitor.html.twig', $this->monitorService->getSolrJvmOsMetrics($this->searchDsn));
             case 'legacy':
             default:
                 return '(Not monitored)';
         }
+    }
+
+    public static function getSupportedSearchEngines(): array
+    {
+        return ['solr'/*TODO: , 'elasticsearch'*/];
+    }
+
+    public function getSearchEngineName($identifier): string
+    {
+        $nameMap = [
+            'elasticsearch' => 'Elastic Search',
+        ];
+
+        if (array_key_exists($identifier, $nameMap)) {
+            return $nameMap[$identifier];
+        }
+
+        return ucfirst($this->searchEngine);
     }
 }

@@ -8,13 +8,18 @@
     <body>
       <trans-unit id="8825877d6954e801a74e92e3f6ec6f2c1d64c859" resname="main__admin__monitor">
         <source>Monitor</source>
-        <target state="new">Monitor</target>
+        <target>Monitor</target>
         <note>key: main__admin__monitor</note>
       </trans-unit>
       <trans-unit id="9796809f7dae482d3123c16585f2b60f97407796" resname="monitor">
         <source>Monitor</source>
-        <target state="new">Monitor</target>
+        <target>Monitor</target>
         <note>key: monitor</note>
+      </trans-unit>
+      <trans-unit id="7c134d36ac04d67e19455a41b5aea0285dc927b1" resname="monitor.tab_name">
+        <source>%search_engine_name% Monitor</source>
+        <target>%search_engine_name% Monitor</target>
+        <note>key: monitor.tab_name</note>
       </trans-unit>
     </body>
   </file>
