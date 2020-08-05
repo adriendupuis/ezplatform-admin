@@ -2,8 +2,30 @@
 
 namespace AdrienDupuis\EzPlatformAdminBundle\Service;
 
+use EzSystems\EzPlatformSolrSearchEngine\Gateway\Endpoint;
+use EzSystems\EzPlatformSolrSearchEngine\Gateway\EndpointRegistry;
+use EzSystems\EzPlatformSolrSearchEngine\Gateway\EndpointResolver\NativeEndpointResolver;
+use EzSystems\EzPlatformSolrSearchEngine\Gateway\HttpClient\Stream;
+use EzSystems\EzPlatformSolrSearchEngine\Gateway\Message;
+
 class MonitorService
 {
+    /** @var NativeEndpointResolver */
+    private $solrEndpointResolver;
+
+    /** @var EndpointRegistry */
+    private $solrEndpointRegistry;
+
+    /** @var Stream */
+    private $solrHttpClient;
+
+    public function __construct(NativeEndpointResolver $solrEndpointResolver, EndpointRegistry $solrEndpointRegistry, Stream $solrHttpClient)
+    {
+        $this->solrEndpointResolver = $solrEndpointResolver;
+        $this->solrEndpointRegistry = $solrEndpointRegistry;
+        $this->solrHttpClient = $solrHttpClient;
+    }
+
     public static function formatBytes(float $bytes, int $precision = 2, string $unit = null) {
         $units = ['B', 'KB', 'MB', 'GB', 'TB'];
         if ($unit) {
@@ -17,9 +39,35 @@ class MonitorService
         return round($bytes/pow(1024, $pow), $precision) . ' ' . $units[$pow];
     }
 
-    public function getSolrJvmOsMetrics($solrBase)
+    public function pingSolrEndpoints(): array
     {
-        $jvm = json_decode(file_get_contents("$solrBase/admin/metrics?group=jvm&prefix=os"), true)['metrics']['solr.jvm'];
+        // https://lucene.apache.org/solr/guide/7_7/ping.html#ping-api-examples
+        $path = '/admin/ping';
+        $message = new Message([], 'wt=json');
+        $replies = [];
+        foreach ($this->solrEndpointResolver->getEndpoints() as $endpointName) {
+            $endpoint = $this->solrEndpointRegistry->getEndpoint($endpointName);
+            $replies[$endpointName] = json_decode($this->solrHttpClient->request('GET', $endpoint, $path, $message)->body, true);
+        }
+
+        return $replies;
+    }
+
+    public function getSolrJvmOsMetrics()
+    {
+        $endpoint = $this->solrEndpointRegistry->getEndpoint($this->solrEndpointResolver->getEntryEndpoint());
+        $adminEndpoint = new Endpoint([
+            'scheme' => $endpoint->scheme,
+            'user' => $endpoint->user,
+            'pass' => $endpoint->pass,
+            'host' => $endpoint->host,
+            'port' => $endpoint->port,
+            'path' => $endpoint->path,
+            'core' => 'admin',
+        ]);
+        $path = '/metrics';
+        $message = new Message([], 'group=jvm&prefix=os');
+        $jvm = json_decode($this->solrHttpClient->request('GET', $adminEndpoint, $path, $message)->body, true)['metrics']['solr.jvm'];
 
         return [
             'free_physical_memory' => (int) $jvm['os.freePhysicalMemorySize'],

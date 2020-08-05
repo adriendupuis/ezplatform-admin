@@ -49,6 +49,12 @@ services:
         tags:
             - { name: ezplatform.tab, group: ad-admin-content-usage }
 
+    AdrienDupuis\EzPlatformAdminBundle\Service\MonitorService:
+        arguments:
+            $solrEndpointResolver: '@ez_search_engine_solr.connection.default.endpoint_resolver_id'
+            $solrEndpointRegistry: '@ezpublish.search.solr.gateway.endpoint_registry'
+            $solrHttpClient: '@ezpublish.search.solr.gateway.client.http.stream'
+
     adriendupuis.ezplatform.admin.monitor.tab_groups:
         parent: EzSystems\EzPlatformAdminUi\Component\TabsComponent
         autowire: true
@@ -61,7 +67,7 @@ services:
         tags:
             - { name: ezplatform.admin_ui.component, group: ad-admin-monitor-tab-groups }
 
-    AdrienDupuis\EzPlatformAdminBundle\EventSubscriber\ContentUsageTabGroupSubscriber:
+    AdrienDupuis\EzPlatformAdminBundle\EventSubscriber\MonitorTabGroupSubscriber:
         arguments:
             $searchEngine: '%search_engine%'
 
@@ -72,8 +78,6 @@ services:
         public: false
         arguments:
             $searchEngine: '%search_engine%'
-            $solrDsn: '%solr_dsn%'
-            $elasticsearchDsn: '%elasticsearch_dsn%'
         tags:
             - { name: ezplatform.tab, group: ad-admin-monitor }
 

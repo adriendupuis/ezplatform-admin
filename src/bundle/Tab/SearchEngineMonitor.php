@@ -17,27 +17,15 @@ class SearchEngineMonitor extends AbstractTab
     /** @var string */
     private $searchEngine;
 
-    /** @var string */
-    private $searchDsn;
-
     public function __construct(
         Environment $twig,
         TranslatorInterface $translator,
         MonitorService $monitorService,
-        string $searchEngine,
-        string $solrDsn,
-        string $elasticsearchDsn
+        string $searchEngine
     ) {
         parent::__construct($twig, $translator);
         $this->monitorService = $monitorService;
         $this->searchEngine = $searchEngine;
-        switch ($this->searchEngine) {
-            case 'solr':
-                $this->searchDsn = $solrDsn;
-                break;
-            case 'elasticsearch':
-                $this->searchDsn = $elasticsearchDsn;
-        }
     }
 
     public function getIdentifier(): string
@@ -57,7 +45,9 @@ class SearchEngineMonitor extends AbstractTab
     {
         switch ($this->searchEngine) {
             case 'solr':
-                return $this->twig->render('@ezdesign/tab/solr_monitor.html.twig', $this->monitorService->getSolrJvmOsMetrics($this->searchDsn));
+                return $this->twig->render('@ezdesign/tab/solr_monitor.html.twig', $this->monitorService->getSolrJvmOsMetrics());
+            case 'elasticsearch':
+                return '(Not yet implemented)';//TODO
             case 'legacy':
             default:
                 return '(Not monitored)';

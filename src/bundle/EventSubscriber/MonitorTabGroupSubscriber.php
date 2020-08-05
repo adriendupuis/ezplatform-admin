@@ -8,7 +8,7 @@ use EzSystems\EzPlatformAdminUi\Tab\Event\TabEvents;
 use EzSystems\EzPlatformAdminUi\Tab\Event\TabGroupEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class ContentUsageTabGroupSubscriber implements EventSubscriberInterface
+class MonitorTabGroupSubscriber implements EventSubscriberInterface
 {
     /** @var string */
     public $searchEngine;
