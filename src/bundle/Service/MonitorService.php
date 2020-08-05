@@ -7,6 +7,7 @@ use EzSystems\EzPlatformSolrSearchEngine\Gateway\EndpointRegistry;
 use EzSystems\EzPlatformSolrSearchEngine\Gateway\EndpointResolver;
 use EzSystems\EzPlatformSolrSearchEngine\Gateway\HttpClient;
 use EzSystems\EzPlatformSolrSearchEngine\Gateway\Message;
+use Ibexa\Platform\ElasticSearchEngine\ElasticSearch\Client\ClientFactoryInterface;
 
 class MonitorService
 {
@@ -19,11 +20,20 @@ class MonitorService
     /** @var HttpClient */
     private $solrHttpClient;
 
-    public function __construct(EndpointResolver $solrEndpointResolver, EndpointRegistry $solrEndpointRegistry, HttpClient $solrHttpClient)
+    /** @var \Elasticsearch\Client  */
+    private $elasticsearchClient;
+
+    public function __construct(
+        EndpointResolver $solrEndpointResolver,
+        EndpointRegistry $solrEndpointRegistry,
+        HttpClient $solrHttpClient,
+        ClientFactoryInterface $elasticSearchClientFactory
+    )
     {
         $this->solrEndpointResolver = $solrEndpointResolver;
         $this->solrEndpointRegistry = $solrEndpointRegistry;
         $this->solrHttpClient = $solrHttpClient;
+        $this->elasticsearchClient = $elasticSearchClientFactory->create();
     }
 
     public static function formatBytes(float $bytes, int $precision = 2, string $unit = null)
@@ -55,7 +65,7 @@ class MonitorService
         return $replies;
     }
 
-    public function getSolrJvmOsMetrics(): array
+    public function getSolrOsMetrics(): array
     {
         // https://lucene.apache.org/solr/guide/7_7/metrics-reporting.html#metrics-api
         $metrics = [];
@@ -90,6 +100,33 @@ class MonitorService
                     'used_swap_space_human_readable' => self::formatBytes($jvm['os.totalSwapSpaceSize'] - $jvm['os.freeSwapSpaceSize']),
                 ];
             }
+        }
+
+        return $metrics;
+    }
+
+    public function getElasticsearchOsMetrics(): array
+    {
+        // https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-nodes-stats.html
+        $metrics = [];
+        $stats = $this->elasticsearchClient->nodes()->stats([
+            'metric' => 'os',
+        ]);
+        foreach($stats['nodes'] as $node => $nodeStats) {
+            $metrics[$node] = [
+                'free_physical_memory' => (int) $nodeStats['os']['mem']['free_in_bytes'],
+                'total_physical_memory' => (int) $nodeStats['os']['mem']['total_in_bytes'],
+                'used_physical_memory' => (int) $nodeStats['os']['mem']['used_in_bytes'],
+                'free_physical_memory_human_readable' => self::formatBytes($nodeStats['os']['mem']['free_in_bytes']),
+                'total_physical_memory_human_readable' => self::formatBytes($nodeStats['os']['mem']['total_in_bytes']),
+                'used_physical_memory_human_readable' => self::formatBytes($nodeStats['os']['mem']['used_in_bytes']),
+                'free_swap_space' => (int) $nodeStats['os']['swap']['free_in_bytes'],
+                'total_swap_space' => (int) $nodeStats['os']['swap']['total_in_bytes'],
+                'used_swap_space' => (int) $nodeStats['os']['swap']['used_in_bytes'],
+                'free_swap_space_human_readable' => self::formatBytes($nodeStats['os']['swap']['free_in_bytes']),
+                'total_swap_space_human_readable' => self::formatBytes($nodeStats['os']['swap']['total_in_bytes']),
+                'used_swap_space_human_readable' => self::formatBytes($nodeStats['os']['swap']['used_in_bytes']),
+            ];
         }
 
         return $metrics;

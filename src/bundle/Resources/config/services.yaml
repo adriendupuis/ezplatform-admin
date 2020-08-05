@@ -54,6 +54,7 @@ services:
             $solrEndpointResolver: '@ez_search_engine_solr.connection.default.endpoint_resolver_id'
             $solrEndpointRegistry: '@ezpublish.search.solr.gateway.endpoint_registry'
             $solrHttpClient: '@ezpublish.search.solr.gateway.client.http.stream'
+            $elasticSearchClientFactory: '@Ibexa\Platform\ElasticSearchEngine\ElasticSearch\Client\ClientFactoryInterface'
 
     adriendupuis.ezplatform.admin.monitor.tab_groups:
         parent: EzSystems\EzPlatformAdminUi\Component\TabsComponent
