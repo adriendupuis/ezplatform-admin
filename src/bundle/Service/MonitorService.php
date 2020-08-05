@@ -57,9 +57,10 @@ class MonitorService
 
     public function getSolrJvmOsMetrics(): array
     {
+        // https://lucene.apache.org/solr/guide/7_7/metrics-reporting.html#metrics-api
         $metrics = [];
         $path = '/metrics';
-        $message = new Message([], 'group=jvm&prefix=os');
+        $message = new Message([], 'wt=json&group=jvm&prefix=os');
         foreach ($this->solrEndpointResolver->getEndpoints() as $endpointName) {
             $endpoint = $this->solrEndpointRegistry->getEndpoint($endpointName);
             $adminEndpoint = new Endpoint([
