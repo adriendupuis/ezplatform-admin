@@ -1,8 +1,8 @@
 {% trans_default_domain 'ad_admin_monitor' %}
 
 {% set width = 300 %}
-{% for endpoint, metrics in endpoints_metrics %}
-<h2>{{ endpoint }}</h2>
+{% for identifier, metrics in os_metrics %}
+<h2>{{ identifier }}</h2>
 <div style="float: left; margin-right: {{ (width/6)|round }}px;">
     <h3>Physical Memory</h3>
     <div id="total_physical_memory"

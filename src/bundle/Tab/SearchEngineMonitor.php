@@ -2,7 +2,10 @@
 
 namespace AdrienDupuis\EzPlatformAdminBundle\Tab;
 
+use AdrienDupuis\EzPlatformAdminBundle\Service\ElasticsearchMonitorService;
 use AdrienDupuis\EzPlatformAdminBundle\Service\MonitorService;
+use AdrienDupuis\EzPlatformAdminBundle\Service\SearchEngineMonitorServiceAbstract;
+use AdrienDupuis\EzPlatformAdminBundle\Service\SolrMonitorService;
 use EzSystems\EzPlatformAdminUi\Tab\AbstractTab;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -11,21 +14,29 @@ class SearchEngineMonitor extends AbstractTab
 {
     public const IDENTIFIER = 'ad-admin-monitor-search-engine-tab';
 
-    /** @var MonitorService */
-    private $monitorService;
-
     /** @var string */
     private $searchEngine;
+
+    /** @var SearchEngineMonitorServiceAbstract|null  */
+    private $searchEngineMonitorService;
 
     public function __construct(
         Environment $twig,
         TranslatorInterface $translator,
-        MonitorService $monitorService,
-        string $searchEngine
+        string $searchEngine,
+        SolrMonitorService $solrMonitorService,
+        ElasticsearchMonitorService $elasticsearchMonitorService
     ) {
         parent::__construct($twig, $translator);
-        $this->monitorService = $monitorService;
         $this->searchEngine = $searchEngine;
+        switch ($this->searchEngine) {
+            case 'solr':
+                $this->searchEngineMonitorService = $solrMonitorService;
+                break;
+            case 'elasticsearch':
+                $this->searchEngineMonitorService = $elasticsearchMonitorService;
+                break;
+        }
     }
 
     public function getIdentifier(): string
@@ -43,36 +54,26 @@ class SearchEngineMonitor extends AbstractTab
 
     public function renderView(array $parameters): string
     {
-        switch ($this->searchEngine) {
-            case 'solr':
+        if (in_array($this->searchEngine, self::getSupportedSearchEngines(), true)) {
+            if ($this->searchEngineMonitorService->ping()) {
                 return $this->twig->render('@ezdesign/tab/search_engine_monitor.html.twig', [
-                    'endpoints_metrics' => $this->monitorService->getSolrOsMetrics(),
+                    'os_metrics' => $this->searchEngineMonitorService->getOsMetrics(),
                 ]);
-            case 'elasticsearch':
-                return $this->twig->render('@ezdesign/tab/search_engine_monitor.html.twig', [
-                    'endpoints_metrics' => $this->monitorService->getElasticsearchOsMetrics(),
-                ]);
-            case 'legacy':
-            default:
-                return '(Not monitored)';
+            }
+
+            return 'Search engine does not respond';
         }
+
+        return  '(Not monitored)';
     }
 
     public static function getSupportedSearchEngines(): array
     {
-        return ['solr'/*TODO: , 'elasticsearch'*/];
+        return ['solr', 'elasticsearch'];
     }
 
     public function getSearchEngineName($identifier): string
     {
-        $nameMap = [
-            'elasticsearch' => 'Elastic Search',
-        ];
-
-        if (array_key_exists($identifier, $nameMap)) {
-            return $nameMap[$identifier];
-        }
-
         return ucfirst($this->searchEngine);
     }
 }

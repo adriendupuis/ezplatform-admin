@@ -49,11 +49,14 @@ services:
         tags:
             - { name: ezplatform.tab, group: ad-admin-content-usage }
 
-    AdrienDupuis\EzPlatformAdminBundle\Service\MonitorService:
+    AdrienDupuis\EzPlatformAdminBundle\Service\SolrMonitorService:
         arguments:
             $solrEndpointResolver: '@ez_search_engine_solr.connection.default.endpoint_resolver_id'
             $solrEndpointRegistry: '@ezpublish.search.solr.gateway.endpoint_registry'
             $solrHttpClient: '@ezpublish.search.solr.gateway.client.http.stream'
+
+    AdrienDupuis\EzPlatformAdminBundle\Service\ElasticsearchMonitorService:
+        arguments:
             $elasticSearchClientFactory: '@Ibexa\Platform\ElasticSearchEngine\ElasticSearch\Client\ClientFactoryInterface'
 
     adriendupuis.ezplatform.admin.monitor.tab_groups:
@@ -79,6 +82,8 @@ services:
         public: false
         arguments:
             $searchEngine: '%search_engine%'
+            $solrMonitorService: '@AdrienDupuis\EzPlatformAdminBundle\Service\SolrMonitorService'
+            $elasticsearchMonitorService: '@AdrienDupuis\EzPlatformAdminBundle\Service\ElasticsearchMonitorService'
         tags:
             - { name: ezplatform.tab, group: ad-admin-monitor }
 
