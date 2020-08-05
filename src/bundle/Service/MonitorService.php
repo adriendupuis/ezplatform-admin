@@ -4,29 +4,30 @@ namespace AdrienDupuis\EzPlatformAdminBundle\Service;
 
 use EzSystems\EzPlatformSolrSearchEngine\Gateway\Endpoint;
 use EzSystems\EzPlatformSolrSearchEngine\Gateway\EndpointRegistry;
-use EzSystems\EzPlatformSolrSearchEngine\Gateway\EndpointResolver\NativeEndpointResolver;
-use EzSystems\EzPlatformSolrSearchEngine\Gateway\HttpClient\Stream;
+use EzSystems\EzPlatformSolrSearchEngine\Gateway\EndpointResolver;
+use EzSystems\EzPlatformSolrSearchEngine\Gateway\HttpClient;
 use EzSystems\EzPlatformSolrSearchEngine\Gateway\Message;
 
 class MonitorService
 {
-    /** @var NativeEndpointResolver */
+    /** @var EndpointResolver */
     private $solrEndpointResolver;
 
     /** @var EndpointRegistry */
     private $solrEndpointRegistry;
 
-    /** @var Stream */
+    /** @var HttpClient */
     private $solrHttpClient;
 
-    public function __construct(NativeEndpointResolver $solrEndpointResolver, EndpointRegistry $solrEndpointRegistry, Stream $solrHttpClient)
+    public function __construct(EndpointResolver $solrEndpointResolver, EndpointRegistry $solrEndpointRegistry, HttpClient $solrHttpClient)
     {
         $this->solrEndpointResolver = $solrEndpointResolver;
         $this->solrEndpointRegistry = $solrEndpointRegistry;
         $this->solrHttpClient = $solrHttpClient;
     }
 
-    public static function formatBytes(float $bytes, int $precision = 2, string $unit = null) {
+    public static function formatBytes(float $bytes, int $precision = 2, string $unit = null)
+    {
         $units = ['B', 'KB', 'MB', 'GB', 'TB'];
         if ($unit) {
             $pow = array_search(strtoupper($unit), $units);
@@ -36,7 +37,8 @@ class MonitorService
         } else {
             $pow = min(floor(log($bytes) / log(1024)), count($units) - 1);
         }
-        return round($bytes/pow(1024, $pow), $precision) . ' ' . $units[$pow];
+
+        return round($bytes / pow(1024, $pow), $precision).' '.$units[$pow];
     }
 
     public function pingSolrEndpoints(): array
