@@ -1,13 +1,14 @@
 {% trans_default_domain 'ad_admin_monitor' %}
 
 {% set width = 300 %}
-
+{% for endpoint, metrics in endpoints_metrics %}
+<h2>{{ endpoint }}</h2>
 <div style="float: left; margin-right: {{ (width/6)|round }}px;">
     <h3>Physical Memory</h3>
     <div id="total_physical_memory"
          style="width: {{ width }}px; height: 10px; background: red;">
         <div id="free_physical_memory"
-             style="width:{{ (width * free_physical_memory/total_physical_memory)|round }}px; height: 10px; background: green; float: right;"></div>
+             style="width:{{ (width * metrics.free_physical_memory/metrics.total_physical_memory)|round }}px; height: 10px; background: green; float: right;"></div>
     </div>
     <table style="width: {{ width }}px;" class="ez-table">
         <thead>
@@ -19,9 +20,9 @@
         </thead>
         <tbody>
         <tr>
-            <td>{{ used_physical_memory_human_readable }}</td>
-            <td>{{ total_physical_memory_human_readable }}</td>
-            <td>{{ free_physical_memory_human_readable }}</td>
+            <td>{{ metrics.used_physical_memory_human_readable }}</td>
+            <td>{{ metrics.total_physical_memory_human_readable }}</td>
+            <td>{{ metrics.free_physical_memory_human_readable }}</td>
         </tr>
         </tbody>
     </table>
@@ -32,7 +33,7 @@
     <div id="total_swap_space"
          style="width: {{ width }}px; height: 10px; background: red;">
         <div id="free_swap_space"
-             style="width:{{ (width * free_swap_space/total_swap_space)|round }}px; height: 10px; background: green; float: right;"></div>
+             style="width:{{ (width * metrics.free_swap_space/metrics.total_swap_space)|round }}px; height: 10px; background: green; float: right;"></div>
     </div>
     <table style="width: {{ width }}px;" class="ez-table">
         <thead>
@@ -44,10 +45,11 @@
         </thead>
         <tbody>
         <tr>
-            <td>{{ used_swap_space_human_readable }}</td>
-            <td>{{ total_swap_space_human_readable }}</td>
-            <td>{{ free_swap_space_human_readable }}</td>
+            <td>{{ metrics.used_swap_space_human_readable }}</td>
+            <td>{{ metrics.total_swap_space_human_readable }}</td>
+            <td>{{ metrics.free_swap_space_human_readable }}</td>
         </tr>
         </tbody>
     </table>
 </div>
+{% endfor %}

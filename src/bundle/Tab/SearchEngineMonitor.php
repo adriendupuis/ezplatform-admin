@@ -45,7 +45,9 @@ class SearchEngineMonitor extends AbstractTab
     {
         switch ($this->searchEngine) {
             case 'solr':
-                return $this->twig->render('@ezdesign/tab/solr_monitor.html.twig', $this->monitorService->getSolrJvmOsMetrics());
+                return $this->twig->render('@ezdesign/tab/solr_monitor.html.twig', [
+                    'endpoints_metrics' => $this->monitorService->getSolrJvmOsMetrics(),
+                ]);
             case 'elasticsearch':
                 return '(Not yet implemented)'; //TODO
             case 'legacy':

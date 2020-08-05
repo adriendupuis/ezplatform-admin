@@ -55,35 +55,42 @@ class MonitorService
         return $replies;
     }
 
-    public function getSolrJvmOsMetrics()
+    public function getSolrJvmOsMetrics(): array
     {
-        $endpoint = $this->solrEndpointRegistry->getEndpoint($this->solrEndpointResolver->getEntryEndpoint());
-        $adminEndpoint = new Endpoint([
-            'scheme' => $endpoint->scheme,
-            'user' => $endpoint->user,
-            'pass' => $endpoint->pass,
-            'host' => $endpoint->host,
-            'port' => $endpoint->port,
-            'path' => $endpoint->path,
-            'core' => 'admin',
-        ]);
+        $metrics = [];
         $path = '/metrics';
         $message = new Message([], 'group=jvm&prefix=os');
-        $jvm = json_decode($this->solrHttpClient->request('GET', $adminEndpoint, $path, $message)->body, true)['metrics']['solr.jvm'];
+        foreach ($this->solrEndpointResolver->getEndpoints() as $endpointName) {
+            $endpoint = $this->solrEndpointRegistry->getEndpoint($endpointName);
+            $adminEndpoint = new Endpoint([
+                'scheme' => $endpoint->scheme,
+                'user' => $endpoint->user,
+                'pass' => $endpoint->pass,
+                'host' => $endpoint->host,
+                'port' => $endpoint->port,
+                'path' => $endpoint->path,
+                'core' => 'admin',
+            ]);
+            $identifier = str_replace('/admin', '', $adminEndpoint->getIdentifier());
+            if (!array_key_exists($identifier, $metrics)) {
+                $jvm = json_decode($this->solrHttpClient->request('GET', $adminEndpoint, $path, $message)->body, true)['metrics']['solr.jvm'];
+                $metrics[$identifier] = [
+                    'free_physical_memory' => (int) $jvm['os.freePhysicalMemorySize'],
+                    'total_physical_memory' => (int) $jvm['os.totalPhysicalMemorySize'],
+                    'used_physical_memory' => $jvm['os.totalPhysicalMemorySize'] - $jvm['os.freePhysicalMemorySize'],
+                    'free_physical_memory_human_readable' => self::formatBytes($jvm['os.freePhysicalMemorySize']),
+                    'total_physical_memory_human_readable' => self::formatBytes($jvm['os.totalPhysicalMemorySize']),
+                    'used_physical_memory_human_readable' => self::formatBytes($jvm['os.totalPhysicalMemorySize'] - $jvm['os.freePhysicalMemorySize']),
+                    'free_swap_space' => (int) $jvm['os.freeSwapSpaceSize'],
+                    'total_swap_space' => (int) $jvm['os.totalSwapSpaceSize'],
+                    'used_swap_space' => $jvm['os.totalSwapSpaceSize'] - $jvm['os.freeSwapSpaceSize'],
+                    'free_swap_space_human_readable' => self::formatBytes($jvm['os.freeSwapSpaceSize']),
+                    'total_swap_space_human_readable' => self::formatBytes($jvm['os.totalSwapSpaceSize']),
+                    'used_swap_space_human_readable' => self::formatBytes($jvm['os.totalSwapSpaceSize'] - $jvm['os.freeSwapSpaceSize']),
+                ];
+            }
+        }
 
-        return [
-            'free_physical_memory' => (int) $jvm['os.freePhysicalMemorySize'],
-            'total_physical_memory' => (int) $jvm['os.totalPhysicalMemorySize'],
-            'used_physical_memory' => $jvm['os.totalPhysicalMemorySize'] - $jvm['os.freePhysicalMemorySize'],
-            'free_physical_memory_human_readable' => self::formatBytes($jvm['os.freePhysicalMemorySize']),
-            'total_physical_memory_human_readable' => self::formatBytes($jvm['os.totalPhysicalMemorySize']),
-            'used_physical_memory_human_readable' => self::formatBytes($jvm['os.totalPhysicalMemorySize'] - $jvm['os.freePhysicalMemorySize']),
-            'free_swap_space' => (int) $jvm['os.freeSwapSpaceSize'],
-            'total_swap_space' => (int) $jvm['os.totalSwapSpaceSize'],
-            'used_swap_space' => $jvm['os.totalSwapSpaceSize'] - $jvm['os.freeSwapSpaceSize'],
-            'free_swap_space_human_readable' => self::formatBytes($jvm['os.freeSwapSpaceSize']),
-            'total_swap_space_human_readable' => self::formatBytes($jvm['os.totalSwapSpaceSize']),
-            'used_swap_space_human_readable' => self::formatBytes($jvm['os.totalSwapSpaceSize'] - $jvm['os.freeSwapSpaceSize']),
-        ];
+        return $metrics;
     }
 }
