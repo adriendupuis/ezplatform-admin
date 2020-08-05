@@ -2,7 +2,6 @@
 
 namespace AdrienDupuis\EzPlatformAdminBundle\EventSubscriber;
 
-use AdrienDupuis\EzPlatformAdminBundle\Tab\LandingPageUsage;
 use AdrienDupuis\EzPlatformAdminBundle\Tab\SearchEngineMonitor;
 use EzSystems\EzPlatformAdminUi\Tab\Event\TabEvents;
 use EzSystems\EzPlatformAdminUi\Tab\Event\TabGroupEvent;
