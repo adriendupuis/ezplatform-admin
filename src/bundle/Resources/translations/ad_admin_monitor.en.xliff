@@ -6,10 +6,15 @@
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="4ff88aaddbd209d8026924c2cc2836b408698823" resname="free">
+      <trans-unit id="19d7d896ec933e337e6eae5cfa5821a7634e2d98" resname="free_physical_memory">
         <source>Free</source>
         <target>Free</target>
-        <note>key: free</note>
+        <note>key: free_physical_memory</note>
+      </trans-unit>
+      <trans-unit id="0cd8cc77c1111ad285aec3d95cf54a171ad911f1" resname="free_swap_space">
+        <source>Free</source>
+        <target>Free</target>
+        <note>key: free_swap_space</note>
       </trans-unit>
       <trans-unit id="8825877d6954e801a74e92e3f6ec6f2c1d64c859" resname="main__admin__monitor">
         <source>Monitor</source>
@@ -36,15 +41,25 @@
         <target>Swap Space</target>
         <note>key: swap_space</note>
       </trans-unit>
-      <trans-unit id="5a537e209151ae5fcccd6326b34b5622bcfb0578" resname="total">
+      <trans-unit id="63df899ddd006f60746f4fbd75408644c2ca49a1" resname="total_physical_memory">
         <source>Total</source>
         <target>Total</target>
-        <note>key: total</note>
+        <note>key: total_physical_memory</note>
       </trans-unit>
-      <trans-unit id="192a56759d36454cc0b8c812e31845e9ed10b130" resname="used">
+      <trans-unit id="0c1f7aafa7b74ea5694e48fbe4ad147ffa652df8" resname="total_swap_space">
+        <source>Total</source>
+        <target>Total</target>
+        <note>key: total_swap_space</note>
+      </trans-unit>
+      <trans-unit id="91f2d9b1d10220c18d50d2ac1bb1d84f5a280050" resname="used_physical_memory">
         <source>Used</source>
         <target>Used</target>
-        <note>key: used</note>
+        <note>key: used_physical_memory</note>
+      </trans-unit>
+      <trans-unit id="da6c0593bc39627e3306603b1ae650956dd20e81" resname="used_swap_space">
+        <source>Used</source>
+        <target>Used</target>
+        <note>key: used_swap_space</note>
       </trans-unit>
     </body>
   </file>
