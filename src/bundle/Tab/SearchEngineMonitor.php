@@ -3,7 +3,6 @@
 namespace AdrienDupuis\EzPlatformAdminBundle\Tab;
 
 use AdrienDupuis\EzPlatformAdminBundle\Service\ElasticsearchMonitorService;
-use AdrienDupuis\EzPlatformAdminBundle\Service\MonitorService;
 use AdrienDupuis\EzPlatformAdminBundle\Service\SearchEngineMonitorServiceAbstract;
 use AdrienDupuis\EzPlatformAdminBundle\Service\SolrMonitorService;
 use EzSystems\EzPlatformAdminUi\Tab\AbstractTab;
@@ -17,7 +16,7 @@ class SearchEngineMonitor extends AbstractTab
     /** @var string */
     private $searchEngine;
 
-    /** @var SearchEngineMonitorServiceAbstract|null  */
+    /** @var SearchEngineMonitorServiceAbstract|null */
     private $searchEngineMonitorService;
 
     public function __construct(
