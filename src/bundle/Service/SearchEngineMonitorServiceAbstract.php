@@ -29,7 +29,8 @@ abstract class SearchEngineMonitorServiceAbstract
                 throw new \InvalidArgumentException("Unit '$unit' is invalid; available units for base $base: ".implode(', ', $baseUnits));
             }
         } else {
-            $pow = min(floor(log($bytes, $base)), count($baseUnits) - 1);
+            //$pow = max(0, min(floor(log($bytes, $base)), count($baseUnits) - 1));
+            $pow = max(0, min(round(log($bytes, $base)), count($baseUnits) - 1));
         }
 
         return number_format($bytes / pow($base, $pow), $precision, '.', '').' '.$baseUnits[$pow];
