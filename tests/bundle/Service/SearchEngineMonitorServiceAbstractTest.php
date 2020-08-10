@@ -113,31 +113,31 @@ class SearchEngineMonitorServiceAbstractTest extends TestCase
         );
         $this->assertEquals(
             '1023.00 KiB',
-            SearchEngineMonitorServiceAbstract::formatBytes(1023*1024)
+            SearchEngineMonitorServiceAbstract::formatBytes(1023 * 1024)
         );
         $this->assertEquals(
             '1023.99 KiB',
-            SearchEngineMonitorServiceAbstract::formatBytes(1024*1024-6)
+            SearchEngineMonitorServiceAbstract::formatBytes(1024 * 1024 - 6)
         );
         $this->assertEquals(
             '1.00 MiB',
-            SearchEngineMonitorServiceAbstract::formatBytes(1024*1024-5)
+            SearchEngineMonitorServiceAbstract::formatBytes(1024 * 1024 - 5)
         );
         $this->assertEquals(
             '1023.00 MiB',
-            SearchEngineMonitorServiceAbstract::formatBytes(1023*1024*1024)
+            SearchEngineMonitorServiceAbstract::formatBytes(1023 * 1024 * 1024)
         );
         $this->assertEquals(
             '1023.99 MiB',
-            SearchEngineMonitorServiceAbstract::formatBytes(1024*1024*1024-5*1024-123)
+            SearchEngineMonitorServiceAbstract::formatBytes(1024 * 1024 * 1024 - 5 * 1024 - 123)
         );
         $this->assertEquals(
             '1.00 GiB'/*Avoid '1024.00 MiB'*/,
-            SearchEngineMonitorServiceAbstract::formatBytes(1024*1024*1024-5*1024-122)
+            SearchEngineMonitorServiceAbstract::formatBytes(1024 * 1024 * 1024 - 5 * 1024 - 122)
         );
         $this->assertEquals(
             '1023.995 MiB',
-            SearchEngineMonitorServiceAbstract::formatBytes(1024*1024*1024-5*1024-122, 3)
+            SearchEngineMonitorServiceAbstract::formatBytes(1024 * 1024 * 1024 - 5 * 1024 - 122, 3)
         );
     }
 

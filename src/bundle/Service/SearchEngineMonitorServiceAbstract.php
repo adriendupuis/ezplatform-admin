@@ -42,10 +42,13 @@ abstract class SearchEngineMonitorServiceAbstract
         return "$formattedNumber {$units[$pow]}";
     }
 
-    private static function getUnitPower($bytes, $base, $units): int {
+    private static function getUnitPower($bytes, $base, $units): int
+    {
         return max(0, min(floor(log($bytes, $base)), count($units) - 1));
     }
-    private static function formatUnitNumber($bytes, $base, $pow, $precision): string {
+
+    private static function formatUnitNumber($bytes, $base, $pow, $precision): string
+    {
         return number_format($bytes / pow($base, $pow), $precision, '.', '');
     }
 }
