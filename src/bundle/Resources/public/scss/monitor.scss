@@ -1,0 +1,24 @@
+.server {
+  clear: both;
+  & > .usage {
+    float: left;
+    .bar {
+      height: 10px;
+      &.total {
+        background: red;
+      }
+      &.free {
+        background: green;
+        float: right;
+      }
+    }
+    table {
+      th:nth-child(even) {
+        width: 33%;
+      }
+      th:nth-child(odd) {
+        width: 34%;
+      }
+    }
+  }
+}
