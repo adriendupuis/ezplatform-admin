@@ -1,3 +1,10 @@
+@import '../../../../../../../ezsystems/ezplatform-admin-ui/src/bundle/Resources/public/scss/_custom.scss';
+@import '../../../../../../../ezsystems/ezplatform-admin-ui/src/bundle/Resources/public/scss/functions/_calculate.rem.scss';
+
+.nav-tabs-ad-admin-monitor {
+  border-bottom: none;
+}
+
 .server {
   clear: both;
   & > .usage {
@@ -18,6 +25,9 @@
       }
       th:nth-child(odd) {
         width: 34%;
+      }
+      td {
+        padding: calculateRem(11px);
       }
     }
   }
