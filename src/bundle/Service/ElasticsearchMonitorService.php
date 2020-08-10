@@ -6,13 +6,12 @@ use Ibexa\Platform\ElasticSearchEngine\ElasticSearch\Client\ClientFactoryInterfa
 
 class ElasticsearchMonitorService extends SearchEngineMonitorServiceAbstract
 {
-    /** @var \Elasticsearch\Client  */
+    /** @var \Elasticsearch\Client */
     private $elasticsearchClient;
 
     public function __construct(
         ClientFactoryInterface $elasticSearchClientFactory
-    )
-    {
+    ) {
         $this->elasticsearchClient = $elasticSearchClientFactory->create();
     }
 
@@ -28,7 +27,7 @@ class ElasticsearchMonitorService extends SearchEngineMonitorServiceAbstract
         $stats = $this->elasticsearchClient->nodes()->stats([
             'metric' => 'os',
         ]);
-        foreach($stats['nodes'] as $node => $nodeStats) {
+        foreach ($stats['nodes'] as $node => $nodeStats) {
             $metrics[$node] = [
                 'free_physical_memory' => (int) $nodeStats['os']['mem']['free_in_bytes'],
                 'total_physical_memory' => (int) $nodeStats['os']['mem']['total_in_bytes'],
