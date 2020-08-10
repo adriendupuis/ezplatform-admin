@@ -9,22 +9,29 @@ abstract class SearchEngineMonitorServiceAbstract
     abstract public function getOsMetrics(): array;
 
     /**
-     * Formats bytes using binary base (1 KB = 2^10 B = 1024 Bytes) base.
+     * Formats bytes using binary (default) base (1 KiB = 2^10 B = 1024 Bytes) base or metric base (1 kB = 10^3 B = 1000 B)
      * Returns a string ending with the largest unit possible and a starting with the corresponding float with $precision digits after the decimal separator.
      */
-    public static function formatBytes(float $bytes, int $precision = 2, string $unit = null): string
+    public static function formatBytes(float $bytes, int $precision = 2, string $unit = null, int $base = 1024): string
     {
-        $base = 1024;
-        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+        $units = [
+            1000 => ['B', 'kB', 'MB', 'GB', 'TB'],
+            1024 => ['B', 'KiB', 'MiB', 'GiB', 'TiB'],
+        ];
+        if (array_key_exists($base, $units)) {
+            $baseUnits = $units[$base];
+        } else {
+            throw new \InvalidArgumentException('Base must be '.implode(' or ', array_keys($units)));
+        }
         if ($unit) {
-            $pow = array_search(strtoupper($unit), $units);
+            $pow = array_search($unit, $baseUnits);
             if (false === $pow) {
-                throw new \InvalidArgumentException("Unit '$unit' is invalid; available units: ".implode(', ', $units));
+                throw new \InvalidArgumentException("Unit '$unit' is invalid; available units for base $base: ".implode(', ', $baseUnits));
             }
         } else {
-            $pow = min(floor(log($bytes, $base)), count($units) - 1);
+            $pow = min(floor(log($bytes, $base)), count($baseUnits) - 1);
         }
 
-        return round($bytes / pow($base, $pow), $precision).' '.$units[$pow];
+        return number_format($bytes / pow($base, $pow), $precision, '.', '').' '.$baseUnits[$pow];
     }
 }
