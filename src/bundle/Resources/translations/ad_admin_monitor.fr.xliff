@@ -6,6 +6,11 @@
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
+      <trans-unit id="4ff88aaddbd209d8026924c2cc2836b408698823" resname="free">
+        <source>Free</source>
+        <target>Libre</target>
+        <note>key: free</note>
+      </trans-unit>
       <trans-unit id="8825877d6954e801a74e92e3f6ec6f2c1d64c859" resname="main__admin__monitor">
         <source>Monitor</source>
         <target>Moniteur</target>
@@ -20,6 +25,26 @@
         <source>%search_engine_name% Monitor</source>
         <target>Moniteur %search_engine_name%</target>
         <note>key: monitor.tab_name</note>
+      </trans-unit>
+      <trans-unit id="487b94edfbcb49dd8d8741483b69d81abb55c413" resname="physical_memory">
+        <source>Physical Memory</source>
+        <target>Mémoire physique</target>
+        <note>key: physical_memory</note>
+      </trans-unit>
+      <trans-unit id="77eb0b8664cedd2ca5cb4d8be38efc6567a5eac0" resname="swap_space">
+        <source>Swap Space</source>
+        <target>Espace d'échange</target>
+        <note>key: swap_space</note>
+      </trans-unit>
+      <trans-unit id="5a537e209151ae5fcccd6326b34b5622bcfb0578" resname="total">
+        <source>Total</source>
+        <target>Total</target>
+        <note>key: total</note>
+      </trans-unit>
+      <trans-unit id="192a56759d36454cc0b8c812e31845e9ed10b130" resname="used">
+        <source>Used</source>
+        <target>Utilisé</target>
+        <note>key: used</note>
       </trans-unit>
     </body>
   </file>

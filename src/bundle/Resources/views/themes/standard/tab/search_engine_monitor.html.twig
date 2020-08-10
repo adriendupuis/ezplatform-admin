@@ -5,7 +5,7 @@
     <div class="server">
         <h2>{{ identifier }}</h2>
         <div class="usage physical_memory_usage" style="margin-right: {{ (width/6)|round }}px;">
-            <h3>Physical Memory</h3>
+            <h3>{{ 'physical_memory'|trans|desc('Physical Memory') }}</h3>
             <div class="bar total total_physical_memory"
                  style="width: {{ width }}px;">
                 <div class="bar free free_physical_memory"
@@ -14,9 +14,9 @@
             <table class="ez-table table" style="width: {{ width }}px;">
                 <thead>
                 <tr>
-                    <th scope="col">Used</th>
-                    <th scope="col">Total</th>
-                    <th scope="col">Free</th>
+                    <th scope="col">{{ 'used'|trans|desc('Used') }}</th>
+                    <th scope="col">{{ 'total'|trans|desc('Total') }}</th>
+                    <th scope="col">{{ 'free'|trans|desc('Free') }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -30,7 +30,7 @@
         </div>
 
         <div class="usage swap_space_usage" style="margin-right: {{ (width/6)|round }}px;">
-            <h3>Swap Space</h3>
+            <h3>{{ 'swap_space'|trans|desc('Swap Space') }}</h3>
             <div class="bar total total_swap_space"
                  style="width: {{ width }}px;">
                 <div class="bar free free_swap_space"
@@ -39,9 +39,9 @@
             <table class="ez-table table" style="width: {{ width }}px;">
                 <thead>
                 <tr>
-                    <th scope="col">Used</th>
-                    <th scope="col">Total</th>
-                    <th scope="col">Free</th>
+                    <th scope="col">{{ 'used'|trans|desc('Used') }}</th>
+                    <th scope="col">{{ 'total'|trans|desc('Total') }}</th>
+                    <th scope="col">{{ 'free'|trans|desc('Free') }}</th>
                 </tr>
                 </thead>
                 <tbody>
