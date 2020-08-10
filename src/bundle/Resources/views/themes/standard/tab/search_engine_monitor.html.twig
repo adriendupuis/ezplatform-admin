@@ -2,54 +2,56 @@
 
 {% set width = 300 %}
 {% for identifier, metrics in os_metrics %}
-<h2>{{ identifier }}</h2>
-<div style="float: left; margin-right: {{ (width/6)|round }}px;">
-    <h3>Physical Memory</h3>
-    <div id="total_physical_memory"
-         style="width: {{ width }}px; height: 10px; background: red;">
-        <div id="free_physical_memory"
-             style="width:{{ (width * metrics.free_physical_memory/metrics.total_physical_memory)|round }}px; height: 10px; background: green; float: right;"></div>
-    </div>
-    <table style="width: {{ width }}px;" class="ez-table">
-        <thead>
-        <tr>
-            <th scope="col" style="width: 33%">Used</th>
-            <th scope="col" style="width: 34%">Total</th>
-            <th scope="col" style="width: 33%">Free</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>{{ metrics.used_physical_memory_human_readable }}</td>
-            <td>{{ metrics.total_physical_memory_human_readable }}</td>
-            <td>{{ metrics.free_physical_memory_human_readable }}</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+    <div class="server">
+        <h2>{{ identifier }}</h2>
+        <div class="usage physical_memory_usage" style="margin-right: {{ (width/6)|round }}px;">
+            <h3>Physical Memory</h3>
+            <div class="bar total total_physical_memory"
+                 style="width: {{ width }}px;">
+                <div class="bar free free_physical_memory"
+                     style="width:{{ (width * metrics.free_physical_memory/metrics.total_physical_memory)|round }}px;"></div>
+            </div>
+            <table class="ez-table table" style="width: {{ width }}px;">
+                <thead>
+                <tr>
+                    <th scope="col">Used</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Free</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ metrics.used_physical_memory_human_readable }}</td>
+                    <td>{{ metrics.total_physical_memory_human_readable }}</td>
+                    <td>{{ metrics.free_physical_memory_human_readable }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
-<div style="float: left; margin-right: {{ (width/6)|round }}px;">
-    <h3>Swap Space</h3>
-    <div id="total_swap_space"
-         style="width: {{ width }}px; height: 10px; background: red;">
-        <div id="free_swap_space"
-             style="width:{{ (width * metrics.free_swap_space/metrics.total_swap_space)|round }}px; height: 10px; background: green; float: right;"></div>
+        <div class="usage swap_space_usage" style="margin-right: {{ (width/6)|round }}px;">
+            <h3>Swap Space</h3>
+            <div class="bar total total_swap_space"
+                 style="width: {{ width }}px;">
+                <div class="bar free free_swap_space"
+                     style="width:{{ (width * metrics.free_swap_space/metrics.total_swap_space)|round }}px;"></div>
+            </div>
+            <table class="ez-table table" style="width: {{ width }}px;">
+                <thead>
+                <tr>
+                    <th scope="col">Used</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Free</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ metrics.used_swap_space_human_readable }}</td>
+                    <td>{{ metrics.total_swap_space_human_readable }}</td>
+                    <td>{{ metrics.free_swap_space_human_readable }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <table style="width: {{ width }}px;" class="ez-table">
-        <thead>
-        <tr>
-            <th scope="col" style="width: 33%">Used</th>
-            <th scope="col" style="width: 34%">Total</th>
-            <th scope="col" style="width: 33%">Free</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>{{ metrics.used_swap_space_human_readable }}</td>
-            <td>{{ metrics.total_swap_space_human_readable }}</td>
-            <td>{{ metrics.free_swap_space_human_readable }}</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
 {% endfor %}

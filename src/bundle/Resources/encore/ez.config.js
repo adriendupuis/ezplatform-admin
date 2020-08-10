@@ -12,5 +12,9 @@ module.exports = (Encore) => {
         .addEntry('ad-admin-identification-css', [
             path.resolve(__dirname, '../public/scss/identification.scss'),
         ])
+        .addEntry('ad-admin-monitor-css', [
+            path.resolve(__dirname, '../public/scss/monitor.scss'),
+        ])
+    ;
 };
 // Note: jQuery is provided by https://github.com/ezsystems/ezplatform-admin-ui-assets/tree/v5.0.0/Resources/public/vendors/jquery
