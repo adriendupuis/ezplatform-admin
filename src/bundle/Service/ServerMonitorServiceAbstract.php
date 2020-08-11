@@ -2,7 +2,7 @@
 
 namespace AdrienDupuis\EzPlatformAdminBundle\Service;
 
-abstract class SearchEngineMonitorServiceAbstract
+abstract class ServerMonitorServiceAbstract
 {
     abstract public function ping(): bool;
 

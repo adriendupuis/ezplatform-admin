@@ -3,7 +3,7 @@
 namespace AdrienDupuis\EzPlatformAdminBundle\Tab;
 
 use AdrienDupuis\EzPlatformAdminBundle\Service\ElasticsearchMonitorService;
-use AdrienDupuis\EzPlatformAdminBundle\Service\SearchEngineMonitorServiceAbstract;
+use AdrienDupuis\EzPlatformAdminBundle\Service\ServerMonitorServiceAbstract;
 use AdrienDupuis\EzPlatformAdminBundle\Service\SolrMonitorService;
 use EzSystems\EzPlatformAdminUi\Tab\AbstractTab;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -16,7 +16,7 @@ class SearchEngineMonitor extends AbstractTab
     /** @var string */
     private $searchEngine;
 
-    /** @var SearchEngineMonitorServiceAbstract|null */
+    /** @var ServerMonitorServiceAbstract|null */
     private $searchEngineMonitorService;
 
     public function __construct(
@@ -55,7 +55,7 @@ class SearchEngineMonitor extends AbstractTab
     {
         if (in_array($this->searchEngine, self::getSupportedSearchEngines(), true)) {
             if ($this->searchEngineMonitorService->ping()) {
-                return $this->twig->render('@ezdesign/tab/search_engine_monitor.html.twig', [
+                return $this->twig->render('@ezdesign/tab/server_monitor.html.twig', [
                     'os_metrics' => $this->searchEngineMonitorService->getOsMetrics(),
                 ]);
             }

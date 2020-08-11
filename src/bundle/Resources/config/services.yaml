@@ -75,6 +75,16 @@ services:
         arguments:
             $searchEngine: '%search_engine%'
 
+    AdrienDupuis\EzPlatformAdminBundle\Tab\CurrentHostMonitor:
+        parent: EzSystems\EzPlatformAdminUi\Tab\AbstractTab
+        autowire: true
+        autoconfigure: false
+        public: false
+        arguments:
+            $hostMonitorService: '@AdrienDupuis\EzPlatformAdminBundle\Service\HostMonitorService'
+        tags:
+            - { name: ezplatform.tab, group: ad-admin-monitor }
+
     AdrienDupuis\EzPlatformAdminBundle\Tab\SearchEngineMonitor:
         parent: EzSystems\EzPlatformAdminUi\Tab\AbstractTab
         autowire: true
@@ -86,4 +96,3 @@ services:
             $elasticsearchMonitorService: '@AdrienDupuis\EzPlatformAdminBundle\Service\ElasticsearchMonitorService'
         tags:
             - { name: ezplatform.tab, group: ad-admin-monitor }
-

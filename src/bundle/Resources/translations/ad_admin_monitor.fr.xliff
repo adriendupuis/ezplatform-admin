@@ -8,7 +8,7 @@
     <body>
       <trans-unit id="19d7d896ec933e337e6eae5cfa5821a7634e2d98" resname="free_physical_memory">
         <source>Free</source>
-        <target state="new">Libre</target>
+        <target>Libre</target>
         <note>key: free_physical_memory</note>
       </trans-unit>
       <trans-unit id="0cd8cc77c1111ad285aec3d95cf54a171ad911f1" resname="free_swap_space">
@@ -25,6 +25,11 @@
         <source>Monitor</source>
         <target>Moniteur</target>
         <note>key: monitor</note>
+      </trans-unit>
+      <trans-unit id="cd68c9926340d3cd09a8f348fb1c0a3705727a68" resname="monitor.current_host">
+        <source>Current Host Monitor</source>
+        <target>Moniteur de ce serveur</target>
+        <note>key: monitor.current_host</note>
       </trans-unit>
       <trans-unit id="7c134d36ac04d67e19455a41b5aea0285dc927b1" resname="monitor.tab_name">
         <source>%search_engine_name% Monitor</source>

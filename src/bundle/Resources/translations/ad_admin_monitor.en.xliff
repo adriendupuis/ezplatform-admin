@@ -26,6 +26,11 @@
         <target>Monitor</target>
         <note>key: monitor</note>
       </trans-unit>
+      <trans-unit id="cd68c9926340d3cd09a8f348fb1c0a3705727a68" resname="monitor.current_host">
+        <source>Current Host Monitor</source>
+        <target>Current Host Monitor</target>
+        <note>key: monitor.current_host</note>
+      </trans-unit>
       <trans-unit id="7c134d36ac04d67e19455a41b5aea0285dc927b1" resname="monitor.tab_name">
         <source>%search_engine_name% Monitor</source>
         <target>%search_engine_name% Monitor</target>

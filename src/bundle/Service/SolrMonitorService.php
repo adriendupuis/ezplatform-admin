@@ -8,7 +8,7 @@ use EzSystems\EzPlatformSolrSearchEngine\Gateway\EndpointResolver;
 use EzSystems\EzPlatformSolrSearchEngine\Gateway\HttpClient;
 use EzSystems\EzPlatformSolrSearchEngine\Gateway\Message;
 
-class SolrMonitorService extends SearchEngineMonitorServiceAbstract
+class SolrMonitorService extends ServerMonitorServiceAbstract
 {
     /** @var EndpointResolver */
     private $solrEndpointResolver;

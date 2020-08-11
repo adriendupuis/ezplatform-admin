@@ -4,7 +4,7 @@ namespace AdrienDupuis\EzPlatformAdminBundle\Service;
 
 use Ibexa\Platform\ElasticSearchEngine\ElasticSearch\Client\ClientFactoryInterface;
 
-class ElasticsearchMonitorService extends SearchEngineMonitorServiceAbstract
+class ElasticsearchMonitorService extends ServerMonitorServiceAbstract
 {
     /** @var \Elasticsearch\Client */
     private $elasticsearchClient;
