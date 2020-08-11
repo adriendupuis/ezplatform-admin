@@ -11,17 +11,17 @@ jobs:
 
         runs-on: ubuntu-latest
 
-    steps:
-        - uses: actions/checkout@v2
+        steps:
+            - uses: actions/checkout@v2
 
-        - name: Remove eZ Platform Admin UI's dependency
-          run: composer remove ezsystems/ezplatform-admin-ui --no-interaction --no-update
+            - name: Remove eZ Platform Admin UI's dependency
+              run: composer remove ezsystems/ezplatform-admin-ui --no-interaction --no-update
 
-        - name: Install PHPUnit
-          run: composer require phpunit/phpunit --dev --no-interaction
+            - name: Install PHPUnit
+              run: composer require phpunit/phpunit --dev --no-interaction
 
-        - name: Install dependencies
-          run: composer install --no-scripts
+            - name: Install dependencies
+              run: composer install --no-scripts
 
-        - name: Run test suite
-          run: vendor/bin/phpunit --colors=always tests/
+            - name: Run test suite
+              run: vendor/bin/phpunit --colors=always tests/
