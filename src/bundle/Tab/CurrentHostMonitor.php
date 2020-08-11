@@ -2,10 +2,7 @@
 
 namespace AdrienDupuis\EzPlatformAdminBundle\Tab;
 
-use AdrienDupuis\EzPlatformAdminBundle\Service\ElasticsearchMonitorService;
 use AdrienDupuis\EzPlatformAdminBundle\Service\HostMonitorService;
-use AdrienDupuis\EzPlatformAdminBundle\Service\ServerMonitorServiceAbstract;
-use AdrienDupuis\EzPlatformAdminBundle\Service\SolrMonitorService;
 use EzSystems\EzPlatformAdminUi\Tab\AbstractTab;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -44,5 +41,4 @@ class CurrentHostMonitor extends AbstractTab
             'os_metrics' => $this->hostMonitorService->getOsMetrics(),
         ]);
     }
-
 }

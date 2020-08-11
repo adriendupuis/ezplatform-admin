@@ -2,12 +2,6 @@
 
 namespace AdrienDupuis\EzPlatformAdminBundle\Service;
 
-use EzSystems\EzPlatformSolrSearchEngine\Gateway\Endpoint;
-use EzSystems\EzPlatformSolrSearchEngine\Gateway\EndpointRegistry;
-use EzSystems\EzPlatformSolrSearchEngine\Gateway\EndpointResolver;
-use EzSystems\EzPlatformSolrSearchEngine\Gateway\HttpClient;
-use EzSystems\EzPlatformSolrSearchEngine\Gateway\Message;
-
 class HostMonitorService extends ServerMonitorServiceAbstract
 {
     public function ping(): bool
