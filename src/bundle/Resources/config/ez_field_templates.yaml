@@ -1,0 +1,4 @@
+system:
+    admin_group:
+        field_templates:
+            - { template: '@ezdesign/fields/admin_ezlandingpage.html.twig', priority: 11 }
