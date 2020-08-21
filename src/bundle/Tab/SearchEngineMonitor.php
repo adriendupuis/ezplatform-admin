@@ -60,10 +60,14 @@ class SearchEngineMonitor extends AbstractTab
                 ]);
             }
 
-            return 'Search engine does not respond';
+            return /** @Desc("Search engine does not respond") */
+                $this->translator->trans('monitor.search_engine.no_ping', [
+                ], 'ad_admin_monitor');
         }
 
-        return  '(Not monitored)';
+        return /** @Desc("(Not monitored)") */
+            $this->translator->trans('monitor.not_monitored', [
+            ], 'ad_admin_monitor');
     }
 
     public static function getSupportedSearchEngines(): array

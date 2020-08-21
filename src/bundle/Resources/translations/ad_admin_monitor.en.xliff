@@ -31,6 +31,26 @@
         <target>Current Host Monitor</target>
         <note>key: monitor.current_host</note>
       </trans-unit>
+      <trans-unit id="95f76fb4ad55daa146926d645a86790f0336891e" resname="monitor.not_monitored">
+        <source>(Not monitored)</source>
+        <target>(Not monitored)</target>
+        <note>key: monitor.not_monitored</note>
+      </trans-unit>
+      <trans-unit id="248ffd4f89141fe70d01c2580641834de3fa8504" resname="monitor.redis">
+        <source>Redis Monitor</source>
+        <target>Redis Monitor</target>
+        <note>key: monitor.redis</note>
+      </trans-unit>
+      <trans-unit id="1651d0952a90fb6c5ddae601ffa7ded92cf7f295" resname="monitor.redis.no_ping">
+        <source>Redis does not respond</source>
+        <target>Redis does not respond</target>
+        <note>key: monitor.redis.no_ping</note>
+      </trans-unit>
+      <trans-unit id="d88996d39c37a6a6c46ee29a79522f4bf7169fb3" resname="monitor.search_engine.no_ping">
+        <source>Search engine does not respond</source>
+        <target>Search engine does not respond</target>
+        <note>key: monitor.search_engine.no_ping</note>
+      </trans-unit>
       <trans-unit id="7c134d36ac04d67e19455a41b5aea0285dc927b1" resname="monitor.tab_name">
         <source>%search_engine_name% Monitor</source>
         <target>%search_engine_name% Monitor</target>
