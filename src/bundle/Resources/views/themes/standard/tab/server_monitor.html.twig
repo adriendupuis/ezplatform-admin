@@ -29,6 +29,7 @@
             </table>
         </div>
 
+        {% if metrics.free_swap_space is defined %}
         <div class="usage swap_space_usage" style="margin-right: {{ (width/6)|round }}px;">
             <h3>{{ 'swap_space'|trans|desc('Swap Space') }}</h3>
             <div class="bar total total_swap_space"
@@ -53,5 +54,6 @@
                 </tbody>
             </table>
         </div>
+        {% endif %}
     </div>
 {% endfor %}
