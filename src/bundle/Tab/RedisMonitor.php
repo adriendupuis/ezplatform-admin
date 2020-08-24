@@ -39,6 +39,7 @@ class RedisMonitor extends AbstractTab
     {
         if ($this->redisMonitorService->ping()) {
             return $this->twig->render('@ezdesign/tab/server_monitor.html.twig', [
+                'server_monitor_addtition_template' => '@ezdesign/tab/redis_monitor.html.twig',
                 'os_metrics' => $this->redisMonitorService->getOsMetrics(),
             ]);
         }

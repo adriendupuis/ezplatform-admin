@@ -81,10 +81,11 @@ class RedisMonitorService extends ServerMonitorServiceAbstract
         $metrics = [];
         /** @var \Redis $host */
         foreach ($this->getHosts() as $host) {
+            $node = $host->getHost() . ($host->getPort() ? ":{$host->getPort()}" : '');
+
             $info = $host->info('Memory');
             $info = isset($info['Memory']) ? $info['Memory'] : $info;
 
-            $node = $host->getHost() . $host->getPort() ? "{$host->getHost()}" : '';
             $metrics[$node] = [
                 'free_physical_memory' => $info['total_system_memory'] - $info['used_memory_rss'],
                 'total_physical_memory' => (int) $info['total_system_memory'],
@@ -92,8 +93,17 @@ class RedisMonitorService extends ServerMonitorServiceAbstract
                 'free_physical_memory_human' => self::formatBytes($info['total_system_memory'] - $info['used_memory_rss']),
                 'total_physical_memory_human' => self::formatBytes($info['total_system_memory']),
                 'used_physical_memory_human' => self::formatBytes($info['used_memory_rss']),
+
+                'mem_fragmentation_ratio' => (float) $info['mem_fragmentation_ratio'],
+                'maxmemory_policy' => $info['maxmemory_policy'],
             ];
+
+            $info = $host->info('Stats');
+            $info = isset($info['Stats']) ? $info['Stats'] : $info;
+
+            $metrics[$node]['evicted_keys'] = $info['evicted_keys'];
         }
+
 
         return $metrics;
     }

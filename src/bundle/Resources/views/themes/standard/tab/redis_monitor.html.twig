@@ -1,0 +1,30 @@
+<dl>
+    <dt>{{ 'monitor.redis.mem_fragmentation_ratio'|trans }}</dt>
+    <dd>
+        {{ metrics.mem_fragmentation_ratio }}
+        {% if metrics.mem_fragmentation_ratio < 1 %}
+            <strong>&lt; 1 ⚠ server is swapping</strong>
+        {% elseif metrics.mem_fragmentation_ratio > 1.5 %}
+            <span>&gt; 1.5 <small>(<em>TODO: Reduce</em>)</small></span>
+        {% endif %}
+    </dd>
+
+    <dt>{{ 'monitor.redis.maxmemory_policy'|trans }}</dt>
+    <dd>
+        {% set recommanded_maxmemory_policy = ['volatile-lru', 'volatile-lfu', 'volatile-ttl'] %}
+        {{ metrics.maxmemory_policy|trans }}
+        {% if 'noeviction' is same as(metrics.maxmemory_policy) %}
+            <small>(OK. More recommended are <a href="https://doc.ezplatform.com/en/3.1/guide/persistence_cache/#symfonycomponentcacheadapterredistagawareadapter">{{ recommanded_maxmemory_policy|join(', ') }}</a>)</small>
+        {% elseif metrics.maxmemory_policy not in recommanded_maxmemory_policy %}
+            <small>(<strong>Recommended are <a href="https://doc.ezplatform.com/en/3.1/guide/persistence_cache/#symfonycomponentcacheadapterredistagawareadapter">{{ recommanded_maxmemory_policy|join(', ') }}</a></strong>)</small>
+        {% endif %}
+    </dd>
+
+    <dt>{{ 'monitor.redis.evicted_keys'|trans }}</dt>
+    <dd>
+        {{ metrics.evicted_keys }}
+        {% if 0 < metrics.evicted_keys %}
+            <small>(<em>TODO: Lower to zero</em>)</small>
+        {% endif %}
+    </dd>
+</dl>

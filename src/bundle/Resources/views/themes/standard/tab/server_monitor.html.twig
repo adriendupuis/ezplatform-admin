@@ -55,5 +55,12 @@
             </table>
         </div>
         {% endif %}
+
+        {% if server_monitor_addtition_template is defined %}
+            {% include server_monitor_addtition_template with {
+                identifier: identifier,
+                metrics: metrics,
+            } %}
+        {% endif %}
     </div>
 {% endfor %}
