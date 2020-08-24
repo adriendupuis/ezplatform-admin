@@ -17,7 +17,7 @@ class RedisMonitorService extends ServerMonitorServiceAbstract
     /**
      * @param \Redis|\RedisArray|\RedisCluster|\Predis\ClientInterface $redisClient
      */
-    public function __construct(RedisProxy $redisClient, string $namespace = '', int $defaultLifetime = 0, MarshallerInterface $marshaller = null, ?string $redisDsn=null)
+    public function __construct(RedisProxy $redisClient, string $namespace = '', int $defaultLifetime = 0, MarshallerInterface $marshaller = null, ?string $redisDsn = null)
     {
         try {
             $redisClient->getHost();
@@ -73,6 +73,7 @@ class RedisMonitorService extends ServerMonitorServiceAbstract
                 return false;
             }
         }
+
         return true;
     }
 
@@ -81,7 +82,7 @@ class RedisMonitorService extends ServerMonitorServiceAbstract
         $metrics = [];
         /** @var \Redis $host */
         foreach ($this->getHosts() as $host) {
-            $node = $host->getHost() . ($host->getPort() ? ":{$host->getPort()}" : '');
+            $node = $host->getHost().($host->getPort() ? ":{$host->getPort()}" : '');
 
             $info = $host->info('Memory');
             $info = isset($info['Memory']) ? $info['Memory'] : $info;
@@ -104,7 +105,6 @@ class RedisMonitorService extends ServerMonitorServiceAbstract
             $metrics[$node]['evicted_keys'] = $info['evicted_keys'];
         }
 
-
         return $metrics;
     }
 
@@ -113,7 +113,6 @@ class RedisMonitorService extends ServerMonitorServiceAbstract
         if (null !== $this->redisEvictionPolicy) {
             return $this->redisEvictionPolicy;
         }
-
 
         return $this->redisEvictionPolicy = '';
     }
