@@ -36,3 +36,9 @@
     }
   }
 }
+
+.physical_memory_usage, swap_space_usage {
+  table td {
+    white-space: nowrap;
+  }
+}
