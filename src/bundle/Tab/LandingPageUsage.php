@@ -4,10 +4,11 @@ namespace AdrienDupuis\EzPlatformAdminBundle\Tab;
 
 use AdrienDupuis\EzPlatformAdminBundle\Service\ContentUsageService;
 use EzSystems\EzPlatformAdminUi\Tab\AbstractTab;
+use EzSystems\EzPlatformAdminUi\Tab\ConditionalTabInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-class LandingPageUsage extends AbstractTab
+class LandingPageUsage extends AbstractTab implements ConditionalTabInterface
 {
     public const IDENTIFIER = 'ad-admin-landing-page-usage-tab';
 
@@ -21,6 +22,11 @@ class LandingPageUsage extends AbstractTab
     ) {
         parent::__construct($twig, $translator);
         $this->contentUsageService = $contentUsageService;
+    }
+
+    public function evaluate(array $parameters): bool
+    {
+        return class_exists('EzSystems\EzPlatformPageFieldTypeBundle\EzPlatformPageFieldTypeBundle');
     }
 
     public function getIdentifier(): string
