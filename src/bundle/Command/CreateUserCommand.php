@@ -53,10 +53,10 @@ class CreateUserCommand extends Command
             ->addArgument('first_name', InputArgument::REQUIRED)
             ->addArgument('last_name', InputArgument::REQUIRED)
             ->addArgument('email', InputArgument::REQUIRED)
-            ->addOption('login', 'l', InputOption::VALUE_REQUIRED, 'If omitted, email\'s username (part before at sign “@”) is used as login')
+            ->addOption('login', 'l', InputOption::VALUE_REQUIRED, 'If omitted, email\'s username (part before “at” sign “@”) is used as login')
             ->addOption('password', 'p', InputOption::VALUE_REQUIRED, 'If omitted, asked on prompt (it is recommended to omit it to avoid having password in shell history)')
-            ->addOption('group', 'g', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'User\'s parent user group content ID.')
-            ->addOption('admin-user', 'a', InputOption::VALUE_REQUIRED, 'Login of the admin user creating this new user', 'admin')
+            ->addOption('group', 'g', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'User\'s parent user group content ID. Default is “Guest accounts” group (11)', [11])
+            ->addOption('admin', 'a', InputOption::VALUE_REQUIRED, 'Login of the admin user creating this new user', 'admin')
             ->addOption('sudo', 's', InputOption::VALUE_NONE, 'Use sudo instead of an admin user')
             ->addOption('lang', 'c', InputOption::VALUE_REQUIRED, 'Main language code for user object creation', 'eng-GB')
         ;
@@ -96,7 +96,7 @@ class CreateUserCommand extends Command
                 return $this->createUser($userCreateStruct, $parentGroupIds, $output);
             });
         } else {
-            $adminUserLogin = $input->getOption('admin-user');
+            $adminUserLogin = $input->getOption('admin');
             try {
                 $adminUser = $this->userService->loadUserByLogin($adminUserLogin);
             } catch (NotFoundException $notFoundException) {
