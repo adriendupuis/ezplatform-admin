@@ -43,6 +43,14 @@ services:
         tags:
             - { name: ezplatform.tab, group: ad-admin-content-usage }
 
+    AdrienDupuis\EzPlatformAdminBundle\Tab\LandingPageUsage:
+        parent: EzSystems\EzPlatformAdminUi\Tab\AbstractTab
+        autowire: true
+        autoconfigure: false
+        public: false
+        tags:
+            - { name: ezplatform.tab, group: ad-admin-content-usage }
+
     AdrienDupuis\EzPlatformAdminBundle\Tab\LanguageUsage:
         parent: EzSystems\EzPlatformAdminUi\Tab\AbstractTab
         autowire: true

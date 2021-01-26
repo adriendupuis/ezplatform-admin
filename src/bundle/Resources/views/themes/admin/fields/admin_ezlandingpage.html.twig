@@ -1,0 +1,35 @@
+{% extends '@EzPublishCore/content_fields.html.twig' %}
+
+{% block ezlandingpage_field %}
+    {% set page = field.value.page() %}
+    <strong>{{ page.layout }}</strong>
+    <ul style="list-style: circle;">
+        {% for zone_index, zone in page.zones %}
+            <li>
+                <em title="Zone #{{ zone_index }}">{{ zone.name }}</em>
+                <ul style="list-style: square;">
+                    {% for block_index, block in zone.blocks %}
+                        <li>
+                            <small>({{ block.type }})</small>
+                            <span>{{ block.name }}</span>
+                            {% if block.since is not null %}
+                                <br />
+                                <span>
+                                    {{ 'page_builder.block_configuration.reveal'|trans(domain='ezplatform_page_builder_block_config') }}:
+                                    {{ block.since|ez_full_datetime }}
+                                </span>
+                            {% endif %}
+                            {% if block.till is not null %}
+                                <br />
+                                <span>
+                                    {{ 'page_builder.block_configuration.hide'|trans(domain='ezplatform_page_builder_block_config') }}:
+                                    {{ block.till|ez_full_datetime }}
+                                </span>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
