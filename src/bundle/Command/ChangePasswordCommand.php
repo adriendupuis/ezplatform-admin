@@ -26,7 +26,6 @@ class ChangePasswordCommand extends UpdateUserCommandAbstract
             return $exitCode;
         }
 
-
         $password = $input->getArgument('password');
         while (!$password) {
             $question = new Question('Enter user\'s new password…');
