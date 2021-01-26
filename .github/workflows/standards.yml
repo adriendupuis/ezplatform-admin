@@ -14,21 +14,24 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Setup PHP with tools
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          tools: composer, php-cs-fixer
+
       - name: Validate composer.json
         run: composer validate
 
       - name: Remove eZ Platform Admin UI's dependency
         run: composer remove ezsystems/ezplatform-admin-ui --no-interaction --no-update
 
-      - name: Install PHP CS Fixer
-        run: composer require friendsofphp/php-cs-fixer --dev --no-interaction
-
       - name: Remove JMSTranslationBundle Ignore annotation
         # …Because this annotation's syntax isn't compatible with PHP CS Fixer `@Symfony` rules (tested w/ “Yellow Bird” 2.16.3)
         run: php -r "\$filename='src/bundle/Controller/ContentUsageController.php'; file_put_contents(\$filename, str_replace('/** @Ignore */', '', file_get_contents(\$filename)));"
 
       - name: Validate coding standards in source
-        run: vendor/bin/php-cs-fixer fix --dry-run --rules=@Symfony src/
+        run: php-cs-fixer fix --dry-run --rules=@Symfony src/
 
 #      - name: Validate coding standards in test suite
 #        run: vendor/bin/php-cs-fixer fix --dry-run --rules=@Symfony tests/
