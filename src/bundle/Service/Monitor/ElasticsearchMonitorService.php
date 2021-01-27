@@ -1,6 +1,6 @@
 <?php
 
-namespace AdrienDupuis\EzPlatformAdminBundle\Service;
+namespace AdrienDupuis\EzPlatformAdminBundle\Service\Monitor;
 
 use Ibexa\Platform\ElasticSearchEngine\ElasticSearch\Client\ClientFactoryInterface;
 

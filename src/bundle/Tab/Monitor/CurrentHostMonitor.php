@@ -1,8 +1,8 @@
 <?php
 
-namespace AdrienDupuis\EzPlatformAdminBundle\Tab;
+namespace AdrienDupuis\EzPlatformAdminBundle\Tab\Monitor;
 
-use AdrienDupuis\EzPlatformAdminBundle\Service\HostMonitorService;
+use AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\HostMonitorService;
 use EzSystems\EzPlatformAdminUi\Tab\AbstractTab;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;

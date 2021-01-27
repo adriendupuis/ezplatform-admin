@@ -1,10 +1,10 @@
 <?php
 
-namespace AdrienDupuis\EzPlatformAdminBundle\Tab;
+namespace AdrienDupuis\EzPlatformAdminBundle\Tab\Monitor;
 
-use AdrienDupuis\EzPlatformAdminBundle\Service\ElasticsearchMonitorService;
-use AdrienDupuis\EzPlatformAdminBundle\Service\ServerMonitorServiceAbstract;
-use AdrienDupuis\EzPlatformAdminBundle\Service\SolrMonitorService;
+use AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\ElasticsearchMonitorService;
+use AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\ServerMonitorServiceAbstract;
+use AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\SolrMonitorService;
 use EzSystems\EzPlatformAdminUi\Tab\AbstractTab;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;

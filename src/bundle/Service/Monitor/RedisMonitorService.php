@@ -1,6 +1,6 @@
 <?php
 
-namespace AdrienDupuis\EzPlatformAdminBundle\Service;
+namespace AdrienDupuis\EzPlatformAdminBundle\Service\Monitor;
 
 use Symfony\Component\Cache\Marshaller\DefaultMarshaller;
 use Symfony\Component\Cache\Marshaller\DeflateMarshaller;

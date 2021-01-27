@@ -77,17 +77,17 @@ services:
         arguments:
             $searchEngine: '%search_engine%'
 
-    AdrienDupuis\EzPlatformAdminBundle\Tab\CurrentHostMonitor:
+    AdrienDupuis\EzPlatformAdminBundle\Tab\Monitor\CurrentHostMonitor:
         parent: EzSystems\EzPlatformAdminUi\Tab\AbstractTab
         autowire: true
         autoconfigure: false
         public: false
         arguments:
-            $hostMonitorService: '@AdrienDupuis\EzPlatformAdminBundle\Service\HostMonitorService'
+            $hostMonitorService: '@AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\HostMonitorService'
         tags:
             - { name: ezplatform.tab, group: ad-admin-monitor }
 
-    AdrienDupuis\EzPlatformAdminBundle\Service\RedisMonitorService:
+    AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\RedisMonitorService:
         autowire: true
         autoconfigure: false
         public: false
@@ -98,34 +98,34 @@ services:
             #$redisClient: 'ezpublish.cache_pool'
             $redisDsn: '%cache_dsn%'
 
-    AdrienDupuis\EzPlatformAdminBundle\Tab\RedisMonitor:
+    AdrienDupuis\EzPlatformAdminBundle\Tab\Monitor\RedisMonitor:
         parent: EzSystems\EzPlatformAdminUi\Tab\AbstractTab
         autowire: true
         autoconfigure: false
         public: false
         arguments:
-            $redisMonitorService: '@AdrienDupuis\EzPlatformAdminBundle\Service\RedisMonitorService'
+            $redisMonitorService: '@AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\RedisMonitorService'
         tags:
             - { name: ezplatform.tab, group: ad-admin-monitor }
 
-    AdrienDupuis\EzPlatformAdminBundle\Tab\SearchEngineMonitor:
+    AdrienDupuis\EzPlatformAdminBundle\Tab\Monitor\SearchEngineMonitor:
         parent: EzSystems\EzPlatformAdminUi\Tab\AbstractTab
         autowire: true
         autoconfigure: false
         public: false
         arguments:
             $searchEngine: '%search_engine%'
-            $solrMonitorService: '@AdrienDupuis\EzPlatformAdminBundle\Service\SolrMonitorService'
-            $elasticsearchMonitorService: '@AdrienDupuis\EzPlatformAdminBundle\Service\ElasticsearchMonitorService'
+            $solrMonitorService: '@AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\SolrMonitorService'
+            $elasticsearchMonitorService: '@AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\ElasticsearchMonitorService'
         tags:
             - { name: ezplatform.tab, group: ad-admin-monitor }
 
-    AdrienDupuis\EzPlatformAdminBundle\Service\SolrMonitorService:
+    AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\SolrMonitorService:
         arguments:
             $solrEndpointResolver: '@ez_search_engine_solr.connection.default.endpoint_resolver_id'
             $solrEndpointRegistry: '@ezpublish.search.solr.gateway.endpoint_registry'
             $solrHttpClient: '@ezpublish.search.solr.gateway.client.http.stream'
 
-    AdrienDupuis\EzPlatformAdminBundle\Service\ElasticsearchMonitorService:
+    AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\ElasticsearchMonitorService:
         arguments:
             $elasticSearchClientFactory: '@Ibexa\Platform\ElasticSearchEngine\ElasticSearch\Client\ClientFactoryInterface'

@@ -1,6 +1,6 @@
 <?php
 
-namespace AdrienDupuis\EzPlatformAdminBundle\Service;
+namespace AdrienDupuis\EzPlatformAdminBundle\Service\Monitor;
 
 use EzSystems\EzPlatformSolrSearchEngine\Gateway\Endpoint;
 use EzSystems\EzPlatformSolrSearchEngine\Gateway\EndpointRegistry;
