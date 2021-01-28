@@ -160,7 +160,7 @@ class IntegrityService
 
         $unusedImageDirectories = [];
         foreach ($this->getPathListFromCmd($cmd) as $absoluteDirPath) {
-            $dirPath = str_replace(trim(`pwd`).'/public/', '', $absoluteDirPath);
+            $dirPath = str_replace(trim(shell_exec('pwd')).'/public/', '', $absoluteDirPath);
             /** @var array|bool $usage */
             $usage = $imageQueryBuilder
                 ->setParameter(':dirpath', str_replace(':dirpath', $dirPath, $this->imageAttributePattern))
