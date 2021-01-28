@@ -5,11 +5,16 @@ namespace AdrienDupuis\EzPlatformAdminBundle\Service;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use eZ\Publish\API\Repository\LanguageService;
+use eZ\Publish\API\Repository\LocationService;
 use eZ\Publish\API\Repository\Values\Content\Language;
+use eZ\Publish\API\Repository\Values\Content\Location;
 use eZ\Publish\Core\IO\IOConfigProvider;
 use eZ\Publish\Core\MVC\Symfony\SiteAccess;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * @todo Use dedicated classes instead of associative arrays to represent check results
+ */
 class IntegrityService
 {
     /** @var ContainerInterface */
@@ -27,19 +32,69 @@ class IntegrityService
     /** @var LanguageService */
     private $languageService;
 
+    /** @var LocationService */
+    private $locationService;
+
     public function __construct(
         ContainerInterface $container,
         SiteAccess $siteAccess,
         Connection $connection,
         IOConfigProvider $ioConfigProvider,
-        LanguageService $languageService
+        LanguageService $languageService,
+        LocationService $locationService
     ) {
         $this->container = $container;
         $this->siteAccess = $siteAccess;
         $this->dbalConnection = $connection;
         $this->ioConfigProvider = $ioConfigProvider;
         $this->languageService = $languageService;
+        $this->locationService = $locationService;
     }
+
+    /* TREE */
+
+    /**
+     * Get locations which parent is missing.
+     *
+     * @return array[]
+     */
+    public function getMissingParentLocations(): array
+    {
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = $this->dbalConnection->createQueryBuilder();
+
+        return $queryBuilder
+            ->select(['l.node_id', 'l.contentobject_id', 'l.parent_node_id'])
+            ->from('ezcontentobject_tree', 'l')
+            ->leftJoin('l', 'ezcontentobject_tree', 'p', 'l.parent_node_id = p.node_id')
+            ->where($queryBuilder->expr()->isNull('p.node_id'))
+            ->execute()
+            ->fetchAll()
+        ;
+    }
+
+    /**
+     * Get locations which content is missing.
+     *
+     * @return array[]
+     */
+    public function getMissingContentLocations(): array
+    {
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = $this->dbalConnection->createQueryBuilder();
+
+        return $queryBuilder
+            ->select(['l.node_id', 'l.contentobject_id', 'l.parent_node_id'])
+            ->from('ezcontentobject_tree', 'l')
+            ->leftJoin('l', 'ezcontentobject', 'o', 'l.contentobject_id = o.id')
+            ->where($queryBuilder->expr()->isNull('o.id'))
+            ->andWhere($queryBuilder->expr()->neq('l.node_id', 1)) // The root location has contentobject_id=0 pointing to a fake content object
+            ->execute()
+            ->fetchAll()
+        ;
+    }
+
+    /* LANGUAGES */
 
     public function getAvailableAndMissingLanguages(): array
     {
@@ -85,6 +140,8 @@ class IntegrityService
             ->fetchAll()
         ;
     }
+
+    /* STORAGE */
 
     /** @var string */
     private $imageAttributePattern = '% dirpath=":dirpath" %';
@@ -147,7 +204,6 @@ class IntegrityService
         return $unusedApplicationFiles;
     }
 
-    /** @todo Use a dedicated PHP class instead of an array to represent a content with missing file(s) */
     private function addFieldWithMissingFile(
         array &$contentsWithMissingFile,
         int $contentId,
