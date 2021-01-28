@@ -32,9 +32,20 @@ Features
 * Navigation
   - Tab Opener: Open a tab according to URL hash. Examples: Right-click on a tab and open it in a new window, the tab is active; Reload a page, tab is still active.
 * Commands
-  - `ezuser:create` to create an user
-  - `ezuser:password` to change an user password
-  - `ezuser:enable` to enable an user
+  - User:
+    - `ezuser:create` to create an user
+    - `ezuser:password` to change an user password
+    - `ezuser:enable` to enable an user
+  - Database & Storage Integrity:
+    - `integrity:check` to run all command from this name space
+    - `integrity:check:language` to check
+      - language declared in config files against language declared in database
+      - language used in content object against language declared in database
+    - `integrity:check:tree` to check content tree consistency
+      - find location which parent is missing
+      - find location which content is missing
+    - `integrity:check:storage` to find file missing from storage and storage unused files
+    - `integrity:fix:remove-unused-files` to remove from storage file unused by a field.
 
 Contribute
 ----------
