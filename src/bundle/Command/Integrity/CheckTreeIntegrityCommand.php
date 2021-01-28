@@ -36,15 +36,21 @@ class CheckTreeIntegrityCommand extends CheckIntegrityCommandAbstract
         foreach ($locations as $location) {
             if (in_array('content', $location['missing'])) {
                 if (in_array('parent', $location['missing'])) {
-                    $output->writeln("location {$location['node_id']} misses both its content {$location['contentobject_id']} and its parent location {$location['parent_node_id']}.");
+                    $output->writeln("<warning>location {$location['node_id']} misses both its content {$location['contentobject_id']} and its parent location {$location['parent_node_id']}.</warning>");
                 } else {
-                    $output->writeln("location {$location['node_id']} misses both its content {$location['contentobject_id']}.");
+                    $output->writeln("<warning>location {$location['node_id']} misses both its content {$location['contentobject_id']}.</warning>");
                 }
             } else /* if (in_array('parent', $location['missing'])) */ {
-                $output->writeln("location {$location['node_id']} misses its parent location {$location['parent_node_id']}.");
+                $output->writeln("<warning>location {$location['node_id']} misses its parent location {$location['parent_node_id']}.</warning>");
             }
         }
 
-        return count($locations) ? self::WARNING : SELF::SUCCESS;
+        if (count($locations)) {
+            $output->writeln('<info>Location with missing content and/or parent won\'t break the whole platform but cause some broken URLs.</info>');
+            //TODO: How to fix those locations?
+            return self::WARNING;
+        }
+
+        return self::SUCCESS;
     }
 }
