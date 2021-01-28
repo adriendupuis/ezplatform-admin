@@ -1,6 +1,6 @@
 <?php
 
-namespace AdrienDupuis\EzPlatformAdminBundle\Command;
+namespace AdrienDupuis\EzPlatformAdminBundle\Command\Integrity;
 
 use eZ\Publish\API\Repository\Values\Content\Content;
 use Symfony\Component\Console\Input\InputInterface;

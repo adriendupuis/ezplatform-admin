@@ -1,6 +1,6 @@
 <?php
 
-namespace AdrienDupuis\EzPlatformAdminBundle\Command;
+namespace AdrienDupuis\EzPlatformAdminBundle\Command\Integrity;
 
 use AdrienDupuis\EzPlatformAdminBundle\Service\IntegrityService;
 use Symfony\Component\Console\Command\Command;
