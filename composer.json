@@ -1,12 +1,13 @@
 {
   "name": "adriendupuis/ezplatform-admin",
   "description": "eZ Platform Administration Tools",
+  "homepage": "https://github.com/adriendupuis/ezplatform-admin",
   "autoload": {
     "psr-4": {
       "AdrienDupuis\\EzPlatformAdminBundle\\": "src/bundle/"
     }
   },
   "require": {
-    "ezsystems/ezplatform-admin-ui": "~2.0.0"
+    "ezsystems/ezplatform-admin-ui": "^2.0.0"
   }
 }
