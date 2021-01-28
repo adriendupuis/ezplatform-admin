@@ -1,6 +1,6 @@
 <?php
 
-namespace AdrienDupuis\EzPlatformAdminBundle\Command;
+namespace AdrienDupuis\EzPlatformAdminBundle\Command\User;
 
 use eZ\Publish\API\Repository\Exceptions\ContentFieldValidationException;
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
