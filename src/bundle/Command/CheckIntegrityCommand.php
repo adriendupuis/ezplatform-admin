@@ -11,8 +11,6 @@ class CheckIntegrityCommand extends CheckIntegrityCommandAbstract
 {
     protected static $defaultName = 'integrity:check';
 
-    public const SUCCESS = 0;
-
     protected function configure()
     {
         $this
