@@ -1,6 +1,6 @@
 <?php
 
-use AdrienDupuis\EzPlatformAdminBundle\Service\ServerMonitorServiceAbstract;
+use AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\ServerMonitorServiceAbstract;
 use PHPUnit\Framework\TestCase;
 
 class ServerMonitorServiceAbstractTest extends TestCase
