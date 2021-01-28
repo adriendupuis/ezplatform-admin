@@ -1,6 +1,6 @@
 <?php
 
-namespace AdrienDupuis\EzPlatformAdminBundle\Command;
+namespace AdrienDupuis\EzPlatformAdminBundle\Command\User;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
