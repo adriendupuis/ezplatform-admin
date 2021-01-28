@@ -35,7 +35,7 @@ class CheckIntegrityCommand extends CheckIntegrityCommandAbstract
         }
 
         $symfonyStyle->newLine();
-        $symfonyStyle->section('Summary '.$command->getName());
+        $symfonyStyle->section('Summary');
         if ($exitCode) {
             $levelName = $this->getLevelName($exitCode);
             $output->writeln("<$levelName>Higher problem level: $levelName</$levelName>");
