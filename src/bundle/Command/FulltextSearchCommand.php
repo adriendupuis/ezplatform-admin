@@ -15,13 +15,13 @@ class FulltextSearchCommand extends Command
 {
     protected static $defaultName = 'search:fulltext';
 
-    function __construct(SearchService $searchService)
+    public function __construct(SearchService $searchService)
     {
         parent::__construct(self::$defaultName);
         $this->searchService = $searchService;
     }
 
-    function configure()
+    public function configure()
     {
         $this
             ->setDescription('Search for content using fulltext')
@@ -31,12 +31,12 @@ class FulltextSearchCommand extends Command
             ->addArgument('phrase', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'Searched text');
     }
 
-    function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $phrase = implode(' ', $input->getArgument('phrase'));
         $limit = $input->getOption('limit');
         $plural = 1 < $limit ? 's' : '';
-        $output->writeln("Searching {$limit} content{$plural} for “{$phrase}”…");
+        $output->writeln("Searching {$limit} first content{$plural} for “{$phrase}”…");
 
         try {
             $searchResult = $this->searchService->findContent(new Query([
@@ -50,13 +50,16 @@ class FulltextSearchCommand extends Command
         }
 
         $totalCount = $searchResult->totalCount;
+        $sliceCount = count($searchResult->searchHits);
         $plural = 1 < $totalCount ? 's' : '';
-        $output->writeln("{$totalCount} result{$plural}");
+        $time = $searchResult->time;
+        $time = $time < 1 ? (1000 * $time).'ms' : "{$time}s";
+        $output->writeln("{$sliceCount}/{$totalCount} result{$plural} in $time");
 
         foreach ($searchResult->searchHits as $searchHit) {
             /** @var Content $content */
             $content = $searchHit->valueObject;
-            $output->writeln("- [{$content->id}] “{$content->getName()}” (main location: {$content->contentInfo->mainLocationId})");
+            $output->writeln("- [{$content->id}@{$content->contentInfo->mainLocationId}] “{$content->getName()}”");
         }
 
         return 0;
