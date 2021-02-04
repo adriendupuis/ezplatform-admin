@@ -56,10 +56,13 @@ class FulltextSearchCommand extends Command
         $time = $time < 1 ? (1000 * $time).'ms' : "{$time}s";
         $output->writeln("{$sliceCount}/{$totalCount} result{$plural} in $time");
 
+        $canScore = !empty($searchResult->maxScore);
+
         foreach ($searchResult->searchHits as $searchHit) {
             /** @var Content $content */
             $content = $searchHit->valueObject;
-            $output->writeln("- [{$content->id}@{$content->contentInfo->mainLocationId}] “{$content->getName()}”");
+            $score = $canScore ? (100*$searchHit->score/$searchResult->maxScore).'% ' : '';
+            $output->writeln("- [{$content->id}@{$content->contentInfo->mainLocationId}] {$score}“{$content->getName()}”");
         }
 
         return 0;
