@@ -42,6 +42,7 @@ class FulltextSearchCommand extends Command
             $searchResult = $this->searchService->findContent(new Query([
                 'filter' => new Query\Criterion\FullText($phrase),
                 'limit' => $limit,
+                //'sortClauses' => [new Query\SortClause\Score()],
             ]));
         } catch (\Exception $e) {
             $output->writeln("<error>{$e->getMessage()}</error>");
@@ -53,7 +54,7 @@ class FulltextSearchCommand extends Command
         $sliceCount = count($searchResult->searchHits);
         $plural = 1 < $totalCount ? 's' : '';
         $time = $searchResult->time;
-        $time = $time < 1 ? (1000 * $time).'ms' : "{$time}s";
+        $time = $time < 1 ? number_format(1000 * $time, 0, '.', '').'ms' : number_format($time, 3, '.', '').'s';
         $output->writeln("{$sliceCount}/{$totalCount} result{$plural} in $time");
 
         $canScore = !empty($searchResult->maxScore);
