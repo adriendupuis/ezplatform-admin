@@ -25,13 +25,17 @@ Features
 
 * Content Usage
   - Content Type Usage: Content count per content type.
-  - Example Finder: Find best and bad content examples for each field of a content type, and report field usage statistics.
+  - Field Usage (Example Finder): Find best and bad content examples for each field of a content type, and report field usage statistics.
   - Language Usage: Content count per language.
+  - Landing Page Usage: Layout usage count and block usage count.
 * Admin
   - Identification: Find content, location, content type or content type field definitions from an ID or an identifier (like `1`, `folder`, `user*` or `ez*text`)
 * Navigation
   - Tab Opener: Open a tab according to URL hash. Examples: Right-click on a tab and open it in a new window, the tab is active; Reload a page, tab is still active.
-
+* Commands
+  - `ezuser:create` to create an user
+  - `ezuser:password` to change an user password
+  - `ezuser:enable` to enable an user
 
 Contribute
 ----------
@@ -47,9 +51,6 @@ bin/console translation:extract en --bundle AdrienDupuisEzPlatformAdminBundle --
 ### TODO
 
 * Features
-  * Users
-    - User creation command
-    - Password update command
 * Developments
   * Quality
     - Unit tests

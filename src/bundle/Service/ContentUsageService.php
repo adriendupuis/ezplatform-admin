@@ -14,6 +14,8 @@ use eZ\Publish\API\Repository\Values\Content\Location;
 use eZ\Publish\API\Repository\Values\Content\Query;
 use eZ\Publish\API\Repository\Values\ContentType\ContentType;
 use eZ\Publish\Core\Base\Exceptions\InvalidArgumentException;
+use EzSystems\EzPlatformPageFieldType\FieldType\Page\Block\Definition\BlockDefinitionFactory;
+use EzSystems\EzPlatformPageFieldType\Registry\LayoutDefinitionRegistry;
 use Symfony\Component\Routing\RouterInterface;
 
 class ContentUsageService
@@ -50,6 +52,12 @@ class ContentUsageService
     /** @var RouterInterface */
     private $router;
 
+    /** @var LayoutDefinitionRegistry */
+    private $layoutDefinitionRegistry;
+
+    /** @var BlockDefinitionFactory */
+    private $blockDefinitionFactory;
+
     public function __construct(
         Connection $connection,
         ContentService $contentService,
@@ -57,7 +65,9 @@ class ContentUsageService
         ContentTypeService $contentTypeService,
         FieldTypeService $fieldTypeService,
         SearchService $searchService,
-        RouterInterface $router
+        RouterInterface $router,
+        LayoutDefinitionRegistry $layoutDefinitionRegistry,
+        BlockDefinitionFactory $blockDefinitionFactory
     ) {
         $this->dbalConnection = $connection;
         $this->contentService = $contentService;
@@ -66,6 +76,8 @@ class ContentUsageService
         $this->fieldTypeService = $fieldTypeService;
         $this->searchService = $searchService;
         $this->router = $router;
+        $this->layoutDefinitionRegistry = $layoutDefinitionRegistry;
+        $this->blockDefinitionFactory = $blockDefinitionFactory;
     }
 
     public function getContentTypeUsage(): array
@@ -225,6 +237,74 @@ class ContentUsageService
         ];
     }
 
+    public function getLayoutUsage()
+    {
+        $layoutDefinitions = $this->layoutDefinitionRegistry->getLayoutDefinitions();
+        $contentCountList = $this->dbalConnection->createQueryBuilder()
+            ->select('p.layout, COUNT(o.id) as content_count')
+            ->from('ezpage_pages', 'p')
+            ->join('p', 'ezcontentobject', 'o', 'p.content_id = o.id AND p.version_no = o.current_version')
+            ->groupBy('p.layout')
+            ->orderBy('content_count', 'DESC')
+            ->execute()
+            ->fetchAll()
+        ;
+
+        $usedLayouts = [];
+        foreach ($contentCountList as $contentCount) {
+            $usedLayouts[] = $contentCount['layout'];
+        }
+        $unusedLayouts = array_diff(array_keys($layoutDefinitions), $usedLayouts);
+        foreach ($unusedLayouts as $unusedLayout) {
+            $contentCountList[] = [
+                'layout' => $unusedLayout,
+                'content_count' => 0,
+            ];
+        }
+
+        return [
+            'layout_definitions' => $layoutDefinitions,
+            'layout_content_count_list' => $contentCountList,
+        ];
+    }
+
+    public function getBlockUsage()
+    {
+        $blockDefinitions = [];
+        foreach ($this->blockDefinitionFactory->getBlockIdentifiers() as $blockIdentifier) {
+            $blockDefinitions[$blockIdentifier] = $this->blockDefinitionFactory->getBlockDefinition($blockIdentifier);
+        }
+        $contentCountList = $this->dbalConnection->createQueryBuilder()
+            ->select('b.type AS block, COUNT(o.id) AS content_count')
+            ->from('ezpage_blocks', 'b')
+            ->join('b', 'ezpage_map_blocks_zones', 'bz', 'b.id = bz.block_id')
+            ->join('bz', 'ezpage_map_zones_pages', 'zp', 'bz.zone_id = zp.zone_id')
+            ->join('zp', 'ezpage_pages', 'p', 'zp.page_id = p.id')
+            ->join('p', 'ezcontentobject', 'o', 'p.content_id = o.id AND p.version_no = o.current_version')
+            ->groupBy('b.type')
+            ->orderBy('content_count', 'DESC')
+            ->execute()
+            ->fetchAll()
+        ;
+
+        $usedBlocks = [];
+        foreach ($contentCountList as $contentCount) {
+            $usedBlocks[] = $contentCount['block'];
+        }
+        $unusedBlocks = array_diff(array_keys($blockDefinitions), $usedBlocks);
+        foreach ($unusedBlocks as $unusedBlock) {
+            $contentCountList[] = [
+                'block' => $unusedBlock,
+                'content_count' => 0,
+            ];
+        }
+
+        return [
+            'block_definitions' => $blockDefinitions,
+            'block_content_count_list' => $contentCountList,
+        ];
+    }
+
     public function getLanguageUsage(): array
     {
         $contentCounts = [];
@@ -241,6 +321,8 @@ class ContentUsageService
 
         return $contentCounts;
     }
+
+    /* IDENTIFICATION */
 
     /** @param mixed $identifier */
     public function isId($identifier): bool
