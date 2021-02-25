@@ -55,8 +55,13 @@ Contribute
 
 extract:
 ```shell
-bin/console translation:extract en --bundle AdrienDupuisEzPlatformAdminBundle --domain ad_admin_content_usage --output-dir vendor/adriendupuis/ezplatform-admin/src/bundle/Resources/translations/ --bundle AdrienDupuisEzPlatformAdminBundle;
-bin/console translation:extract en --bundle AdrienDupuisEzPlatformAdminBundle --domain ad_admin_identification --output-dir vendor/adriendupuis/ezplatform-admin/src/bundle/Resources/translations/ --bundle AdrienDupuisEzPlatformAdminBundle;
+bin/console translation:extract en --bundle AdrienDupuisEzPlatformAdminBundle --domain ad_admin_content_usage --domain ad_admin_identification --output-dir vendor/adriendupuis/ezplatform-admin/src/bundle/Resources/translations/ --bundle AdrienDupuisEzPlatformAdminBundle;
+```
+
+### Run unit tests
+
+```shell
+bin/phpunit vendor/adriendupuis/ezplatform-admin/tests/;
 ```
 
 ### TODO

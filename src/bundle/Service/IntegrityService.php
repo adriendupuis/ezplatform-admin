@@ -317,4 +317,97 @@ class IntegrityService
 
         return [];
     }
+
+    public function checkUploadMaxFileSize(): array
+    {
+        $warnings = [];
+        $errors = [];
+
+        //How to check the Web instead of the CLI?
+        $iniUploadMaxFilesizeString = ini_get('upload_max_filesize');
+        $iniUploadMaxFilesizeBytes = self::parseBytes($iniUploadMaxFilesizeString);
+        $iniPostMaxSizeString = ini_get('post_max_size');
+        $iniPostMaxSizeBytes = self::parseBytes($iniPostMaxSizeString);
+        if ($iniPostMaxSizeBytes < $iniUploadMaxFilesizeBytes) {
+            $warnings[] = "post_max_size ($iniPostMaxSizeString) is less than upload_max_filesize ($iniUploadMaxFilesizeString); so, file size maximum is less than $iniPostMaxSizeString.";
+            $iniMaxFileSizeString = "post_max_size = $iniPostMaxSizeString";
+            $iniMaxFileSizeBytes = $iniPostMaxSizeBytes;
+        } else {
+            $iniMaxFileSizeString = "upload_max_filesize = $iniUploadMaxFilesizeString";
+            $iniMaxFileSizeBytes = $iniUploadMaxFilesizeBytes;
+        }
+
+        $statement = $this->dbalConnection->createQueryBuilder()
+            ->select('c.identifier AS class_identifier, a.identifier AS attribute_identifier, a.data_type_string, a.data_int1 AS max_file_size') // see eZ\Publish\Core\Persistence\Legacy\Content\FieldValue\Converter\BinaryFileConverter and its descendants
+            ->from('ezcontentclass_attribute', 'a')
+            ->join('a', 'ezcontentclass', 'c', 'a.contentclass_id = c.id AND a.version = c.version')
+            ->where('a.version = 0')
+            ->andWhere('a.data_type_string IN (\'ezbinaryfile\', \'ezimage\', \'ezmedia\')')
+            ->execute()
+        ;
+        while ($row = $statement->fetch()) {
+            $maxFileSizeString = ((int) $row['max_file_size']).'M';
+            $maxFileSizeBytes = self::parseBytes($maxFileSizeString);
+            if ($maxFileSizeBytes && $maxFileSizeBytes > $iniMaxFileSizeBytes) {
+                $errors[] = "{$row['class_identifier']}/{$row['attribute_identifier']} ({$row['data_type_string']}) as a max file size of $maxFileSizeString greater than php.ini $iniMaxFileSizeString";
+            }
+        }
+
+        return [
+            'warnings' => $warnings,
+            'errors' => $errors,
+        ];
+    }
+
+    /**
+     * Get bytes from a formatted string using unit
+     * Reverse of ServerMonitorServiceAbstract::formatBytes.
+     */
+    public static function parseBytes(string $formattedBytes): int
+    {
+        preg_match('/(?<number>[0-9.]+) ?(?<unit>[^0-9]*)/', $formattedBytes, $matches);
+        $bytes = (float) $matches['number'];
+
+        if (empty($matches['unit'])) {
+            return (int) $bytes;
+        }
+        /*
+        $unitSystems = [
+            1000 => ['B', 'kB', 'MB', 'GB', 'TB'],
+            1024 => ['B', 'KiB', 'MiB', 'GiB', 'TiB'],
+        ];
+         */
+        switch (strtolower($matches['unit'])) {
+            case 't':
+            case 'tib':
+                $bytes *= 1024;
+                // no break
+            case 'g':
+            case 'gib':
+                $bytes *= 1024;
+                // no break
+            case 'm':
+            case 'mib':
+                $bytes *= 1024;
+                // no break
+            case 'k':
+            case 'kib':
+                $bytes *= 1024;
+                break;
+            case 'tb':
+                $bytes *= 1000;
+                // no break
+            case 'gb':
+                $bytes *= 1000;
+                // no break
+            case 'mb':
+                $bytes *= 1000;
+                // no break
+            case 'kb':
+                $bytes *= 1000;
+                break;
+        }
+
+        return (int) $bytes;
+    }
 }

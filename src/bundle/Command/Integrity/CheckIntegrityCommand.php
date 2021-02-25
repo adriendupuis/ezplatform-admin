@@ -42,6 +42,7 @@ class CheckIntegrityCommand extends CheckIntegrityCommandAbstract
         } else {
             $output->writeln('<success>Every thing is alright.</success>');
         }
+        $symfonyStyle->newLine();
 
         return $exitCode;
     }
