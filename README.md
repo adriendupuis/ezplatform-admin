@@ -47,7 +47,8 @@ Features
       - find location which content is missing
     - `integrity:check:storage` to find file missing from storage and storage unused files
     - `integrity:fix:remove-unused-files` to remove from storage file unused by a field.
-
+    - `integrity:check:config` to check miscellaneous PHP and eZ Platform configurations
+      - check that `upload_max_filesize` and `post_max_size` are coherent with usage of field types like `ezbinaryfile`.
 
 Contribute
 ----------
