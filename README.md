@@ -37,6 +37,7 @@ Features
   - `ezuser:password` to change a user password
   - `ezuser:enable` to enable a user
 
+
 Contribute
 ----------
 
