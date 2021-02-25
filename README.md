@@ -34,9 +34,9 @@ Features
   - Tab Opener: Open a tab according to URL hash. Examples: Right-click on a tab and open it in a new window, the tab is active; Reload a page, tab is still active.
 * Commands
   - User:
-    - `ezuser:create` to create an user
-    - `ezuser:password` to change an user password
-    - `ezuser:enable` to enable an user
+    - `ezuser:create` to create a user
+    - `ezuser:password` to change a user password
+    - `ezuser:enable` to enable a user
   - Database & Storage Integrity:
     - `integrity:check` to run all command from this name space
     - `integrity:check:language` to check
