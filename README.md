@@ -50,6 +50,7 @@ Features
     - `integrity:check:config` to check miscellaneous PHP and eZ Platform configurations
       - check that `upload_max_filesize` and `post_max_size` are coherent with usage of field types like `ezbinaryfile`.
 
+
 Contribute
 ----------
 
