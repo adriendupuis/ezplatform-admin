@@ -3,13 +3,13 @@
 namespace AdrienDupuis\EzPlatformAdminBundle\Tab\Monitor;
 
 use AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\RedisMonitorService;
-use EzSystems\EzPlatformAdminUi\Tab\AbstractTab;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-class RedisMonitor extends AbstractTab
+class RedisMonitor extends CachePoolMonitor
 {
     public const IDENTIFIER = 'ad-admin-monitor-redis-tab';
+    public const HANDLER = 'redis';
 
     /** @var RedisMonitorService */
     private $redisMonitorService;
@@ -17,9 +17,10 @@ class RedisMonitor extends AbstractTab
     public function __construct(
         Environment $twig,
         TranslatorInterface $translator,
+        string $cachePool,
         RedisMonitorService $redisMonitorService
     ) {
-        parent::__construct($twig, $translator);
+        parent::__construct($twig, $translator, $cachePool);
         $this->redisMonitorService = $redisMonitorService;
     }
 
