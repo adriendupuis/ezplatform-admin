@@ -27,7 +27,7 @@ class FulltextSearchCommand extends Command
             ->setDescription('Search for content using fulltext')
             //->addOption('offset', 'o',InputOption::VALUE_REQUIRED, 'Returned content offset', 0)
             ->addOption('limit', 'c', InputOption::VALUE_REQUIRED, 'Returned content count', 5)
-            ->addOption('language', 'l', InputOption::VALUE_REQUIRED|InputOption::VALUE_IS_ARRAY, 'Language to search in')
+            ->addOption('language', 'l', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Language to search in')
             ->addArgument('phrase', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'Searched text');
     }
 
@@ -63,7 +63,7 @@ class FulltextSearchCommand extends Command
         foreach ($searchResult->searchHits as $searchHit) {
             /** @var Content $content */
             $content = $searchHit->valueObject;
-            $score = $canScore ? (100*$searchHit->score/$searchResult->maxScore).'% ' : '';
+            $score = $canScore ? (100 * $searchHit->score / $searchResult->maxScore).'% ' : '';
             $output->writeln("- [{$content->id}@{$content->contentInfo->mainLocationId}] {$score}“{$content->getName()}”");
         }
 
