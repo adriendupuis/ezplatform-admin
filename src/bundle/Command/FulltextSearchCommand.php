@@ -27,13 +27,14 @@ class FulltextSearchCommand extends Command
             ->setDescription('Search for content using fulltext')
             //->addOption('offset', 'o',InputOption::VALUE_REQUIRED, 'Returned content offset', 0)
             ->addOption('limit', 'c', InputOption::VALUE_REQUIRED, 'Returned content count', 5)
-            //->addOption('language', 'l', InputOption::VALUE_REQUIRED, 'Language to search in')
+            ->addOption('language', 'l', InputOption::VALUE_REQUIRED|InputOption::VALUE_IS_ARRAY, 'Language to search in')
             ->addArgument('phrase', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'Searched text');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $phrase = implode(' ', $input->getArgument('phrase'));
+        $languageFilter = ['languages' => $input->getOption('language')];
         $limit = $input->getOption('limit');
         $plural = 1 < $limit ? 's' : '';
         $output->writeln("Searching {$limit} first content{$plural} for “{$phrase}”…");
@@ -43,7 +44,7 @@ class FulltextSearchCommand extends Command
                 'filter' => new Query\Criterion\FullText($phrase),
                 'limit' => $limit,
                 //'sortClauses' => [new Query\SortClause\Score()],
-            ]));
+            ]), $languageFilter);
         } catch (\Exception $e) {
             $output->writeln("<error>{$e->getMessage()}</error>");
 
