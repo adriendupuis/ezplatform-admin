@@ -73,10 +73,6 @@ services:
         tags:
             - { name: ezplatform.admin_ui.component, group: ad-admin-monitor-tab-groups }
 
-    AdrienDupuis\EzPlatformAdminBundle\EventSubscriber\MonitorTabGroupSubscriber:
-        arguments:
-            $searchEngine: '%search_engine%'
-
     AdrienDupuis\EzPlatformAdminBundle\Tab\Monitor\CurrentHostMonitor:
         parent: EzSystems\EzPlatformAdminUi\Tab\AbstractTab
         autowire: true
@@ -87,26 +83,27 @@ services:
         tags:
             - { name: ezplatform.tab, group: ad-admin-monitor }
 
-    AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\RedisMonitorService:
-        autowire: true
-        autoconfigure: false
-        public: false
-        arguments:
-            $redisClient: '@cache.default_redis_provider'
-            #$redisClient: '@cache.adapter.redis'
-            #$redisClient: '@cache.redis'
-            #$redisClient: 'ezpublish.cache_pool'
-            $redisDsn: '%cache_dsn%'
-
-    AdrienDupuis\EzPlatformAdminBundle\Tab\Monitor\RedisMonitor:
+    AdrienDupuis\EzPlatformAdminBundle\Tab\Monitor\CachePoolMonitor:
         parent: EzSystems\EzPlatformAdminUi\Tab\AbstractTab
         autowire: true
         autoconfigure: false
         public: false
         arguments:
+            $cachePool: '%cache_pool%'
             $redisMonitorService: '@AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\RedisMonitorService'
+            $memcachedMonitorService: '@AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\MemcachedMonitorService'
         tags:
             - { name: ezplatform.tab, group: ad-admin-monitor }
+
+    AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\RedisMonitorService:
+        arguments:
+            $cachePool: '%cache_pool%'
+            $cacheDsn: '%cache_dsn%'
+
+    AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\MemcachedMonitorService:
+        arguments:
+            $cachePool: '%cache_pool%'
+            $cacheDsn: '%cache_dsn%'
 
     AdrienDupuis\EzPlatformAdminBundle\Tab\Monitor\SearchEngineMonitor:
         parent: EzSystems\EzPlatformAdminUi\Tab\AbstractTab

@@ -1,5 +1,7 @@
+{% trans_default_domain 'ad_admin_monitor' %}
+
 <dl>
-    <dt>{{ 'monitor.redis.mem_fragmentation_ratio'|trans }}</dt>
+    <dt>{{ 'monitor.redis.mem_fragmentation_ratio'|trans|desc('Memory Fragmentation Ratio') }}</dt>
     <dd>
         {{ metrics.mem_fragmentation_ratio }}
         {% if metrics.mem_fragmentation_ratio < 1 %}
@@ -9,7 +11,12 @@
         {% endif %}
     </dd>
 
-    <dt>{{ 'monitor.redis.maxmemory_policy'|trans }}</dt>
+    <dt>{{ 'monitor.cache_pool.hit_ratio'|trans|desc('Hit Ratio') }}</dt>
+    <dd>
+        {{ metrics.hit_ratio_percent }}
+    </dd>
+
+    <dt>{{ 'monitor.redis.maxmemory_policy'|trans|desc('Eviction Policy') }}</dt>
     <dd>
         {% set recommanded_maxmemory_policy = ['volatile-lru', 'volatile-lfu', 'volatile-ttl'] %}
         {{ metrics.maxmemory_policy|trans }}
@@ -20,10 +27,10 @@
         {% endif %}
     </dd>
 
-    <dt>{{ 'monitor.redis.evicted_keys'|trans }}</dt>
+    <dt>{{ 'monitor.cache_pool.evictions'|trans|desc('Evictions') }}</dt>
     <dd>
-        {{ metrics.evicted_keys }}
-        {% if 0 < metrics.evicted_keys %}
+        {{ metrics.evictions }}
+        {% if 0 < metrics.evictions %}
             <small>(<em>TODO: Lower to zero</em>)</small>
         {% endif %}
     </dd>

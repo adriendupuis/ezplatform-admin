@@ -6,7 +6,18 @@ abstract class ServerMonitorServiceAbstract
 {
     abstract public function ping(): bool;
 
-    abstract public function getOsMetrics(): array;
+    abstract public function getMetrics(): array;
+
+    public static function formatPercent(float $ratio): string {
+        $percent = 100 * $ratio;
+        if ($percent < 1) {
+            return number_format($percent, 2).'%';
+        }
+        if ($percent < 10) {
+            return number_format($percent, 1).'%';
+        }
+        return number_format($percent, 0).'%';
+    }
 
     /**
      * Formats bytes using binary (default) base (1 KiB = 2^10 B = 1024 Bytes) base or metric base (1 kB = 10^3 B = 1000 B)

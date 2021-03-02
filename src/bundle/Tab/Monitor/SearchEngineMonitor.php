@@ -6,10 +6,11 @@ use AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\ElasticsearchMonitorServi
 use AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\ServerMonitorServiceAbstract;
 use AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\SolrMonitorService;
 use EzSystems\EzPlatformAdminUi\Tab\AbstractTab;
+use EzSystems\EzPlatformAdminUi\Tab\ConditionalTabInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-class SearchEngineMonitor extends AbstractTab
+class SearchEngineMonitor extends AbstractTab implements ConditionalTabInterface
 {
     public const IDENTIFIER = 'ad-admin-monitor-search-engine-tab';
 
@@ -38,6 +39,16 @@ class SearchEngineMonitor extends AbstractTab
         }
     }
 
+    public static function getSupportedSearchEngines(): array
+    {
+        return ['solr', 'elasticsearch'];
+    }
+
+    public function evaluate(array $parameters): bool
+    {
+        return in_array($this->searchEngine, self::getSupportedSearchEngines(), true);
+    }
+
     public function getIdentifier(): string
     {
         return self::IDENTIFIER;
@@ -45,9 +56,9 @@ class SearchEngineMonitor extends AbstractTab
 
     public function getName(): string
     {
-        return /** @Desc("%search_engine_name% Monitor") */
+        return /** @Desc("%service_name% Monitor") */
             $this->translator->trans('monitor.tab_name', [
-                '%search_engine_name%' => $this->getSearchEngineName($this->searchEngine),
+                '%service_name%' => ucfirst($this->searchEngine),
             ], 'ad_admin_monitor');
     }
 
@@ -56,7 +67,7 @@ class SearchEngineMonitor extends AbstractTab
         if (in_array($this->searchEngine, self::getSupportedSearchEngines(), true)) {
             if ($this->searchEngineMonitorService->ping()) {
                 return $this->twig->render('@ezdesign/tab/server_monitor.html.twig', [
-                    'os_metrics' => $this->searchEngineMonitorService->getOsMetrics(),
+                    'os_metrics' => $this->searchEngineMonitorService->getMetrics(),
                 ]);
             }
 
@@ -68,15 +79,5 @@ class SearchEngineMonitor extends AbstractTab
         return /** @Desc("(Not monitored)") */
             $this->translator->trans('monitor.not_monitored', [
             ], 'ad_admin_monitor');
-    }
-
-    public static function getSupportedSearchEngines(): array
-    {
-        return ['solr', 'elasticsearch'];
-    }
-
-    public function getSearchEngineName($identifier): string
-    {
-        return ucfirst($this->searchEngine);
     }
 }

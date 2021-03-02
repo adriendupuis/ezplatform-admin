@@ -25,6 +25,11 @@
                     <td>{{ metrics.total_physical_memory_human }}</td>
                     <td>{{ metrics.free_physical_memory_human }}</td>
                 </tr>
+                <tr>
+                    <td>{{ metrics.used_physical_memory_percent }}</td>
+                    <td></td>
+                    <td>{{ metrics.free_physical_memory_percent }}</td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -50,6 +55,11 @@
                     <td>{{ metrics.used_swap_space_human }}</td>
                     <td>{{ metrics.total_swap_space_human }}</td>
                     <td>{{ metrics.free_swap_space_human }}</td>
+                </tr>
+                <tr>
+                    <td>{{ metrics.used_swap_space_percent }}</td>
+                    <td></td>
+                    <td>{{ metrics.free_swap_space_percent }}</td>
                 </tr>
                 </tbody>
             </table>

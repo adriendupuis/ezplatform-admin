@@ -38,7 +38,7 @@ class CurrentHostMonitor extends AbstractTab
     public function renderView(array $parameters): string
     {
         return $this->twig->render('@ezdesign/tab/server_monitor.html.twig', [
-            'os_metrics' => $this->hostMonitorService->getOsMetrics(),
+            'os_metrics' => $this->hostMonitorService->getMetrics(),
         ]);
     }
 }

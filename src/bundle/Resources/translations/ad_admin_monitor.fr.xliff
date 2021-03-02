@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file source-language="en" target-language="en" datatype="plaintext" original="not.available">
+  <file source-language="en" target-language="fr" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -26,6 +26,21 @@
         <target>Moniteur</target>
         <note>key: monitor</note>
       </trans-unit>
+      <trans-unit id="88d28dbec0e37fd6742aa8e3488457fe8f1daed2" resname="monitor.cache_pool.evictions">
+        <source>Evictions</source>
+        <target>Évictions</target>
+        <note>key: monitor.cache_pool.evictions</note>
+      </trans-unit>
+      <trans-unit id="1e3d45cbb5c8df1e46a3106258a4cf3c536d5179" resname="monitor.cache_pool.hit_ratio">
+        <source>Hit Ratio</source>
+        <target>Taux de présence</target>
+        <note>key: monitor.cache_pool.hit_ratio</note>
+      </trans-unit>
+      <trans-unit id="662848c8202a69d23422e5cd805e0f839c8c8249" resname="monitor.cache_pool.no_ping">
+        <source>Cache pool does not respond</source>
+        <target state="new">Cache pool does not respond</target>
+        <note>key: monitor.cache_pool.no_ping</note>
+      </trans-unit>
       <trans-unit id="cd68c9926340d3cd09a8f348fb1c0a3705727a68" resname="monitor.current_host">
         <source>Current Host Monitor</source>
         <target>Moniteur de ce serveur</target>
@@ -36,15 +51,15 @@
         <target>(Non monitoré)</target>
         <note>key: monitor.not_monitored</note>
       </trans-unit>
-      <trans-unit id="248ffd4f89141fe70d01c2580641834de3fa8504" resname="monitor.redis">
-        <source>Redis Monitor</source>
-        <target>Moniteur Redis</target>
-        <note>key: monitor.redis</note>
+      <trans-unit id="8ee99864e4e7153db7da79e7b516b5da719690a7" resname="monitor.redis.maxmemory_policy">
+        <source>Eviction Policy</source>
+        <target>Politique d'éviction</target>
+        <note>key: monitor.redis.maxmemory_policy</note>
       </trans-unit>
-      <trans-unit id="1651d0952a90fb6c5ddae601ffa7ded92cf7f295" resname="monitor.redis.no_ping">
-        <source>Redis does not respond</source>
-        <target>Redis ne répond pas</target>
-        <note>key: monitor.redis.no_ping</note>
+      <trans-unit id="55ab3aebe30f0c583b64bf0bd74642a84a96996b" resname="monitor.redis.mem_fragmentation_ratio">
+        <source>Memory Fragmentation Ratio</source>
+        <target>Rapport de fragmentation de la mémoire</target>
+        <note>key: monitor.redis.mem_fragmentation_ratio</note>
       </trans-unit>
       <trans-unit id="d88996d39c37a6a6c46ee29a79522f4bf7169fb3" resname="monitor.search_engine.no_ping">
         <source>Search engine does not respond</source>

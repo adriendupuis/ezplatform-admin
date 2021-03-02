@@ -50,7 +50,7 @@ class SolrMonitorService extends ServerMonitorServiceAbstract
         return true;
     }
 
-    public function getOsMetrics(): array
+    public function getMetrics(): array
     {
         // https://lucene.apache.org/solr/guide/7_7/metrics-reporting.html#metrics-api
         $metrics = [];
@@ -77,12 +77,16 @@ class SolrMonitorService extends ServerMonitorServiceAbstract
                     'free_physical_memory_human' => self::formatBytes($jvm['os.freePhysicalMemorySize']),
                     'total_physical_memory_human' => self::formatBytes($jvm['os.totalPhysicalMemorySize']),
                     'used_physical_memory_human' => self::formatBytes($jvm['os.totalPhysicalMemorySize'] - $jvm['os.freePhysicalMemorySize']),
+                    'free_physical_memory_percent' => self::formatPercent($jvm['os.freePhysicalMemorySize']/$jvm['os.totalPhysicalMemorySize']),
+                    'used_physical_memory_percent' => self::formatPercent(($jvm['os.totalPhysicalMemorySize'] - $jvm['os.freePhysicalMemorySize'])/$jvm['os.totalPhysicalMemorySize']),
                     'free_swap_space' => (int) $jvm['os.freeSwapSpaceSize'],
                     'total_swap_space' => (int) $jvm['os.totalSwapSpaceSize'],
                     'used_swap_space' => $jvm['os.totalSwapSpaceSize'] - $jvm['os.freeSwapSpaceSize'],
                     'free_swap_space_human' => self::formatBytes($jvm['os.freeSwapSpaceSize']),
                     'total_swap_space_human' => self::formatBytes($jvm['os.totalSwapSpaceSize']),
                     'used_swap_space_human' => self::formatBytes($jvm['os.totalSwapSpaceSize'] - $jvm['os.freeSwapSpaceSize']),
+                    'free_swap_space_percent' => self::formatPercent($jvm['os.freeSwapSpaceSize']/$jvm['os.totalSwapSpaceSize']),
+                    'used_swap_space_percent' => self::formatPercent(($jvm['os.totalSwapSpaceSize'] - $jvm['os.freeSwapSpaceSize'])/$jvm['os.totalSwapSpaceSize']),
                 ];
             }
         }

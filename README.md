@@ -47,7 +47,7 @@ English example:
 bin/console translation:extract en \
   --bundle AdrienDupuisEzPlatformAdminBundle \
   --output-dir vendor/adriendupuis/ezplatform-admin/src/bundle/Resources/translations/ \
-  --domain ad_admin_content_usage --domain ad_admin_identification \
+  --domain ad_admin_content_usage --domain ad_admin_identification --domain ad_admin_monitor \
 ;
 ```
 
