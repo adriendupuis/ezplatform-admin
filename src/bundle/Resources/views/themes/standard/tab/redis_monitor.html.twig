@@ -4,10 +4,13 @@
     <dt>{{ 'monitor.redis.mem_fragmentation_ratio'|trans|desc('Memory Fragmentation Ratio') }}</dt>
     <dd>
         {{ metrics.mem_fragmentation_ratio }}
+        {# Sources:
+            https://www.datadoghq.com/blog/how-to-monitor-redis-performance-metrics/#metric-to-alert-on-mem_fragmentation_ratio
+        #}
         {% if metrics.mem_fragmentation_ratio < 1 %}
-            <strong>&lt; 1 ⚠ server is swapping</strong>
+            <strong>&lt; 1 ⚠ {{ 'monitor.redis.mem_fragmentation_ratio.less_than_1'|trans|desc('server is swapping') }}</strong>
         {% elseif metrics.mem_fragmentation_ratio > 1.5 %}
-            <span>&gt; 1.5 <small>(<em>TODO: Reduce</em>)</small></span>
+            <span>&gt; 1.5 <small>({{ 'monitor.redis.mem_fragmentation_ratio.more_than_1.5'|trans|desc('memory is too fragmented') }})</small></span>
         {% endif %}
     </dd>
 

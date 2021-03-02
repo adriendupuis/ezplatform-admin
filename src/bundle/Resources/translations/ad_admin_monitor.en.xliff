@@ -61,14 +61,24 @@
         <target state="new">Memory Fragmentation Ratio</target>
         <note>key: monitor.redis.mem_fragmentation_ratio</note>
       </trans-unit>
+      <trans-unit id="11afccda017133fb3ae583e64944251e992e527a" resname="monitor.redis.mem_fragmentation_ratio.less_than_1">
+        <source>server is swapping</source>
+        <target>server is swapping</target>
+        <note>key: monitor.redis.mem_fragmentation_ratio.less_than_1</note>
+      </trans-unit>
+      <trans-unit id="ec70281d52d6070c0fd81005b9a939e0300252f5" resname="monitor.redis.mem_fragmentation_ratio.more_than_1.5">
+        <source>memory is too fragmented</source>
+        <target>memory is too fragmented</target>
+        <note>key: monitor.redis.mem_fragmentation_ratio.more_than_1.5</note>
+      </trans-unit>
       <trans-unit id="d88996d39c37a6a6c46ee29a79522f4bf7169fb3" resname="monitor.search_engine.no_ping">
         <source>Search engine does not respond</source>
         <target>Search engine does not respond</target>
         <note>key: monitor.search_engine.no_ping</note>
       </trans-unit>
       <trans-unit id="7c134d36ac04d67e19455a41b5aea0285dc927b1" resname="monitor.tab_name">
-        <source>%search_engine_name% Monitor</source>
-        <target>%search_engine_name% Monitor</target>
+        <source>%service_name% Monitor</source>
+        <target>%service_name% Monitor</target>
         <note>key: monitor.tab_name</note>
       </trans-unit>
       <trans-unit id="487b94edfbcb49dd8d8741483b69d81abb55c413" resname="physical_memory">
