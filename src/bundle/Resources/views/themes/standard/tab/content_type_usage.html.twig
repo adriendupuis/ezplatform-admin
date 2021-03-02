@@ -6,9 +6,9 @@
         '%used_content_type_count%': used_content_type_count,
     })|desc('%global_content_count% contents of %used_content_type_count% (used) content types') }}
     {%- if content_count_list|length > used_content_type_count %}
-    {{ 'content_type_usage.content_type_count_notice'|trans({
-        '%content_type_count%': content_count_list|length,
-    })|desc('If some content types are not used, this is a notice about the total number of content types — %content_type_count%&#xa0;available content types)') }}
+        {{ 'content_type_usage.content_type_count_notice'|trans({
+            '%content_type_count%': content_count_list|length,
+        })|desc('If some content types are not used, this is a notice about the total number of content types — %content_type_count%&#xa0;available content types)') }}
     {%- endif -%}.
 </div>
 
@@ -30,11 +30,20 @@
                     'contentTypeGroupId': content_count.content_type_group.id,
                     'contentTypeId': content_count.content_type.id
                 }) }}"
-                   title="{{ content_count.content_type_group.identifier }} / {{ content_count.content_type.name }} ({{ content_count.content_type_identifier }})">
+                   title="{{ content_count.content_type_group.identifier }} / {{ content_count.content_type.name }} ({{ content_count.content_type_identifier }})"
+                >
                     {{ content_count.content_type.name }}
                 </a>
             </td>
-            <td align="right">{{ content_count.content_count }}</td>
+            <td align="right">
+                <a href="{{ path('ezplatform.search', {
+                    'search': {
+                        'content_types': [content_count.content_type_identifier]
+                    }
+                }) }}">
+                    {{ content_count.content_count }}
+                </a>
+            </td>
         </tr>
     {% endfor %}
     </tbody>

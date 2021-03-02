@@ -10,6 +10,7 @@ use eZ\Publish\API\Repository\FieldTypeService;
 use eZ\Publish\API\Repository\LocationService;
 use eZ\Publish\API\Repository\SearchService;
 use eZ\Publish\API\Repository\Values\Content\Content;
+use eZ\Publish\API\Repository\Values\Content\ContentInfo;
 use eZ\Publish\API\Repository\Values\Content\Location;
 use eZ\Publish\API\Repository\Values\Content\Query;
 use eZ\Publish\API\Repository\Values\ContentType\ContentType;
@@ -87,6 +88,8 @@ class ContentUsageService
             ->select(['c.identifier AS content_type_identifier', 'COUNT(o.id) AS content_count'])
             ->from('ezcontentclass', 'c')
             ->leftJoin('c', 'ezcontentobject', 'o', 'c.id = o.contentclass_id')
+            ->where('o.status = '.ContentInfo::STATUS_PUBLISHED)
+            ->orWhere('o.id IS NULL')
             ->groupBy('c.id')
             ->orderBy('content_count', 'DESC')
             ->execute()
