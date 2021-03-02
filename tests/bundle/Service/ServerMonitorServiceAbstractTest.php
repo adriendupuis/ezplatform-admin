@@ -168,4 +168,40 @@ class ServerMonitorServiceAbstractTest extends TestCase
             ServerMonitorServiceAbstract::formatBytes(999995, 4, null, 1000)
         );
     }
+
+    public function testFormatPercent()
+    {
+        $this->assertEquals(
+            '100%',
+            ServerMonitorServiceAbstract::formatPercent(0.9950)
+        );
+        $this->assertEquals(
+            '99%',
+            ServerMonitorServiceAbstract::formatPercent(0.9949)
+        );
+        $this->assertEquals(
+            '10%',
+            ServerMonitorServiceAbstract::formatPercent(0.09950)
+        );
+        $this->assertEquals(
+            '9.9%',
+            ServerMonitorServiceAbstract::formatPercent(0.09949)
+        );
+        $this->assertEquals(
+            '1.0%',
+            ServerMonitorServiceAbstract::formatPercent(0.009950)
+        );
+        $this->assertEquals(
+            '0.99%',
+            ServerMonitorServiceAbstract::formatPercent(0.009949)
+        );
+        $this->assertEquals(
+            '0.01%',
+            ServerMonitorServiceAbstract::formatPercent(0.000050)
+        );
+        $this->assertEquals(
+            '0.00%',
+            ServerMonitorServiceAbstract::formatPercent(0.000049)
+        );
+    }
 }

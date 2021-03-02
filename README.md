@@ -52,6 +52,12 @@ bin/console translation:extract en \
 ;
 ```
 
+### Run unit tests
+
+```shell
+bin/phpunit vendor/adriendupuis/ezplatform-admin/tests/;
+```
+
 ### TODO
 
 * Features

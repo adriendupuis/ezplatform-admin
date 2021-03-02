@@ -11,10 +11,10 @@ abstract class ServerMonitorServiceAbstract
     public static function formatPercent(float $ratio): string
     {
         $percent = 100 * $ratio;
-        if ($percent < 1) {
+        if (number_format($percent, 2) < 1) {
             return number_format($percent, 2).'%';
         }
-        if ($percent < 10) {
+        if (number_format($percent, 1) < 10) {
             return number_format($percent, 1).'%';
         }
 
