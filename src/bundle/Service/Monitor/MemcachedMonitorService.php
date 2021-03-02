@@ -27,7 +27,7 @@ class MemcachedMonitorService extends ServerMonitorServiceAbstract
 
         /**
          * @var string $host
-         * @var array $stats
+         * @var array  $stats
          */
         foreach ($this->memcached->getStats() as $host => $stats) {
             $freePhysicalMemory = $stats['limit_maxbytes'] - $stats['bytes'];
@@ -39,8 +39,8 @@ class MemcachedMonitorService extends ServerMonitorServiceAbstract
                 'free_physical_memory_human' => self::formatBytes($freePhysicalMemory),
                 'total_physical_memory_human' => self::formatBytes($stats['limit_maxbytes']),
                 'used_physical_memory_human' => self::formatBytes($stats['bytes']),
-                'free_physical_memory_percent' => self::formatPercent($freePhysicalMemory/$stats['limit_maxbytes']),
-                'used_physical_memory_percent' => self::formatPercent($stats['bytes']/$stats['limit_maxbytes']),
+                'free_physical_memory_percent' => self::formatPercent($freePhysicalMemory / $stats['limit_maxbytes']),
+                'used_physical_memory_percent' => self::formatPercent($stats['bytes'] / $stats['limit_maxbytes']),
 
                 'hits' => (int) $stats['get_hits'],
                 'misses' => (int) $stats['get_misses'],

@@ -29,16 +29,16 @@ class HostMonitorService extends ServerMonitorServiceAbstract
             'free_physical_memory_human' => self::formatBytes($metrics['Mem']['free']),
             'total_physical_memory_human' => self::formatBytes($metrics['Mem']['total']),
             'used_physical_memory_human' => self::formatBytes($metrics['Mem']['used']),
-            'free_physical_memory_percent' => self::formatPercent($metrics['Mem']['free']/$metrics['Mem']['total']),
-            'used_physical_memory_percent' => self::formatPercent($metrics['Mem']['used']/$metrics['Mem']['total']),
+            'free_physical_memory_percent' => self::formatPercent($metrics['Mem']['free'] / $metrics['Mem']['total']),
+            'used_physical_memory_percent' => self::formatPercent($metrics['Mem']['used'] / $metrics['Mem']['total']),
             'free_swap_space' => (int) $metrics['Swap']['free'],
             'total_swap_space' => (int) $metrics['Swap']['total'],
             'used_swap_space' => (int) $metrics['Swap']['used'],
             'free_swap_space_human' => self::formatBytes($metrics['Swap']['free']),
             'total_swap_space_human' => self::formatBytes($metrics['Swap']['total']),
             'used_swap_space_human' => self::formatBytes($metrics['Swap']['used']),
-            'free_swap_space_percent' => self::formatPercent($metrics['Swap']['free']/$metrics['Swap']['total']),
-            'used_swap_space_percent' => self::formatPercent($metrics['Swap']['used']/$metrics['Swap']['total']),
+            'free_swap_space_percent' => self::formatPercent($metrics['Swap']['free'] / $metrics['Swap']['total']),
+            'used_swap_space_percent' => self::formatPercent($metrics['Swap']['used'] / $metrics['Swap']['total']),
         ]];
     }
 }

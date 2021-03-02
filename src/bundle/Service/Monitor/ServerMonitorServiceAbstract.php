@@ -8,7 +8,8 @@ abstract class ServerMonitorServiceAbstract
 
     abstract public function getMetrics(): array;
 
-    public static function formatPercent(float $ratio): string {
+    public static function formatPercent(float $ratio): string
+    {
         $percent = 100 * $ratio;
         if ($percent < 1) {
             return number_format($percent, 2).'%';
@@ -16,6 +17,7 @@ abstract class ServerMonitorServiceAbstract
         if ($percent < 10) {
             return number_format($percent, 1).'%';
         }
+
         return number_format($percent, 0).'%';
     }
 
