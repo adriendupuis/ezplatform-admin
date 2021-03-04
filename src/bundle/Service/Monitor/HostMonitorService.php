@@ -11,6 +11,9 @@ class HostMonitorService extends ServerMonitorServiceAbstract
 
     public function getMetrics(): array
     {
+        //TODO
+        //- test that `free` is available
+        //- use something more cros-platform than `free`
         $rawMetrics = explode(PHP_EOL, str_replace(':', '', shell_exec('free --bytes;')));
         $keys = preg_split('/ +/', array_shift($rawMetrics));
         $metrics = [];
@@ -20,6 +23,11 @@ class HostMonitorService extends ServerMonitorServiceAbstract
             }
             $values = preg_split('/ +/', $line);
             $metrics[$values[0]] = array_combine(array_slice($keys, 0, count($values)), $values);
+        }
+        foreach (['shared', 'buff/cache', 'buffers', 'cache'] as $usedKey) {
+            if (array_key_exists($usedKey, $metrics['Mem'])) {
+                $metrics['Mem']['used'] += $metrics['Mem'][$usedKey];
+            }
         }
 
         return [shell_exec('hostname') => [
