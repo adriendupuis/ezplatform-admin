@@ -1,3 +1,6 @@
+parameters:
+    cache_dsn: '%env(CACHE_DSN)%'
+
 services:
 
     AdrienDupuis\EzPlatformAdminBundle\:
