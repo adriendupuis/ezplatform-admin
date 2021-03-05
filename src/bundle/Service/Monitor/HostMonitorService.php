@@ -22,23 +22,24 @@ class HostMonitorService extends ServerMonitorServiceAbstract
                 continue;
             }
             $values = preg_split('/ +/', $line);
-            $metrics[$values[0]] = array_combine(array_slice($keys, 0, count($values)), $values);
+            $metrics[$values[0]] = array_combine(array_slice($keys, 1, count($values)-1), array_slice($values, 1));
         }
-        foreach (['shared', 'buff/cache', 'buffers', 'cache'] as $usedKey) {
+        $metrics['Mem']['used_sum'] = 0;
+        foreach (['used', 'shared', 'buff/cache', 'buffers', 'cache'] as $usedKey) {
             if (array_key_exists($usedKey, $metrics['Mem'])) {
-                $metrics['Mem']['used'] += $metrics['Mem'][$usedKey];
+                $metrics['Mem']['used_sum'] += $metrics['Mem'][$usedKey];
             }
         }
 
         return [shell_exec('hostname') => [
             'free_physical_memory' => (int) $metrics['Mem']['free'],
             'total_physical_memory' => (int) $metrics['Mem']['total'],
-            'used_physical_memory' => (int) $metrics['Mem']['used'],
+            'used_physical_memory' => (int) $metrics['Mem']['used_sum'],
             'free_physical_memory_human' => self::formatBytes($metrics['Mem']['free']),
             'total_physical_memory_human' => self::formatBytes($metrics['Mem']['total']),
-            'used_physical_memory_human' => self::formatBytes($metrics['Mem']['used']),
+            'used_physical_memory_human' => self::formatBytes($metrics['Mem']['used_sum']),
             'free_physical_memory_percent' => self::formatPercent($metrics['Mem']['free'] / $metrics['Mem']['total']),
-            'used_physical_memory_percent' => self::formatPercent($metrics['Mem']['used'] / $metrics['Mem']['total']),
+            'used_physical_memory_percent' => self::formatPercent($metrics['Mem']['used_sum'] / $metrics['Mem']['total']),
             'free_swap_space' => (int) $metrics['Swap']['free'],
             'total_swap_space' => (int) $metrics['Swap']['total'],
             'used_swap_space' => (int) $metrics['Swap']['used'],
