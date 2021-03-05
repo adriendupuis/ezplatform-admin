@@ -22,7 +22,7 @@ class HostMonitorService extends ServerMonitorServiceAbstract
                 continue;
             }
             $values = preg_split('/ +/', $line);
-            $metrics[$values[0]] = array_combine(array_slice($keys, 1, count($values)-1), array_slice($values, 1));
+            $metrics[$values[0]] = array_combine(array_slice($keys, 1, count($values) - 1), array_slice($values, 1));
         }
         $metrics['Mem']['used_sum'] = 0;
         foreach (['used', 'shared', 'buff/cache', 'buffers', 'cache'] as $usedKey) {
