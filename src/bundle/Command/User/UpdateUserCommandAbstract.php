@@ -68,14 +68,14 @@ abstract class UpdateUserCommandAbstract extends Command
         $this->output = $output;
         $this->user = $this->loadUser($input->getArgument('user'));
         if (null === $this->user) {
-            return ERROR_USER_NOT_FOUND;
+            return self::ERROR_USER_NOT_FOUND;
         }
         if ($input->getOption('admin')) {
             $this->admin = $this->loadUser($input->getOption('admin'));
         }
         if (null === $this->admin) {
             if ($input->getOption('admin')) {
-                return ERROR_ADMIN_NOT_FOUND;
+                return self::ERROR_ADMIN_NOT_FOUND;
             } else {
                 $output->writeln('<info>sudo will be used.</info>');
             }
@@ -86,7 +86,7 @@ abstract class UpdateUserCommandAbstract extends Command
         return self::SUCCESS;
     }
 
-    private function loadUser($loginOrEmail): User
+    private function loadUser($loginOrEmail): ?User
     {
         /* @var User $user */
         $user = null;
