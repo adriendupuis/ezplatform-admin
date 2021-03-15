@@ -26,16 +26,8 @@ jobs:
       - name: Remove eZ Platform Admin UI's dependency
         run: composer remove ezsystems/ezplatform-admin-ui --no-interaction --no-update
 
-      - name: Remove JMSTranslationBundle Ignore annotation
-        # …Because this annotation's syntax isn't compatible with PHP CS Fixer `@Symfony` rules (tested w/ “Yellow Bird” 2.16.4)
-        run: php -r "foreach (explode(\"\n\", trim(shell_exec('find src/bundle/Controller -type f -name ContentUsageController.php'))) as \$filename) { file_put_contents(\$filename, str_replace('/** @Ignore */', '', file_get_contents(\$filename))); }"
-
-      - name: Fix JMSTranslationBundle Desc annotation
-        # …Because this annotation's syntax isn't compatible with PHP CS Fixer `@Symfony` rules (tested w/ “Yellow Bird” 2.16.4)
-        run: php -r "foreach (explode(\"\n\", trim(shell_exec('find src/bundle/Tab -type f'))) as \$filename) { file_put_contents(\$filename, str_replace('/** @Desc(', '/* @Desc(', file_get_contents(\$filename))); }"
-
       - name: Validate coding standards in source
-        run: php-cs-fixer fix --dry-run --rules=@Symfony src/
+        run: php-cs-fixer fix --dry-run --rules=@Symfony,-phpdoc_to_comment src/
 
 #      - name: Validate coding standards in test suite
 #        run: vendor/bin/php-cs-fixer fix --dry-run --rules=@Symfony tests/

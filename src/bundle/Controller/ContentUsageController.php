@@ -75,7 +75,7 @@ class ContentUsageController extends Controller
 
     private function getFieldTypeLabel($fieldTypeIdentifier)
     {
-        return $this->translator->trans(/** @Ignore */$fieldTypeIdentifier.'.name', [], 'fieldtypes');
+        return $this->translator->trans(/** @Ignore */ $fieldTypeIdentifier.'.name', [], 'fieldtypes');
     }
 
     public function exampleFinderSearchAction(Request $request): JsonResponse

@@ -28,7 +28,7 @@
       </trans-unit>
       <trans-unit id="994cb71e0a65036361927bd04ecba83442e5ff40" resname="content_type_usage.content_distribution">
         <source>%global_content_count% contents of %used_content_type_count% (used) content types</source>
-        <target>%global_content_count% contenus de %used_content_type_count% types</target>
+        <target>%global_content_count% contenus publiés de %used_content_type_count% types</target>
         <note>key: content_type_usage.content_distribution</note>
       </trans-unit>
       <trans-unit id="b15be62a1c19bb35a560f924df5c75a74cb85359" resname="content_type_usage.content_type_count_notice">
