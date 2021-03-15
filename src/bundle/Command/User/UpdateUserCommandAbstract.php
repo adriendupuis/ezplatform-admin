@@ -22,9 +22,9 @@ abstract class UpdateUserCommandAbstract extends Command
 
     public const SUCCESS = 0;
     public const FAILURE = 1;
-    public const ERROR_USER_NOT_FOUND = 1;
-    public const ERROR_UPDATE_FAILED = 2;
-    public const ERROR_ADMIN_NOT_FOUND = 9;
+    public const ERROR_USER_NOT_FOUND = 2;
+    public const ERROR_UPDATE_FAILED = 4;
+    public const ERROR_ADMIN_NOT_FOUND = 8;
 
     /** @var Repository */
     private $repository;
