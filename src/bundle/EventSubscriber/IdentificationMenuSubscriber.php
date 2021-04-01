@@ -26,6 +26,9 @@ class IdentificationMenuSubscriber implements EventSubscriberInterface, Translat
         $menu = $event->getMenu();
         /** @var MenuItem $menuItem */
         $menuItem = $menu[MainMenuBuilder::ITEM_ADMIN];
+        if (!$menuItem) {
+            return;
+        }
 
         $menuItem->addChild(
             self::ITEM_ADMIN__IDENTIFICATION,
