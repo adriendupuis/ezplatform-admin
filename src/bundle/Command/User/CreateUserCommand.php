@@ -2,52 +2,30 @@
 
 namespace AdrienDupuis\EzPlatformAdminBundle\Command\User;
 
+use AdrienDupuis\EzPlatformAdminBundle\Command\AdminCommandAbstract;
 use eZ\Publish\API\Repository\Exceptions\ContentFieldValidationException;
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use eZ\Publish\API\Repository\Exceptions\UnauthorizedException;
-use eZ\Publish\API\Repository\PermissionResolver;
-use eZ\Publish\API\Repository\Repository;
-use eZ\Publish\API\Repository\UserService;
 use eZ\Publish\API\Repository\Values\User\UserCreateStruct;
 use eZ\Publish\Core\FieldType\ValidationError;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
-class CreateUserCommand extends Command
+class CreateUserCommand extends AdminCommandAbstract
 {
     protected static $defaultName = 'ezuser:create';
 
-    public const SUCCESS = 0;
-    public const FAILURE = 1;
-    public const ERROR_CREATION_FAILED = 2;
-    public const ERROR_GROUP_NOT_FOUND = 4;
-    public const ERROR_NO_ACCESS_GROUP = 5;
-    public const ERROR_GROUP_NOT_GIVEN = 6;
-    public const ERROR_ADMIN_NOT_FOUND = 9;
-
-    /** @var Repository */
-    private $repository;
-
-    /** @var UserService */
-    private $userService;
-
-    /** @var PermissionResolver */
-    private $permissionResolver;
-
-    public function __construct(Repository $repository)
-    {
-        parent::__construct(self::$defaultName);
-        $this->repository = $repository;
-        $this->userService = $this->repository->getUserService();
-        $this->permissionResolver = $this->repository->getPermissionResolver();
-    }
+    public const ERROR_CREATION_FAILED = 4;
+    public const ERROR_GROUP_NOT_FOUND = 8;
+    public const ERROR_NO_ACCESS_GROUP = 16;
+    public const ERROR_GROUP_NOT_GIVEN = 32;
 
     protected function configure(): void
     {
+        parent::configure();
         $this
             ->setDescription('Create a new user')
             ->addArgument('first_name', InputArgument::REQUIRED)
@@ -56,14 +34,17 @@ class CreateUserCommand extends Command
             ->addOption('login', 'l', InputOption::VALUE_REQUIRED, 'If omitted, email\'s username (part before “at” sign “@”) is used as login')
             ->addOption('password', 'p', InputOption::VALUE_REQUIRED, 'If omitted, asked on prompt (it is recommended to omit it to avoid having password in shell history)')
             ->addOption('group', 'g', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'User\'s parent user group content ID. Default is “Guest accounts” group (11)', [11])
-            ->addOption('admin', 'a', InputOption::VALUE_REQUIRED, 'Login of the admin user creating this new user', 'admin')
-            ->addOption('sudo', 's', InputOption::VALUE_NONE, 'Use sudo instead of an admin user')
             ->addOption('lang', 'c', InputOption::VALUE_REQUIRED, 'Main language code for user object creation', 'eng-GB')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $initCode = $this->initAdminFunctionExecution($input, $output);
+        if (self::SUCCESS !== $initCode) {
+            return $initCode;
+        }
+
         $email = $input->getArgument('email');
         $login = $input->getOption('login');
         $password = $input->getOption('password');
@@ -91,25 +72,9 @@ class CreateUserCommand extends Command
         $userCreateStruct->setField('first_name', $input->getArgument('first_name'));
         $userCreateStruct->setField('last_name', $input->getArgument('last_name'));
 
-        if ($input->getOption('sudo')) {
-            return $this->repository->sudo(function () use ($userCreateStruct, $parentGroupIds, $output) {
-                return $this->createUser($userCreateStruct, $parentGroupIds, $output);
-            });
-        } else {
-            $adminUserLogin = $input->getOption('admin');
-            try {
-                $adminUser = $this->userService->loadUserByLogin($adminUserLogin);
-            } catch (NotFoundException $notFoundException) {
-                $output->writeln("<error>Error: User '$adminUserLogin' not found.</error>");
-
-                return self::ERROR_ADMIN_NOT_FOUND;
-            }
-            $this->permissionResolver->setCurrentUserReference($adminUser);
-
+        return $this->executeAdminFunction(function () use ($userCreateStruct, $parentGroupIds, $output) {
             return $this->createUser($userCreateStruct, $parentGroupIds, $output);
-        }
-
-        return self::FAILURE;
+        });
     }
 
     private function createUser(UserCreateStruct $userCreateStruct, array $parentGroupIds, OutputInterface $output): int
@@ -119,17 +84,17 @@ class CreateUserCommand extends Command
             try {
                 $parentGroups[] = $this->userService->loadUserGroup($groupId);
             } catch (NotFoundException $exception) {
-                $output->writeln("Error: No group found for ID $groupId.");
+                $output->writeln("<error>Error: No group found for ID $groupId.</error>");
 
                 return self::ERROR_GROUP_NOT_FOUND;
             } catch (UnauthorizedException $unauthorizedException) {
-                $output->writeln("Error: Current user ({$this->permissionResolver->getCurrentUserReference()->getUserId()}) can't access to group with ID $groupId.");
+                $output->writeln("<error>Error: Current user ({$this->permissionResolver->getCurrentUserReference()->getUserId()}) can't access to group with ID $groupId.</error>");
 
                 return self::ERROR_NO_ACCESS_GROUP;
             }
         }
         if (!count($parentGroups)) {
-            $output->writeln('Error: A minimum of one user group is mandatory.');
+            $output->writeln('<error>Error: A minimum of one user group is mandatory.</error>');
 
             return self::ERROR_GROUP_NOT_GIVEN;
         }
