@@ -87,7 +87,7 @@
         <note>key: identifier.help</note>
       </trans-unit>
       <trans-unit id="a24b22fee586aeaacd766b6b0c39ce4a5d0a9294" resname="identifier.label">
-        <source>identifier.label</source>
+        <source>identifier:</source>
         <target>identifier:</target>
         <note>key: identifier.label</note>
       </trans-unit>

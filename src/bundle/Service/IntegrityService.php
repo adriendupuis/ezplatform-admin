@@ -2,28 +2,99 @@
 
 namespace AdrienDupuis\EzPlatformAdminBundle\Service;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Query\QueryBuilder;
 use eZ\Publish\API\Repository\LanguageService;
+use eZ\Publish\API\Repository\LocationService;
 use eZ\Publish\API\Repository\Values\Content\Language;
+use eZ\Publish\API\Repository\Values\Content\Location;
+use eZ\Publish\Core\IO\IOConfigProvider;
 use eZ\Publish\Core\MVC\Symfony\SiteAccess;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * @todo Use dedicated classes instead of associative arrays to represent check results
+ */
 class IntegrityService
 {
     /** @var ContainerInterface */
     private $container;
 
-    /** @var LanguageService */
-    private $languageService;
-
     /** @var SiteAccess */
     private $siteAccess;
 
-    public function __construct(ContainerInterface $container, SiteAccess $siteAccess)
-    {
+    /** @var Connection */
+    private $dbalConnection;
+
+    /** @var IOConfigProvider */
+    private $ioConfigProvider;
+
+    /** @var LanguageService */
+    private $languageService;
+
+    /** @var LocationService */
+    private $locationService;
+
+    public function __construct(
+        ContainerInterface $container,
+        SiteAccess $siteAccess,
+        Connection $connection,
+        IOConfigProvider $ioConfigProvider,
+        LanguageService $languageService,
+        LocationService $locationService
+    ) {
         $this->container = $container;
-        $this->languageService = $this->container->get('ezpublish.api.service.language');
         $this->siteAccess = $siteAccess;
+        $this->dbalConnection = $connection;
+        $this->ioConfigProvider = $ioConfigProvider;
+        $this->languageService = $languageService;
+        $this->locationService = $locationService;
     }
+
+    /* TREE */
+
+    /**
+     * Get locations which parent is missing.
+     *
+     * @return array[]
+     */
+    public function getMissingParentLocations(): array
+    {
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = $this->dbalConnection->createQueryBuilder();
+
+        return $queryBuilder
+            ->select(['l.node_id', 'l.contentobject_id', 'l.parent_node_id'])
+            ->from('ezcontentobject_tree', 'l')
+            ->leftJoin('l', 'ezcontentobject_tree', 'p', 'l.parent_node_id = p.node_id')
+            ->where($queryBuilder->expr()->isNull('p.node_id'))
+            ->execute()
+            ->fetchAll()
+        ;
+    }
+
+    /**
+     * Get locations which content is missing.
+     *
+     * @return array[]
+     */
+    public function getMissingContentLocations(): array
+    {
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = $this->dbalConnection->createQueryBuilder();
+
+        return $queryBuilder
+            ->select(['l.node_id', 'l.contentobject_id', 'l.parent_node_id'])
+            ->from('ezcontentobject_tree', 'l')
+            ->leftJoin('l', 'ezcontentobject', 'o', 'l.contentobject_id = o.id')
+            ->where($queryBuilder->expr()->isNull('o.id'))
+            ->andWhere($queryBuilder->expr()->neq('l.node_id', 1)) // The root location has contentobject_id=0 pointing to a fake content object
+            ->execute()
+            ->fetchAll()
+        ;
+    }
+
+    /* LANGUAGES */
 
     public function getAvailableAndMissingLanguages(): array
     {
@@ -46,5 +117,297 @@ class IntegrityService
                 'from_database' => array_diff($configLanguageCodeList, $databaseLanguageCodeList), // Notice: won't be usable until created in admin but no fatal error
             ],
         ];
+    }
+
+    public function getUnknownLanguages(): array
+    {
+        $availableLanguageMask = $this->dbalConnection->createQueryBuilder()
+            ->select('BIT_OR(l.id) AS available_language_mask')
+            ->from('ezcontent_language', 'l')
+            ->execute()
+            ->fetchColumn(0)
+        ;
+
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = $this->dbalConnection->createQueryBuilder();
+
+        return $queryBuilder
+            ->select(["DISTINCT (o.language_mask ^ $availableLanguageMask) AS unknown_language"])
+            ->from('ezcontentobject', 'o')
+            ->leftJoin('o', 'ezcontent_language', 'l', 'o.language_mask & l.id = l.id')
+            ->where($queryBuilder->expr()->isNull('l.id'))
+            ->execute()
+            ->fetchAll()
+        ;
+    }
+
+    /* STORAGE */
+
+    /** @var string */
+    private $imageAttributePattern = '% dirpath=":dirpath" %';
+
+    /** @return string[] Array of image directory paths seeming unused and deletable */
+    public function findUnusedImageDirectories(): array
+    {
+        $cmd = "find {$this->ioConfigProvider->getRootDir()}/images -mindepth 5 -type d 2> /dev/null;";
+        $imageQueryBuilder = $this->dbalConnection->createQueryBuilder()
+            ->select('a.id, a.contentobject_id, a.version')
+            ->from('ezcontentobject_attribute', 'a')
+            ->where('a.data_type_string = \'ezimage\'')
+            ->andWhere('a.data_text LIKE :dirpath')
+            ->setMaxResults(1)
+        ;
+
+        $unusedImageDirectories = [];
+        foreach ($this->getPathListFromCmd($cmd) as $absoluteDirPath) {
+            $dirPath = str_replace(trim(shell_exec('pwd')).'/public/', '', $absoluteDirPath);
+            /** @var array|bool $usage */
+            $usage = $imageQueryBuilder
+                ->setParameter(':dirpath', str_replace(':dirpath', $dirPath, $this->imageAttributePattern))
+                ->execute()
+                ->fetch()
+            ;
+            if (false === $usage) {
+                $unusedImageDirectories[] = $absoluteDirPath;
+            }
+        }
+
+        return $unusedImageDirectories;
+    }
+
+    /** @return string[] Array of binary file paths seeming unused and deletable */
+    public function findUnusedApplicationFiles()
+    {
+        $cmd = "find {$this->ioConfigProvider->getRootDir()}/original/application -type f 2> /dev/null;";
+        $binaryQueryBuilder = $this->dbalConnection->createQueryBuilder()
+            ->select('a.id, a.contentobject_id, a.version')
+            ->from('ezbinaryfile', 'f')
+            ->leftJoin('f', 'ezcontentobject_attribute', 'a', 'f.contentobject_attribute_id = a.id')
+            ->where('f.filename = :filename')
+            ->setMaxResults(1)
+        ;
+
+        $unusedApplicationFiles = [];
+        foreach ($this->getPathListFromCmd($cmd) as $filePath) {
+            $fileName = basename($filePath);
+            /** @var array|bool $usage */
+            $usage = $binaryQueryBuilder
+                ->setParameter(':filename', $fileName)
+                ->execute()
+                ->fetch()
+            ;
+            if (false === $usage) {
+                $unusedApplicationFiles[] = $filePath;
+            }
+        }
+
+        return $unusedApplicationFiles;
+    }
+
+    private function addFieldWithMissingFile(
+        array &$contentsWithMissingFile,
+        int $contentId,
+        int $version,
+        string $languageCode,
+        string $fieldIdentifier,
+        string $missingPath,
+        string $originalFilename
+    ): void {
+        $key = "$contentId--$version--$languageCode";
+        if (array_key_exists($key, $contentsWithMissingFile)) {
+            $contentsWithMissingFile[$key]['fields_with_wissing_file'][] = $fieldIdentifier;
+        } else {
+            $contentsWithMissingFile[$key] = [
+                'content' => $this->container->get('ezpublish.api.service.content')->loadContent($contentId, [$languageCode], $version), //TODO: dependecy injection
+                'content_id' => $contentId,
+                'version' => $version,
+                'language_code' => $languageCode,
+                'fields_with_missing_file' => [[
+                    'identifier' => $fieldIdentifier,
+                    'missing_path' => $missingPath,
+                    'original_filename' => $originalFilename,
+                ]],
+            ];
+        }
+    }
+
+    public function findMissingFiles()
+    {
+        $contentsWithMissingFile = [];
+        $contentsWithMissingFile = $this->findMissingImageFiles($contentsWithMissingFile);
+        $contentsWithMissingFile = $this->findMissingBinaryFiles($contentsWithMissingFile);
+
+        return $contentsWithMissingFile;
+    }
+
+    /** @return array[] */
+    public function findMissingImageFiles(?array $contentsWithMissingFile = null): array
+    {
+        $statement = $this->dbalConnection->createQueryBuilder()
+            ->select('oa.id, oa.contentobject_id, oa.version, oa.language_code, ca.identifier, oa.data_text')
+            ->from('ezcontentobject_attribute', 'oa')
+            ->join('oa', 'ezcontentclass_attribute', 'ca', 'oa.contentclassattribute_id = ca.id')
+            ->where('oa.data_type_string = \'ezimage\'')
+            ->execute()
+        ;
+
+        if (!$contentsWithMissingFile) {
+            $contentsWithMissingFile = [];
+        }
+        while ($row = $statement->fetch()) {
+            preg_match('@dirpath="(?<dirpath>[^"]+)".*original_filename="(?<original_filename>[^"]+)"@s', $row['data_text'], $matches);
+            if (!empty($matches['dirpath']) && !file_exists($dirPath = "{$this->container->getParameter('kernel.project_dir')}/public/{$matches['dirpath']}")) {//TODO: dependecy injection
+                $this->addFieldWithMissingFile(
+                    $contentsWithMissingFile,
+                    $row['contentobject_id'],
+                    $row['version'],
+                    $row['language_code'],
+                    $row['identifier'],
+                    $dirPath,
+                    $matches['original_filename'],
+                );
+            }
+        }
+        ksort($contentsWithMissingFile);
+
+        return $contentsWithMissingFile;
+    }
+
+    /** @return array[] */
+    public function findMissingBinaryFiles(?array $contentsWithMissingFile = null): array
+    {
+        $statement = $this->dbalConnection->createQueryBuilder()
+            ->select('oa.id, oa.contentobject_id, oa.version, oa.language_code, ca.identifier, bf.filename, bf.original_filename')
+            ->from('ezcontentobject_attribute', 'oa')
+            ->join('oa', 'ezbinaryfile', 'bf', 'oa.id = bf.contentobject_attribute_id AND oa.version = bf.version')
+            ->join('oa', 'ezcontentclass_attribute', 'ca', 'oa.contentclassattribute_id = ca.id')
+            ->where('oa.data_type_string = \'ezbinaryfile\'')
+            ->execute()
+        ;
+
+        if (!$contentsWithMissingFile) {
+            $contentsWithMissingFile = [];
+        }
+        while ($row = $statement->fetch()) {
+            if (!file_exists($filePath = "{$this->ioConfigProvider->getRootDir()}/original/application/{$row['filename']}")) {
+                $this->addFieldWithMissingFile(
+                    $contentsWithMissingFile,
+                    $row['contentobject_id'],
+                    $row['version'],
+                    $row['language_code'],
+                    $row['identifier'],
+                    $filePath,
+                    $row['original_filename'],
+                );
+            }
+        }
+        ksort($contentsWithMissingFile);
+
+        return $contentsWithMissingFile;
+    }
+
+    /** @return string[] */
+    private function getPathListFromCmd($cmd): array
+    {
+        $pathList = explode(PHP_EOL, trim(shell_exec($cmd)));
+
+        if (count($pathList) && $pathList[0]) {
+            return $pathList;
+        }
+
+        return [];
+    }
+
+    public function checkUploadMaxFileSize(): array
+    {
+        $warnings = [];
+        $errors = [];
+
+        //How to check the Web instead of the CLI?
+        $iniUploadMaxFilesizeString = ini_get('upload_max_filesize');
+        $iniUploadMaxFilesizeBytes = self::parseBytes($iniUploadMaxFilesizeString);
+        $iniPostMaxSizeString = ini_get('post_max_size');
+        $iniPostMaxSizeBytes = self::parseBytes($iniPostMaxSizeString);
+        if ($iniPostMaxSizeBytes < $iniUploadMaxFilesizeBytes) {
+            $warnings[] = "post_max_size ($iniPostMaxSizeString) is less than upload_max_filesize ($iniUploadMaxFilesizeString); so, file size maximum is less than $iniPostMaxSizeString.";
+            $iniMaxFileSizeString = "post_max_size = $iniPostMaxSizeString";
+            $iniMaxFileSizeBytes = $iniPostMaxSizeBytes;
+        } else {
+            $iniMaxFileSizeString = "upload_max_filesize = $iniUploadMaxFilesizeString";
+            $iniMaxFileSizeBytes = $iniUploadMaxFilesizeBytes;
+        }
+
+        $statement = $this->dbalConnection->createQueryBuilder()
+            ->select('c.identifier AS class_identifier, a.identifier AS attribute_identifier, a.data_type_string, a.data_int1 AS max_file_size') // see eZ\Publish\Core\Persistence\Legacy\Content\FieldValue\Converter\BinaryFileConverter and its descendants
+            ->from('ezcontentclass_attribute', 'a')
+            ->join('a', 'ezcontentclass', 'c', 'a.contentclass_id = c.id AND a.version = c.version')
+            ->where('a.version = 0')
+            ->andWhere('a.data_type_string IN (\'ezbinaryfile\', \'ezimage\', \'ezmedia\')')
+            ->execute()
+        ;
+        while ($row = $statement->fetch()) {
+            $maxFileSizeString = ((int) $row['max_file_size']).'M';
+            $maxFileSizeBytes = self::parseBytes($maxFileSizeString);
+            if ($maxFileSizeBytes && $maxFileSizeBytes > $iniMaxFileSizeBytes) {
+                $errors[] = "{$row['class_identifier']}/{$row['attribute_identifier']} ({$row['data_type_string']}) as a max file size of $maxFileSizeString greater than php.ini $iniMaxFileSizeString";
+            }
+        }
+
+        return [
+            'warnings' => $warnings,
+            'errors' => $errors,
+        ];
+    }
+
+    /**
+     * Get bytes from a formatted string using unit
+     * Reverse of ServerMonitorServiceAbstract::formatBytes.
+     */
+    public static function parseBytes(string $formattedBytes): int
+    {
+        preg_match('/(?<number>[0-9.]+) ?(?<unit>[^0-9]*)/', $formattedBytes, $matches);
+        $bytes = (float) $matches['number'];
+
+        if (empty($matches['unit'])) {
+            return (int) $bytes;
+        }
+        /*
+        $unitSystems = [
+            1000 => ['B', 'kB', 'MB', 'GB', 'TB'],
+            1024 => ['B', 'KiB', 'MiB', 'GiB', 'TiB'],
+        ];
+         */
+        switch (strtolower($matches['unit'])) {
+            case 't':
+            case 'tib':
+                $bytes *= 1024;
+                // no break
+            case 'g':
+            case 'gib':
+                $bytes *= 1024;
+                // no break
+            case 'm':
+            case 'mib':
+                $bytes *= 1024;
+                // no break
+            case 'k':
+            case 'kib':
+                $bytes *= 1024;
+                break;
+            case 'tb':
+                $bytes *= 1000;
+                // no break
+            case 'gb':
+                $bytes *= 1000;
+                // no break
+            case 'mb':
+                $bytes *= 1000;
+                // no break
+            case 'kb':
+                $bytes *= 1000;
+                break;
+        }
+
+        return (int) $bytes;
     }
 }

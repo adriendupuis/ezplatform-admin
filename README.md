@@ -33,9 +33,22 @@ Features
 * Navigation
   - Tab Opener: Open a tab according to URL hash. Examples: Right-click on a tab and open it in a new window, the tab is active; Reload a page, tab is still active.
 * Commands
-  - `ezuser:create` to create a user
-  - `ezuser:password` to change a user password
-  - `ezuser:enable` to enable a user
+  - User:
+    - `ezuser:create` to create a user
+    - `ezuser:password` to change a user password
+    - `ezuser:enable` to enable a user
+  - Database & Storage Integrity:
+    - `integrity:check` to run all command from this name space
+    - `integrity:check:language` to check
+      - language declared in config files against language declared in database
+      - language used in content object against language declared in database
+    - `integrity:check:tree` to check content tree consistency
+      - find location which parent is missing
+      - find location which content is missing
+    - `integrity:check:storage` to find file missing from storage and storage unused files
+    - `integrity:fix:remove-unused-files` to remove from storage file unused by a field.
+    - `integrity:check:config` to check miscellaneous PHP and eZ Platform configurations
+      - check that `upload_max_filesize` and `post_max_size` are coherent with usage of field types like `ezbinaryfile`.
 
 
 Contribute
@@ -50,6 +63,12 @@ bin/console translation:extract en \
   --output-dir vendor/adriendupuis/ezplatform-admin/src/bundle/Resources/translations/ \
   --domain ad_admin_content_usage --domain ad_admin_identification \
 ;
+```
+
+### Run unit tests
+
+```shell
+bin/phpunit vendor/adriendupuis/ezplatform-admin/tests/;
 ```
 
 ### TODO
