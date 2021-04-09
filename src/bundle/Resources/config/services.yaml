@@ -1,17 +1,3 @@
 imports:
+    - { resource: services/_default.yaml }
     - { resource: services/content_usage.yaml }
-
-services:
-
-    AdrienDupuis\EzPlatformAdminBundle\:
-        resource: '../../*'
-        exclude: '../../{DependencyInjection,Tests}'
-        autowire: true
-        autoconfigure: true
-
-    AdrienDupuis\EzPlatformAdminBundle\Controller\:
-        resource: '../../Controller'
-        autowire: true
-        tags: [controller.service_arguments]
-        calls:
-            - [setContainer, ['@service_container']]
