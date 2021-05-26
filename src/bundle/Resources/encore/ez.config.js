@@ -13,4 +13,6 @@ module.exports = (Encore) => {
             path.resolve(__dirname, '../public/scss/identification.scss'),
         ])
 };
-// Note: jQuery is provided by https://github.com/ezsystems/ezplatform-admin-ui-assets/tree/v5.0.0/Resources/public/vendors/jquery
+// Note:
+// jQuery is provided in vendor/ezsystems/ezplatform-admin-ui-assets/Resources/public/vendors/jquery/dist/jquery.min.js
+// called by vendor/ezsystems/ezplatform-admin-ui/src/bundle/Resources/views/themes/admin/ui/layout.html.twig
