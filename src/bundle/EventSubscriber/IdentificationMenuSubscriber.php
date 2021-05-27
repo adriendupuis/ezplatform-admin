@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class IdentificationMenuSubscriber implements EventSubscriberInterface, TranslationContainerInterface
 {
-    const ITEM_ADMIN__IDENTIFICATION = 'main__admin__identification';
+    public const ITEM_ADMIN__IDENTIFICATION = 'main__admin__identification';
 
     public static function getSubscribedEvents(): array
     {
