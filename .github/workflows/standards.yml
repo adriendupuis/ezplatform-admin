@@ -1,0 +1,33 @@
+name: Coding Standards
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master, develop ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP with tools
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          tools: composer, php-cs-fixer
+
+      - name: Validate composer.json
+        run: composer validate
+
+      - name: Remove eZ Platform Admin UI's dependency
+        run: composer remove ezsystems/ezplatform-admin-ui --no-interaction --no-update
+
+      - name: Validate coding standards in source
+        run: php-cs-fixer fix --dry-run --rules=@Symfony,-phpdoc_to_comment src/
+
+#      - name: Validate coding standards in test suite
+#        run: vendor/bin/php-cs-fixer fix --dry-run --rules=@Symfony tests/

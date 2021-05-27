@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="not.available">
+    <header>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
+    </header>
+    <body>
+      <trans-unit id="769b0f3164b4fc5f869389ae9b9f2c978d5c38d0" resname="common.content_count">
+        <source>Content Count</source>
+        <target>Content Count</target>
+        <note>key: common.content_count</note>
+      </trans-unit>
+      <trans-unit id="e75cf525f2c565d0c14f02b49cd0d20415c428e6" resname="common.content_type">
+        <source>Content Type</source>
+        <target>Content Type</target>
+        <note>key: common.content_type</note>
+      </trans-unit>
+      <trans-unit id="00483106f6024e76526a5b8257ce848d99a6f491" resname="common.language">
+        <source>Language</source>
+        <target>Language</target>
+        <note>key: common.language</note>
+      </trans-unit>
+      <trans-unit id="e3a83119a1210e6317386df804e14bb7c0af0993" resname="content_type_usage">
+        <source>Content Type Usage</source>
+        <target>Content Type Usage</target>
+        <note>key: content_type_usage</note>
+      </trans-unit>
+      <trans-unit id="994cb71e0a65036361927bd04ecba83442e5ff40" resname="content_type_usage.content_distribution">
+        <source>%global_content_count% contents of %used_content_type_count% (used) content types</source>
+        <target>%global_content_count% published contents in %used_content_type_count% content types</target>
+        <note>key: content_type_usage.content_distribution</note>
+      </trans-unit>
+      <trans-unit id="b15be62a1c19bb35a560f924df5c75a74cb85359" resname="content_type_usage.content_type_count_notice">
+        <source><![CDATA[If some content types are not used, this is a notice about the total number of content types — %content_type_count%&#xa0;available content types)]]></source>
+        <target>(among %content_type_count% available content types)</target>
+        <note>key: content_type_usage.content_type_count_notice</note>
+      </trans-unit>
+      <trans-unit id="36424e1296468675b7ef1936bc1f0d6eddd0388b" resname="content_usage">
+        <source>Content Usage</source>
+        <target>Content Usage</target>
+        <note>key: content_usage</note>
+      </trans-unit>
+      <trans-unit id="a7b10fb4ba0b461f36a554a25ee3583f9eb19f5c" resname="example_finder">
+        <source>Example Finder</source>
+        <target>Field Usage</target>
+        <note>key: example_finder</note>
+      </trans-unit>
+      <trans-unit id="d4468527d7edfe8d2f3e0278897969b7f8bf01ef" resname="example_finder.all_languages">
+        <source>All languages</source>
+        <target>All languages</target>
+        <note>key: example_finder.all_languages</note>
+      </trans-unit>
+      <trans-unit id="13bb92a859c3c91cf2fd73e15d943cccf7174b11" resname="example_finder.bad_example">
+        <source>Bad Example</source>
+        <target>Bad Example</target>
+        <note>key: example_finder.bad_example</note>
+      </trans-unit>
+      <trans-unit id="ab27779b7d09228bf8e26b169f6d7b6c138e5c08" resname="example_finder.bad_example_definition">
+        <source xml:space="preserve">
+          A content having this required field empty.
+          (For example, it can happen when a field has become required
+          but previous content haven't been updated.)
+        </source>
+        <target xml:space="preserve">
+          A content having this required field empty.
+          (For example, it can happen when a field has become required
+          but previous content haven't been updated.)
+        </target>
+        <note>key: example_finder.bad_example_definition</note>
+      </trans-unit>
+      <trans-unit id="1605ac124747d12833b39dcd664b47dca510a347" resname="example_finder.bad_examples">
+        <source>Bad Examples</source>
+        <target>Bad Examples</target>
+        <note>key: example_finder.bad_examples</note>
+      </trans-unit>
+      <trans-unit id="877e4e98e3e28ba749cfb75a3c2f5a287e465cd9" resname="example_finder.best_example">
+        <source>Best Example</source>
+        <target>Best Example</target>
+        <note>key: example_finder.best_example</note>
+      </trans-unit>
+      <trans-unit id="ba7d5e74812c2282392de11995f87989f64a95dd" resname="example_finder.best_example_definition">
+        <source xml:space="preserve">
+          A content having this optional field not empty,
+          the maximum of other optional field not empty
+          and no empty required field.
+        </source>
+        <target xml:space="preserve">
+          A content having this optional field not empty,
+          the maximum of other optional field not empty
+          and no empty required field.
+        </target>
+        <note>key: example_finder.best_example_definition</note>
+      </trans-unit>
+      <trans-unit id="6a8ff8db737c46752faf421665d562093350f4cc" resname="example_finder.field_name">
+        <source>Field Name</source>
+        <target>Field Name</target>
+        <note>key: example_finder.field_name</note>
+      </trans-unit>
+      <trans-unit id="db052c9513336e1c9b95c9d6ec4b2b081a2d0838" resname="example_finder.field_type">
+        <source>Field Type</source>
+        <target>Field Type</target>
+        <note>key: example_finder.field_type</note>
+      </trans-unit>
+      <trans-unit id="3dbee12468b02063ac2cd3cf7afa8ae97a1718fd" resname="example_finder.field_usage">
+        <source>Field Usage</source>
+        <target>Usage</target>
+        <note>key: example_finder.field_usage</note>
+      </trans-unit>
+      <trans-unit id="3c477969bdd2b720a2ac2cb4fc2fe934009caf72" resname="example_finder.irrelevant">
+        <source>irrelevant</source>
+        <target>irrelevant</target>
+        <note>key: example_finder.irrelevant</note>
+      </trans-unit>
+      <trans-unit id="a707c2639aca07a2a5eaa33a773c577b252758d1" resname="example_finder.never_empty_field_type">
+        <source>Field of this type can't be empty.</source>
+        <target>Field of this type can't be empty.</target>
+        <note>key: example_finder.never_empty_field_type</note>
+      </trans-unit>
+      <trans-unit id="44629cd0e65c3b1d268f7a2e01be306768e67c6b" resname="example_finder.no_bad_example_found">
+        <source>No bad example found.</source>
+        <target>No bad example found.</target>
+        <note>key: example_finder.no_bad_example_found</note>
+      </trans-unit>
+      <trans-unit id="6f1a0eff465d1c4f73df9ced91bc586cb8466ab8" resname="example_finder.no_good_example_found">
+        <source>No good example found.</source>
+        <target>No good example found.</target>
+        <note>key: example_finder.no_good_example_found</note>
+      </trans-unit>
+      <trans-unit id="052df5a022e3838e7c9ba13dc5344da31d5f4c7a" resname="example_finder.non_empty_required_field">
+        <source>This field is required and shouldn't be empty.</source>
+        <target>This field is required and shouldn't be empty.</target>
+        <note>key: example_finder.non_empty_required_field</note>
+      </trans-unit>
+      <trans-unit id="bba6b4aeb4898caf5a4b1cebf382b6b38df96dbf" resname="example_finder.none">
+        <source>none</source>
+        <target>none</target>
+        <note>key: example_finder.none</note>
+      </trans-unit>
+      <trans-unit id="834d757c2a68f41f4c84f7955c5fe022d55509ea" resname="example_finder.optional">
+        <source>Optional</source>
+        <target>Optional</target>
+        <note>key: example_finder.optional</note>
+      </trans-unit>
+      <trans-unit id="067a1e0d7eeb311a8cf3810b6a0afab922765ae5" resname="example_finder.optional_can_be_empty">
+        <source>This field is optional and can be rightly empty.</source>
+        <target>This field is optional and can be rightly empty.</target>
+        <note>key: example_finder.optional_can_be_empty</note>
+      </trans-unit>
+      <trans-unit id="b0d952058c2faaf06bf6e36ed989c14c8dca53d4" resname="example_finder.purpose">
+        <source>Find good and bad examples for each field of a content type</source>
+        <target>Find good and bad examples for each field of a content type</target>
+        <note>key: example_finder.purpose</note>
+      </trans-unit>
+      <trans-unit id="1be5029140048aedbf82978b4ada5bd4c350960d" resname="example_finder.required">
+        <source>Required</source>
+        <target>Required</target>
+        <note>key: example_finder.required</note>
+      </trans-unit>
+      <trans-unit id="6de79736d260c467ad6f336dbc30bfa423cda2cc" resname="example_finder.requirement">
+        <source>Requirement</source>
+        <target>Requirement</target>
+        <note>key: example_finder.requirement</note>
+      </trans-unit>
+      <trans-unit id="a4c288a85384bfafe52d335e4e7199bf1a5b93e8" resname="example_finder.select_content_type">
+        <source>Select a content type…</source>
+        <target>Select a content type…</target>
+        <note>key: example_finder.select_content_type</note>
+      </trans-unit>
+      <trans-unit id="cef47e357b5d35dc9bb88589f39d0c36f257d661" resname="example_finder.status">
+        <source>Example Finder status</source>
+        <target>Example Finder status</target>
+        <note>key: example_finder.status</note>
+      </trans-unit>
+      <trans-unit id="aa539c3297f78fe3b23fb8897f3e170f90d4b029" resname="example_finder.status.field_table_init">
+        <source>Initialize field table…</source>
+        <target>Initialize field table…</target>
+        <note>key: example_finder.status.field_table_init</note>
+      </trans-unit>
+      <trans-unit id="2a92d4df818aec1f930a6615c8959c3ee222f40e" resname="example_finder.status.final_result_display">
+        <source>Displaying final result.</source>
+        <target>Displaying final result.</target>
+        <note>key: example_finder.status.final_result_display</note>
+      </trans-unit>
+      <trans-unit id="5e6082aec8a9e252d76bbeeea28abde25561c201" resname="example_finder.status.no_content">
+        <source>No content of this type.</source>
+        <target>No published content of this type.</target>
+        <note>key: example_finder.status.no_content</note>
+      </trans-unit>
+      <trans-unit id="cf8ed671a8bd23d319b117cd62b805ecb600dd10" resname="example_finder.status.ready_to_search">
+        <source>Ready to search…</source>
+        <target>Ready to search…</target>
+        <note>key: example_finder.status.ready_to_search</note>
+      </trans-unit>
+      <trans-unit id="3f87e2595c409e632526bcb3c39e3eaa76484cc8" resname="example_finder.status.searching">
+        <source>Searching…</source>
+        <target>Searching…</target>
+        <note>key: example_finder.status.searching</note>
+      </trans-unit>
+      <trans-unit id="80296418a04e2287d742587759ef0f37c0192c7d" resname="example_finder.status.waiting_selection">
+        <source>Waiting for Content Type selection…</source>
+        <target>Waiting for Content Type selection…</target>
+        <note>key: example_finder.status.waiting_selection</note>
+      </trans-unit>
+      <trans-unit id="6b93843b28e098a3c1fc7669ed84dd80a94ba014" resname="landing_page_usage">
+        <source>Landing Page Usage</source>
+        <target>Landing Page Usage</target>
+        <note>key: landing_page_usage</note>
+      </trans-unit>
+      <trans-unit id="4a3261979f840e0bbc651a7bfbadf11827eebd49" resname="language_usage">
+        <source>Language Usage</source>
+        <target>Language Usage</target>
+        <note>key: language_usage</note>
+      </trans-unit>
+      <trans-unit id="37efd259abfaaa3a6afe696027ef4a12cf3bdc60" resname="language_usage.disabled_language">
+        <source>Disabled language</source>
+        <target>Disabled language</target>
+        <note>key: language_usage.disabled_language</note>
+      </trans-unit>
+      <trans-unit id="2fa37106375bdf09ee52b8c974991d5e35297c2d" resname="language_usage.list_language">
+        <source>List languages registered in database</source>
+        <target>List languages registered in database</target>
+        <note>key: language_usage.list_language</note>
+      </trans-unit>
+      <trans-unit id="c0e5d2c225aabc2d6725da902600d68fe95f24b1" resname="language_usage.nonexistent_language">
+        <source>Nonexistent language</source>
+        <target>Nonexistent language</target>
+        <note>key: language_usage.nonexistent_language</note>
+      </trans-unit>
+      <trans-unit id="bd139ca64e74bf86a5ea4eb87637a4a9c02c9763" resname="language_usage.nonexistent_language_explanation">
+        <source>Some contents have translations to a nonexistent language (usually previously removed)</source>
+        <target>Some contents have translations to a nonexistent language (usually previously removed)</target>
+        <note>key: language_usage.nonexistent_language_explanation</note>
+      </trans-unit>
+      <trans-unit id="fffa762df323f13cf75f1e8a915a12ac6922fdb0" resname="main__content__content_usage">
+        <source>Usage</source>
+        <target>Usage</target>
+        <note>key: main__content__content_usage</note>
+      </trans-unit>
+      <trans-unit id="9a055f01a4f457b2edaf3a4566cf013db83f93de" resname="page.block_category">
+        <source>Block Category</source>
+        <target>Block Category</target>
+        <note>key: page.block_category</note>
+      </trans-unit>
+      <trans-unit id="2a116f10c4960de5afd66ec08bc7c457ebc52b6f" resname="page.block_identifier.tooltip">
+        <source>Identifier: </source>
+        <target>Identifier: </target>
+        <note>key: page.block_identifier.tooltip</note>
+      </trans-unit>
+      <trans-unit id="b0b47cf8b80ccdf745400ea749cbc0e11076904c" resname="page.block_identifier.tooltip.undefined_notice">
+        <source>(undefined block)</source>
+        <target>(undefined block)</target>
+        <note>key: page.block_identifier.tooltip.undefined_notice</note>
+      </trans-unit>
+      <trans-unit id="ae3ceed95faa22f579f55422fffec95478689879" resname="page.block_name">
+        <source>Block Name</source>
+        <target>Block Name</target>
+        <note>key: page.block_name</note>
+      </trans-unit>
+      <trans-unit id="0ab8b8c9ded10b7569530807d0b4c208fa301a83" resname="page.layout_name">
+        <source>Layout Name</source>
+        <target>Layout Name</target>
+        <note>key: page.layout_name</note>
+      </trans-unit>
+      <trans-unit id="de5f38f240755bdc4b43e5e464f0f27909b4bfe4" resname="tab_opener.modal_body">
+        <source>Redirecting to tab</source>
+        <target>Redirecting to tab</target>
+        <note>key: tab_opener.modal_body</note>
+      </trans-unit>
+      <trans-unit id="3d0730859a24c7071fcb9a7ae166a36db96c5991" resname="tab_opener.modal_title">
+        <source>Tab Redirect</source>
+        <target>Tab Redirect</target>
+        <note>key: tab_opener.modal_title</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

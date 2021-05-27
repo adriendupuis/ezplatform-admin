@@ -1,0 +1,69 @@
+{% trans_default_domain 'ad_admin_content_usage' %}
+
+<table class="ez-table table" style="width: auto;">
+    <thead>
+    <tr>
+        <th scope="col">{{ 'page.layout_name'|trans|desc('Layout Name') }}</th>
+        <th scope="col">{{ 'common.content_count'|trans|desc('Content Count') }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for layout_content_count in layout_content_count_list %}
+        <tr>
+            {% if layout_definitions[layout_content_count.layout] is defined %}
+                {% set class = '' %}
+                {% set title = layout_definitions[layout_content_count.layout].description %}
+                {% set name = layout_definitions[layout_content_count.layout].name %}
+                {% set thumbnail = '<img src="' ~ layout_definitions[layout_content_count.layout].thumbnail ~ '" style="max-width:16px;max-height:16px;" />' %}
+            {% else %}
+                {% set class = 'nonexistent' %}
+                {% set title = 'Undefined layout' %}
+                {% set name = layout_content_count.layout %}
+                {% set thumbnail = '' %}
+            {% endif %}
+            <td class="{{ class }}" title="{{ title }}">
+                {{ thumbnail|raw }}
+                {{ name }}
+            </td>
+            <td align="right">
+                {{ layout_content_count.content_count }}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<table class="ez-table table" style="width: auto;">
+    <thead>
+    <tr>
+        <th scope="col">{{ 'page.block_category'|trans|desc('Block Category') }}</th>
+        <th scope="col">{{ 'page.block_name'|trans|desc('Block Name') }}</th>
+        <th scope="col">{{ 'common.content_count'|trans|desc('Content Count') }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for block_content_count in block_content_count_list %}
+        <tr>
+            {% if block_definitions[block_content_count.block] is defined %}
+                {% set class = '' %}
+                {% set title = 'page.block_identifier.tooltip'|trans|desc('Identifier: ') ~ block_definitions[block_content_count.block].identifier %}
+                {% set name = block_definitions[block_content_count.block].name %}
+                {% set thumbnail = '<svg class="ez-icon ez-icon--small"><use xlink:href="' ~ block_definitions[block_content_count.block].thumbnail ~ '"></use></svg>' %}
+            {% else %}
+                {% set class = 'nonexistent' %}
+                {% set title = 'page.block_identifier.tooltip.undefined_notice'|trans|desc('(undefined block)') %}
+                {% set name = block_content_count.block %}
+                {% set thumbnail = '' %}
+            {% endif %}
+            <td>{{ block_definitions[block_content_count.block].category }}</td>
+            <td class="{{ class }}" title="{{ title }}">
+                {{ thumbnail|raw }}
+                {{ name }}
+            </td>
+            <td align="right">
+                {{ block_content_count.content_count }}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
