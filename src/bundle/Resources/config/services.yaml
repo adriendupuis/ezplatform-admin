@@ -1,3 +1,4 @@
 imports:
     - { resource: services/_default.yaml }
+    - { resource: services/command.yaml }
     - { resource: services/content_usage.yaml }

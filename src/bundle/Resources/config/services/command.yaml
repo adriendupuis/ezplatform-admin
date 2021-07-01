@@ -1,0 +1,6 @@
+services:
+    AdrienDupuis\EzPlatformAdminBundle\Command\TestSlugConverterConfigCommand:
+        arguments:
+            $transformationProcessor: '@ezpublish.api.storage_engine.transformation_processor'
+        tags:
+            - { name: 'console.command', command: 'slug:test' }
