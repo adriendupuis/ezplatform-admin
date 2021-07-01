@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class AddLanguageToRepository extends AdminCommandAbstract
+class AddLanguageToRepositoryCommand extends AdminCommandAbstract
 {
     protected static $defaultName = 'ezplatform:language:add';
 
