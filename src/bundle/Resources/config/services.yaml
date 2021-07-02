@@ -1,4 +1,2 @@
 imports:
-    - { resource: services/_default.yaml }
-    - { resource: services/content_usage.yaml }
-    - { resource: services/monitor.yaml }
+    - services/*

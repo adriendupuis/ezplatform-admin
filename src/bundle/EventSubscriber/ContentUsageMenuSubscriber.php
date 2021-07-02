@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ContentUsageMenuSubscriber implements EventSubscriberInterface, TranslationContainerInterface
 {
-    const ITEM_CONTENT__CONTENT_USAGE = 'main__content__content_usage';
+    public const ITEM_CONTENT__CONTENT_USAGE = 'main__content__content_usage';
 
     public static function getSubscribedEvents(): array
     {
