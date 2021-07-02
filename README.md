@@ -36,6 +36,8 @@ Features
   - `ezuser:create` to create a user
   - `ezuser:password` to change a user password
   - `ezuser:enable` to enable a user
+  - `ezplatform:language:add` to add a language to the database
+  - `ezplatform:slug:test` to test transformation of text into slug
 
 
 Contribute
