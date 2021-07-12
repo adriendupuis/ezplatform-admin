@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class MonitorMenuSubscriber implements EventSubscriberInterface, TranslationContainerInterface
 {
-    const ITEM_ADMIN__MONITOR = 'main__admin__monitor';
+    public const ITEM_ADMIN__MONITOR = 'main__admin__monitor';
 
     public static function getSubscribedEvents(): array
     {
