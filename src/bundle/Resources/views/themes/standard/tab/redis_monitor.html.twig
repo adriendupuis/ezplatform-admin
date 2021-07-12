@@ -1,0 +1,40 @@
+{% trans_default_domain 'ad_admin_monitor' %}
+
+<dl>
+    <dt>{{ 'monitor.redis.mem_fragmentation_ratio'|trans|desc('Memory Fragmentation Ratio') }}</dt>
+    <dd>
+        {{ metrics.mem_fragmentation_ratio }}
+        {# Sources:
+            https://www.datadoghq.com/blog/how-to-monitor-redis-performance-metrics/#metric-to-alert-on-mem_fragmentation_ratio
+        #}
+        {% if metrics.mem_fragmentation_ratio < 1 %}
+            <strong>&lt; 1 ⚠ {{ 'monitor.redis.mem_fragmentation_ratio.less_than_1'|trans|desc('server is swapping') }}</strong>
+        {% elseif metrics.mem_fragmentation_ratio > 1.5 %}
+            <span>&gt; 1.5 <small>({{ 'monitor.redis.mem_fragmentation_ratio.more_than_1.5'|trans|desc('memory is too fragmented') }})</small></span>
+        {% endif %}
+    </dd>
+
+    <dt>{{ 'monitor.cache_pool.hit_ratio'|trans|desc('Hit Ratio') }}</dt>
+    <dd>
+        {{ metrics.hit_ratio_percent }}
+    </dd>
+
+    <dt>{{ 'monitor.redis.maxmemory_policy'|trans|desc('Eviction Policy') }}</dt>
+    <dd>
+        {% set recommanded_maxmemory_policy = ['volatile-lru', 'volatile-lfu', 'volatile-ttl'] %}
+        {{ metrics.maxmemory_policy|trans }}
+        {% if 'noeviction' is same as(metrics.maxmemory_policy) %}
+            <small>(OK. More recommended are <a href="https://doc.ezplatform.com/en/3.1/guide/persistence_cache/#symfonycomponentcacheadapterredistagawareadapter">{{ recommanded_maxmemory_policy|join(', ') }}</a>)</small>
+        {% elseif metrics.maxmemory_policy not in recommanded_maxmemory_policy %}
+            <small>(<strong>Recommended are <a href="https://doc.ezplatform.com/en/3.1/guide/persistence_cache/#symfonycomponentcacheadapterredistagawareadapter">{{ recommanded_maxmemory_policy|join(', ') }}</a></strong>)</small>
+        {% endif %}
+    </dd>
+
+    <dt>{{ 'monitor.cache_pool.evictions'|trans|desc('Evictions') }}</dt>
+    <dd>
+        {{ metrics.evictions }}
+        {% if 0 < metrics.evictions %}
+            <small>(<em>TODO: Lower to zero</em>)</small>
+        {% endif %}
+    </dd>
+</dl>

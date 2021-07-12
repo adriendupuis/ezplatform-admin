@@ -1,0 +1,14 @@
+<dl>
+    <dt>{{ 'monitor.cache_pool.hit_ratio'|trans|desc('Hit Ratio') }}</dt>
+    <dd>
+        {{ metrics.hit_ratio_percent }}
+    </dd>
+
+    <dt>{{ 'monitor.cache_pool.evictions'|trans|desc('Evictions') }}</dt>
+    <dd>
+        {{ metrics.evictions }}
+        {% if 0 < metrics.evictions %}
+            <small>(<em>TODO: Lower to zero</em>)</small>
+        {% endif %}
+    </dd>
+</dl>

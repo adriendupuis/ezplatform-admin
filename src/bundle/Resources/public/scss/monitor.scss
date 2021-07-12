@@ -1,0 +1,39 @@
+@import '../../../../../../../ezsystems/ezplatform-admin-ui/src/bundle/Resources/public/scss/_custom.scss';
+@import '../../../../../../../ezsystems/ezplatform-admin-ui/src/bundle/Resources/public/scss/functions/_calculate.rem.scss';
+
+.nav-tabs-ad-admin-monitor {
+  border-bottom: none;
+}
+
+#ez-tab-list-content-ad-admin-monitor {
+  overflow: hidden;
+}
+
+.server {
+  clear: both;
+  & > .usage {
+    float: left;
+    .bar {
+      height: 10px;
+      &.total {
+        background: red;
+      }
+      &.free {
+        background: green;
+        float: right;
+      }
+    }
+    table {
+      th:nth-child(even) {
+        width: 33%;
+      }
+      th:nth-child(odd) {
+        width: 34%;
+      }
+      td {
+        padding: calculateRem(11px);
+        white-space: nowrap;
+      }
+    }
+  }
+}
