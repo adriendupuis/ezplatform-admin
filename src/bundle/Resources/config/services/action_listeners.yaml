@@ -1,0 +1,8 @@
+services:
+    AdrienDupuis\EzPlatformAdminBundle\EventListener\NotifyUserActionListener:
+        arguments:
+            - '@ezpublish.api.service.user'
+            - '@ezpublish.api.service.notification'
+            - '@ezpublish.api.service.permissions_resolver'
+        tags:
+            - { name: ezplatform.workflow.action_listener }
