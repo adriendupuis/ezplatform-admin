@@ -38,6 +38,8 @@ Features
   - `ezuser:enable` to enable a user
   - `ezplatform:language:add` to add a language to the database
   - `ezplatform:slug:test` to test transformation of text into slug
+* Workflows
+  - `notify_user` action: Notify users passed as a data list of user IDs, user group IDs, user logins and/or user emails.
 
 
 Contribute
