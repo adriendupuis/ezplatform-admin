@@ -8,6 +8,7 @@ use eZ\Publish\API\Repository\PermissionResolver;
 use eZ\Publish\API\Repository\UserService;
 use eZ\Publish\API\Repository\Values\Content\Content;
 use eZ\Publish\API\Repository\Values\Notification\CreateStruct;
+use eZ\Publish\API\Repository\Values\User\User;
 use eZ\Publish\API\Repository\Values\User\UserGroup;
 use EzSystems\EzPlatformWorkflow\Event\Action\AbstractStageWorkflowActionListener;
 use EzSystems\EzPlatformWorkflow\MarkingStore\ContextualMarking;
@@ -57,16 +58,23 @@ class NotifyUserActionListener extends AbstractStageWorkflowActionListener
             $this->permissionResolver->getCurrentUserReference()->getUserId()
         );
 
-        $userList = [];
+        $userIdList = [];
+
+        if (!empty($context->reviewerId)) {
+            $userIdList[] = $context->reviewerId;
+        }
+
         foreach (array_keys($event->getMarking()->getPlaces()) as $place) {
             foreach ($event->getWorkflow()->getMetadataStore()->getPlaceMetadata($place)['actions'][$this->getIdentifier()]['data'] as $id) {
-                $userList = array_merge($userList, $this->getUserList($id));
+                foreach ($this->getUserList($id) as $user) {
+                    $userIdList[] = $user->id;
+                }
             }
         }
 
-        foreach ($userList as $user) {
+        foreach (array_unique($userIdList, SORT_NUMERIC) as $userId) {
             $notification = new CreateStruct();
-            $notification->ownerId = $user->id;
+            $notification->ownerId = $userId;
             $notification->type = 'Workflow:NotifyReviewer';
             $notification->data = [
                 'content_id' => $content->id,
