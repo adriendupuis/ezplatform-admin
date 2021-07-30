@@ -18,7 +18,7 @@ class AddLanguageToRepositoryCommand extends AdminCommandAbstract
     {
         parent::configure();
         $this->setDescription('Create a new language')
-            ->addArgument('code', InputArgument::REQUIRED, 'Language code as <ISO 639‑2>-<ISO 3166-1 alpha-2>, in other words <three_lowercase_language>-<two_uppercase_country>; Examples: eng-GB, eng-US, fre-FR, fre-CA')
+            ->addArgument('code', InputArgument::REQUIRED, 'Language code as <ISO 639‑2/B>-<ISO 3166-1 alpha-2>, in other words <three_lowercase_language>-<two_uppercase_country>; Examples: eng-GB, eng-US, fre-FR, fre-CA')
             ->addArgument('name', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'Language name; Traditionally as full language name in itself followed by country in parentheses; Examples: English (United Kingdom), English (United States), Français (France), Français (Canada)');
     }
 
