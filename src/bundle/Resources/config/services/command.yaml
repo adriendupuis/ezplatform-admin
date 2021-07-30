@@ -5,3 +5,11 @@ services:
             $slugConverter: '@ezpublish.persistence.slug_converter'
         tags:
             - { name: 'console.command', command: 'ezplatform:slug:test' }
+
+    AdrienDupuis\EzPlatformAdminBundle\Command\User\AllowSiteaccessToAnonymousCommand:
+        arguments:
+            $repository: '@ezpublish.api.repository'
+            $siteAccessKeyGenerator: '@EzSystems\EzPlatformAdminUi\Siteaccess\SiteAccessKeyGenerator'
+            $siteAccessService: '@ezpublish.siteaccess_service'
+        tags:
+            - { name: 'console.command', command: 'ezuser:anonymous:siteaccess' }
