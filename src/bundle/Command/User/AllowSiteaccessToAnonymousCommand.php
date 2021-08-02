@@ -3,6 +3,7 @@
 namespace AdrienDupuis\EzPlatformAdminBundle\Command\User;
 
 use AdrienDupuis\EzPlatformAdminBundle\Command\AdminCommandAbstract;
+use AdrienDupuis\EzPlatformAdminBundle\Command\OutputStyleTrait;
 use eZ\Publish\API\Repository\Exceptions\LimitationValidationException;
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use eZ\Publish\API\Repository\Repository;
@@ -20,6 +21,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class AllowSiteaccessToAnonymousCommand extends AdminCommandAbstract
 {
+    use OutputStyleTrait;
+
     protected static $defaultName = 'ezuser:anonymous:siteaccess';
 
     /** @var RoleService */
@@ -49,6 +52,8 @@ class AllowSiteaccessToAnonymousCommand extends AdminCommandAbstract
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->setStyle($output);
+
         $initCode = $this->initAdminFunctionExecution($input, $output);
         if (self::SUCCESS !== $initCode) {
             return $initCode;
