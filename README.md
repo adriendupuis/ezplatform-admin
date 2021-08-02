@@ -36,6 +36,7 @@ Features
   - `ezuser:create` to create a user
   - `ezuser:password` to change a user password
   - `ezuser:enable` to enable a user
+  - `ezuser:anonymous:siteaccess` to add a siteaccess to the Anonymous's user/login policy limitation.
   - `ezplatform:language:add` to add a language to the database
   - `ezplatform:slug:test` to test transformation of text into slug
 
