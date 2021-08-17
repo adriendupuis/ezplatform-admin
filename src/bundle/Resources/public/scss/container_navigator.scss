@@ -1,0 +1,24 @@
+#container_navigator_container {
+  & > * {
+    border: 1px solid grey;
+    padding: 0 5px;
+  }
+
+  & > table {
+    width: 100%;
+  }
+
+  th {
+    vertical-align: top;
+  }
+
+  td.container_navigator_close, span.container_navigator_close {
+    cursor: pointer;
+    display: block;
+    width: 15px;
+    max-width: 15px;
+    height: 15px;
+    font-size: 15px;
+    line-height: 15px;
+  }
+}
