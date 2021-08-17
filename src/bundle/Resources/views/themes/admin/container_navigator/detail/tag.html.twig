@@ -1,0 +1,22 @@
+<table width="100%">
+    <tbody>
+    <tr>
+        <th width="200px">Tag</th>
+        <td><strong>{{ tag }}</strong></td>
+        <td class="container_navigator_close" width="15px">✗</td>
+    </tr>
+    <tr>
+        <th>Listeners</th>
+        <td>
+            <ul>
+                {% for service in services %}
+                    <li><a href="{{ path('container_navigator.detail', {'name': service, 'type': 'service'}) }}"
+                           data-name="{{ service }}" data-type="service">{{ service }}</a></li>
+                {% endfor %}
+            </ul>
+
+        </td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>

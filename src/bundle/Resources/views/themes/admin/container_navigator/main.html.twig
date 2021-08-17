@@ -1,0 +1,132 @@
+{% extends "@ezdesign/ui/layout.html.twig" %}
+
+{% trans_default_domain 'ad_admin_container_navigator' %}
+
+{% block breadcrumbs %}
+    {% include '@ezdesign/ui/breadcrumbs.html.twig' with { items: [
+        { value: 'breadcrumb.admin'|trans(domain='messages')|desc('Admin') },
+        { value: 'container_navigator'|trans|desc('Container Navigator') }
+    ]} %}
+{% endblock %}
+
+{% block page_title %}
+    {% include '@ezdesign/ui/page_title.html.twig' with {
+        title: 'container_navigator'|trans|desc('Container Navigator'),
+        icon_name: 'information'
+    } %}
+{% endblock %}
+
+{% block stylesheets %}
+    {# TODO: move to SCSS file #}
+    <style>
+        #container_navigator_container > * {
+            border: 1px solid grey;
+            padding: 0 5px;
+        }
+        #container_navigator_container > table {
+            width: 100%;
+        }
+        #container_navigator_container th {
+            vertical-align: top;
+        }
+        td.container_navigator_close, span.container_navigator_close {
+            cursor: pointer;
+            display: block;
+            width: 15px;
+            max-width: 15px;
+            height: 15px;
+            font-size: 15px;
+            line-height: 15px;
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    {# TODO: move to JS file #}
+    <script>
+        class ContainerNavigator {
+            constructor(baseUrl, container, text, submit, errors) {
+                this.baseUrl = baseUrl;
+                this.container = $(container);
+                this.text = $(text);
+                this.errors = $(errors);
+                this.submit = $(submit).click(this.onSubmit.bind(this));
+            }
+
+            onSubmit(event) {
+                event.preventDefault();
+                let text = $('#container_navigator_text').val();
+                if (text.length) {
+                    this.load(text);
+                } else {
+                    this.displayError('Enter a service, a service tag or an event.');
+                }
+            }
+
+            disableSubmit(state) {
+                this.submit.prop('disabled', state);
+            }
+
+            wrapInto(html, element, direction) {
+                return $('ul' === element.prop('tagName') ? '<li>' : '<div>')[direction + 'To'](element).append(html);
+            }
+
+            displayError(msg) {
+                this.wrapInto(msg, this.errors, 'prepend').fadeIn(200).delay(1000).fadeOut(1000);
+            }
+
+            load(text, type = 'auto') {
+                this.loadHtml(this.baseUrl + '/' + encodeURI(text) + '/' + type);
+            }
+
+            loadHtml(url) {
+                if (!url) { return; }
+                this.disableSubmit(true);
+                $.ajax({
+                    url: url,
+                    success: function (data, textStatus, jqXHR) {
+                        if (data) {
+                            let newElt = this.wrapInto(data, this.container, 'append');
+                            newElt.find('a').click(function (event) {
+                                event.preventDefault();
+                                let target = $(event.target);
+                                if (target.data('name')) {
+                                    this.load(target.data('name'), target.data('type'));
+                                } else {
+                                    this.loadHtml(target.attr('href'));
+                                }
+                            }.bind(this));
+                            newElt.find('.container_navigator_close').click(function(event) {
+                                event.preventDefault();
+                                $(event.target).closest('div, li').remove();
+                            });
+                        } else {
+                            this.displayError();
+                        }
+                        this.disableSubmit(false);
+                    }.bind(this),
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        this.displayError(errorThrown);
+                        this.disableSubmit(false);
+                    }.bind(this),
+                })
+            }
+        }
+    </script>
+    <script>
+        $(function () {
+            let containerNavigator = new ContainerNavigator(document.location.href, '#container_navigator_container', '#container_navigator_text', '#container_navigator_submit', '#container_navigator_errors');
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <section class="container ez-container" style="padding-bottom: 50px;">
+        <ul id="container_navigator_container"></ul>
+        <div>
+            <input type="text" id="container_navigator_text" placeholder="Service, tag or event"/>
+            <input type="submit" id="container_navigator_submit"/>
+        </div>
+        <ul id="container_navigator_errors"></ul>
+    </section>
+{% endblock %}

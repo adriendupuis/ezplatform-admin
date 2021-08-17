@@ -20,3 +20,13 @@ ad_admin.identification:
     path: /identification
     defaults:
         _controller: AdrienDupuis\EzPlatformAdminBundle\Controller\IdentificationController::identificationAction
+
+container_navigator.main:
+    path: /container-navigator
+    defaults:
+        _controller: AdrienDupuis\EzPlatformAdminBundle\Controller\ContainerNavigatorController::mainAction
+
+container_navigator.detail:
+    path: /container-navigator/{name}/{type}
+    defaults:
+        _controller: AdrienDupuis\EzPlatformAdminBundle\Controller\ContainerNavigatorController::detailAction

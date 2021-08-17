@@ -1,0 +1,24 @@
+<table width="100%">
+    <tbody>
+    <tr>
+        <th width="200px">Event</th>
+        <td><strong>{{ event }}</strong></td>
+        <td class="container_navigator_close" width="15px">✗</td>
+    </tr>
+    <tr>
+        <th>Listeners</th>
+        <td>
+            <ul>
+                {% for listener in listeners %}
+                    <li><a href="{{ path('container_navigator.detail', {'name': listener.0, 'type': 'service'}) }}"
+                           data-name="{{ listener.0 }}" data-type="service">{{ listener.0 }}</a>::{{ listener.1 }}</li>
+                {% endfor %}
+            </ul>
+        </td>
+        <td></td>
+    </tr>
+    </tbody>
+    <tfoot style="position: relative;"><tr><td>
+
+        </td></tr></tfoot>
+</table>

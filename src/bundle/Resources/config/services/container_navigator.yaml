@@ -1,0 +1,5 @@
+services:
+    AdrienDupuis\EzPlatformAdminBundle\Service\ContainerNavigatorService:
+        arguments:
+            - '@kernel'
+            - '@debug.event_dispatcher'
