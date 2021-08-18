@@ -9,12 +9,12 @@
         <th>Listeners</th>
         <td>
             <ul>
-                {% for service in services %}
-                    <li><a href="{{ path('container_navigator.detail', {'name': service, 'type': 'service'}) }}"
-                           data-name="{{ service }}" data-type="service">{{ service }}</a></li>
+                {% for class, service in services %}
+                    <li>
+                        <a href="{{ path('container_navigator.detail', {'name': service, 'type': 'service'}) }}">{{ service }}</a>
+                    </li>
                 {% endfor %}
             </ul>
-
         </td>
         <td></td>
     </tr>

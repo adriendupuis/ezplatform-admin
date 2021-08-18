@@ -8,27 +8,62 @@
         </td>
         <td class="container_navigator_close" width="15px">✗</td>
     </tr>
-    <tr><th>Class</th><td>{{ class }}</td></tr>
-    <tr><th>Arguments</th><td colspan="2"><ul>
-        {% for argument in arguments %}
-            {# TODO: other argument types #}
-            <li><a href="{{ path('container_navigator.detail', {'name': argument, 'type': 'service'}) }}">{{ argument }}</a></li>
-        {% endfor %}
-    </ul></td></tr>
-    <tr><th>Tags</th><td colspan="2"><ul>
-        {% for tag in tags %}
-            <li><a href="{{ path('container_navigator.detail', {'name': tag, 'type': 'tag'}) }}">{{ tag }}</a></li>
-        {% endfor %}
-    </ul></td></tr>
-    <tr><th>SubscribedEvents</th><td colspan="2"><ul>
-        {% for event in events.subscribed %}
-            <li><a href="{{ path('container_navigator.detail', {'name': event, 'type': 'event'}) }}">{{ event }}</a></li>
-        {% endfor %}
-    </ul></td></tr>
-    <tr><th>DispatchedEvents</th><td colspan="2"><ul>
-        {% for event in events.dispatched %}
-            <li><a href="{{ path('container_navigator.detail', {'name': event, 'type': 'event'}) }}">{{ event }}</a></li>
-        {% endfor %}
-    </ul></td></tr>
+    <tr>
+        <th>Class</th>
+        <td>{{ class }}</td>
+    </tr>
+    <tr>
+        <th>Arguments</th>
+        <td colspan="2">
+            <ul>
+                {% for argument in arguments %}
+                    {% if argument starts with '!tagged_locator ' %}
+                        {% set type = 'tag' %}
+                        {% set argument = argument|replace({'!tagged_locator ': ''}) %}
+                    {% else %}
+                        {% set type = 'service' %}
+                    {% endif %}
+                    <li>
+                        <a href="{{ path('container_navigator.detail', {'name': argument, 'type': type}) }}">{{ argument }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <th>Tags</th>
+        <td colspan="2">
+            <ul>
+                {% for tag in tags %}
+                    <li><a href="{{ path('container_navigator.detail', {'name': tag, 'type': 'tag'}) }}">{{ tag }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <th>Subscribed Events</th>
+        <td colspan="2">
+            <ul>
+                {% for event in events.subscribed %}
+                    <li>
+                        <a href="{{ path('container_navigator.detail', {'name': event, 'type': 'event'}) }}">{{ event }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <th>Dispatched Events</th>
+        <td colspan="2">
+            <ul>
+                {% for event in events.dispatched %}
+                    <li>
+                        <a href="{{ path('container_navigator.detail', {'name': event, 'type': 'event'}) }}">{{ event }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </td>
+    </tr>
     </tbody>
 </table>

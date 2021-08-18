@@ -5,6 +5,7 @@ namespace AdrienDupuis\EzPlatformAdminBundle\Service;
 use App\Kernel;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
 use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -22,7 +23,9 @@ class ContainerNavigatorService
     public function __construct(Kernel $kernel, EventDispatcherInterface $eventDispatcher)
     {
         if (!$kernel->isDebug() || !(new ConfigCache($kernel->getContainer()->getParameter('debug.container.dump'), true))->isFresh()) {
-            $buildContainer = \Closure::bind(function () { return $this->buildContainer(); }, $kernel, \get_class($kernel));
+            $buildContainer = \Closure::bind(function () {
+                return $this->buildContainer();
+            }, $kernel, \get_class($kernel));
             $container = $buildContainer();
             $container->getCompilerPassConfig()->setRemovingPasses([]);
             $container->getCompilerPassConfig()->setAfterRemovingPasses([]);
@@ -58,7 +61,13 @@ class ContainerNavigatorService
                 'name' => $serviceId,
                 'class' => $serviceDef->getClass(),
                 'aliases' => $this->getServiceAliases($serviceDef->getClass()),
-                'arguments' => array_map(function ($a) {return (string) $a; }, $serviceDef->getArguments()),
+                'arguments' => array_map(function ($a) {
+                    if ($a instanceof TaggedIteratorArgument) {
+                        return '!tagged_locator ' . $a->getTag();
+                    }
+
+                    return (string) $a;
+                }, $serviceDef->getArguments()),
                 'tags' => array_keys($serviceDef->getTags()),
                 'events' => [
                     'dispatched' => $this->getServiceDispatchedEvents($serviceDef->getClass()),
@@ -155,7 +164,9 @@ class ContainerNavigatorService
         if (!empty($file) && is_file($file)) {
             $fqcnList = [];
 
-            $uses = array_filter(explode(PHP_EOL, trim(shell_exec("grep '^use .*".str_replace('\\', '\\\\', $class.";$' $file")))), function ($u) {return !empty($u); });
+            $uses = array_filter(explode(PHP_EOL, trim(shell_exec("grep '^use .*".str_replace('\\', '\\\\', $class.";$' $file")))), function ($u) {
+                return !empty($u);
+            });
             foreach ($uses as $use) {
                 preg_match('/^use (?<fqcn>.+);$/', $use, $matches);
                 if (array_key_exists('fqcn', $matches)) {
@@ -191,7 +202,7 @@ class ContainerNavigatorService
             'type' => 'tag',
             'name' => $name,
             'tag' => $name,
-            'services' => $this->container->findTaggedServiceIds($name),
+            'services' => array_keys($services),
         ];
     }
 
@@ -218,7 +229,9 @@ class ContainerNavigatorService
             $this->getService($name),
             $this->getTag($name),
             $this->getEvent($name),
-        ], function ($v) {return !empty($v); }));
+        ], function ($v) {
+            return !empty($v);
+        }));
         if (1 === count($data)) {
             return $data[0];
         } elseif (count($data)) {
@@ -243,7 +256,7 @@ class ContainerNavigatorService
         return array_unique(array_merge(
             array_keys($this->container->getDefinitions()),
             array_keys($this->container->getAliases())//,
-            //array_keys($this->eventDispatcher->getListeners())
+        //array_keys($this->eventDispatcher->getListeners())
         ));
     }
 }

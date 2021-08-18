@@ -1,9 +1,9 @@
 <span class="container_navigator_close">✗</span>
 <ul>
     {% for possibility in possibilities %}
-        <li>{{ possibility.type }}: <a
-                    href="{{ path('container_navigator.detail', {'name': possibility.name, 'type': possibility.type}) }}"
-                    data-name="{{ possibility.name }}" data-type="{{ possibility.type }}">{{ possibility.name }}</a>
+        <li>
+            {{ possibility.type }}:
+            <a href="{{ path('container_navigator.detail', {'name': possibility.name, 'type': possibility.type}) }}">{{ possibility.name }}</a>
         </li>
     {% endfor %}
 </ul>
