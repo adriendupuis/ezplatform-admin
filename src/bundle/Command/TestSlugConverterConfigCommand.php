@@ -14,6 +14,8 @@ class TestSlugConverterConfigCommand extends Command
 {
     protected static $defaultName = 'ezplatform:slug:test';
 
+    public const INTERNAL_TRANSFORMATION = 'cli_tested_tranformation_group';
+
     /** @var TransformationProcessor */
     private $transformationProcessor;
 
@@ -45,14 +47,13 @@ class TestSlugConverterConfigCommand extends Command
         $transformation = null;
 
         if ($transformationGroupOption = $input->getOption('transformation_group')) {
-            $patternName = 'cli_tested_tranformation_group';
             $transformationGroup = json_decode($transformationGroupOption, true);
             if (array_key_exists('cleanup_method', $transformationGroup) && !array_key_exists('cleanupMethod', $transformationGroup)) {
                 $transformationGroup['cleanupMethod'] = $transformationGroup['cleanup_method'];
             }
 
-            $configuration['transformationGroups'][$patternName] = $transformationGroup;
-            $transformation = $patternName;
+            $configuration['transformationGroups'][self::INTERNAL_TRANSFORMATION] = $transformationGroup;
+            $transformation = self::INTERNAL_TRANSFORMATION;
 
             unset($transformationGroupOption, $transformationGroup);
         } elseif ($transformationOption = $input->getOption('transformation')) {
@@ -86,10 +87,18 @@ class TestSlugConverterConfigCommand extends Command
 
     public function getSlugConverterConfiguration(SlugConverter $slugConverter)
     {
+        $allowedClasses = [
+            'AdrienDupuis\EzPlatformAdminBundle\Command\TestSlugConverterDecorator',
+            //AdrienDupuis\EzPlatformAdminBundle\Command\TestSlugConverterDecorator::class,// As that class is created after this one, it can't be written like this.
+            eZ\Publish\Core\Persistence\TransformationProcessor\PreprocessedBased::class,
+            eZ\Publish\Core\Persistence\TransformationProcessor\PcreCompiler::class,
+            eZ\Publish\Core\Persistence\Utf8Converter::class,
+        ];
+
         $serializedSlugConverter = serialize($slugConverter);
         $serializedDecoratedSlugConverter = str_replace('O:65:"eZ\Publish\Core\Persistence\Legacy\Content\UrlAlias\SlugConverter"', 'O:69:"AdrienDupuis\EzPlatformAdminBundle\Command\TestSlugConverterDecorator"', $serializedSlugConverter);
         /** @var TestSlugConverterDecorator $decoratedSlugConverter */
-        $decoratedSlugConverter = unserialize($serializedDecoratedSlugConverter);
+        $decoratedSlugConverter = unserialize($serializedDecoratedSlugConverter, ['allowed_classes' => $allowedClasses]);
 
         return $decoratedSlugConverter->getConfiguration();
     }
