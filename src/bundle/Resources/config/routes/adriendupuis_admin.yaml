@@ -1,2 +1,4 @@
 adriendupuis_admin:
     resource: '@AdrienDupuisEzPlatformAdminBundle/Resources/config/routing.yaml'
+    defaults:
+        siteaccess_group_whitelist: '%admin_group_name%'
