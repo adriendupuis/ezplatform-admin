@@ -35,21 +35,24 @@ class ContainerNavigatorController extends Controller
                 $data = $this->getEvent($name);
                 break;
             case 'auto':
-                $data = $this->getAuto($name);
-                $type = $data['type'] ?? null;
+                $data = $this->getAuto($name, false /* no need to search, it was a try */);
                 break;
             default:
                 throw new InvalidArgumentException('type', 'unknown type: '.$type);
         }
 
-        if (!empty($data) && !empty($type)) {
+        if (empty($data) && 'auto' !== $type) {
+            // If a type was given, it is known to exist
+            $data = $this->getAuto($name, true);
+        }
+
+        if (!empty($data) && array_key_exists('type', $data)) {
             return $this->render("@ezdesign/container_navigator/detail/{$type}.html.twig", $data);
         } else {
             $response = $this->render('@ezdesign/container_navigator/detail/unknown.html.twig', ['name' => $name, 'type' => $type]);
             $response->setStatusCode('404');
 
             return $response;
-            //$this->createNotFoundException((empty($type) ? 'No service, tag nor event' : "No $type") . " found with name '$name'.");
         }
     }
 
@@ -68,8 +71,8 @@ class ContainerNavigatorController extends Controller
         return $this->containerNavigatorService->getEvent($name);
     }
 
-    private function getAuto($name): ?array
+    private function getAuto($name, $search = false): ?array
     {
-        return $this->containerNavigatorService->getAuto($name);
+        return $this->containerNavigatorService->getAuto($name, $search, !$search);
     }
 }

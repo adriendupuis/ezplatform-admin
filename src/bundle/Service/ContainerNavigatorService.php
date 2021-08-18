@@ -55,15 +55,14 @@ class ContainerNavigatorService
         }
 
         if ($serviceDef instanceof Definition) {
-            //dump($serviceDef->getDecoratedService());
             return [
                 'type' => 'service',
                 'name' => $serviceId,
                 'class' => $serviceDef->getClass(),
                 'aliases' => $this->getServiceAliases($serviceDef->getClass()),
-                'arguments' => array_map(function ($a) {
+                'arguments' => array_map(static function ($a) {
                     if ($a instanceof TaggedIteratorArgument) {
-                        return '!tagged_locator ' . $a->getTag();
+                        return '!tagged_locator '.$a->getTag();
                     }
 
                     return (string) $a;
@@ -214,8 +213,8 @@ class ContainerNavigatorService
                 'type' => 'event',
                 'name' => $name,
                 'event' => $name,
-                'listeners' => array_map(function ($v) {
-                    return [get_class($v[0]), $v[1]];
+                'listeners' => array_map(static function ($v) {
+                    return [empty($v[0]) ? '' : get_class($v[0]), $v[1]];
                 }, $listeners),
             ];
         }
@@ -223,26 +222,80 @@ class ContainerNavigatorService
         return null;
     }
 
-    public function getAuto($name): ?array
+    public function getAuto($name, $includeSearch = false, $startByTrying = true): ?array
     {
-        $data = array_values(array_filter([
-            $this->getService($name),
-            $this->getTag($name),
-            $this->getEvent($name),
-        ], function ($v) {
-            return !empty($v);
-        }));
-        if (1 === count($data)) {
-            return $data[0];
-        } elseif (count($data)) {
+        $possibilities = [];
+
+        if ($startByTrying) {
+            $possibilities = array_values(array_filter([
+                $this->getService($name),
+                $this->getTag($name),
+                $this->getEvent($name),
+            ], function ($v) {
+                return !empty($v);
+            }));
+            if (1 === count($possibilities)) {
+                return $possibilities[0];
+            }
+        }
+
+        if ($includeSearch && (!count($possibilities))) {
+            $results = $this->search($name);
+            if (1 === count($results)) {
+                if ($name !== $results[0]) {
+                    return $this->getAuto($results[0]);
+                }
+            }
+            $possibilities = array_map(static function ($result) {
+                return [
+                'type' => 'possibility',
+                'name' => $result,
+            ];
+            }, $results);
+            unset($result);
+        }
+
+        if (count($possibilities)) {
             return [
                 'type' => 'ambiguous',
                 'name' => $name,
-                'possibilities' => $data,
+                'possibilities' => $possibilities,
             ];
         }
 
         return null;
+    }
+
+    public function search($text)
+    {
+        $possibilities = [];
+        if (false === strpos($text, '.')) {
+            foreach ($this->container->getDefinitions() as $id => $definition) {
+                $class = $definition->getClass();
+                if ($class && $this->endIs($class, $text)) {
+                    $possibility = $this->container->hasDefinition($class) ? $class : $id;
+                    if ($text !== $possibility) {
+                        $possibilities[] = $possibility;
+                    }
+                }
+            }
+        }
+
+        foreach ($this->container->getAliases() as $index => $alias) {
+            if ($text !== $index && $this->endIs($index, $text)) {
+                $possibilities[] = $index;
+            }
+            if ($this->endIs((string) $alias, $text)) {
+                $possibilities[] = (string) $alias;
+            }
+        }
+
+        return array_unique($possibilities);
+    }
+
+    private function endIs(string $ofWhat, string $end)
+    {
+        return $end == substr($ofWhat, -strlen($end));
     }
 
     public function getClassFile($class): ?string
