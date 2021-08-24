@@ -1,0 +1,43 @@
+{% extends "@ezdesign/ui/layout.html.twig" %}
+
+{% trans_default_domain 'ad_admin_container_navigator' %}
+
+{% block breadcrumbs %}
+    {% include '@ezdesign/ui/breadcrumbs.html.twig' with { items: [
+        { value: 'breadcrumb.admin'|trans(domain='messages')|desc('Admin') },
+        { value: 'container_navigator'|trans|desc('Container Navigator') }
+    ]} %}
+{% endblock %}
+
+{% block page_title %}
+    {% include '@ezdesign/ui/page_title.html.twig' with {
+        title: 'container_navigator'|trans|desc('Container Navigator'),
+        icon_name: 'information'
+    } %}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('ad-admin-container-navigator-css', null, 'ezplatform') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('ad-admin-container-navigator-js', null, 'ezplatform') }}
+    <script>
+        $(function () {
+            let containerNavigator = new ContainerNavigator(document.location.href, '#container_navigator_container', '#container_navigator_text', '#container_navigator_submit', '#container_navigator_errors');
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <section class="container ez-container" style="padding-bottom: 50px;">
+        <ul id="container_navigator_container"></ul>
+        <div>
+            <input type="text" id="container_navigator_text" placeholder="Service, tag or event"/>
+            <input type="submit" id="container_navigator_submit"/>
+        </div>
+        <ul id="container_navigator_errors"></ul>
+    </section>
+{% endblock %}
