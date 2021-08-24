@@ -4,6 +4,7 @@ namespace AdrienDupuis\EzPlatformAdminBundle\Controller;
 
 use AdrienDupuis\EzPlatformAdminBundle\Form\Type\IdentificationType;
 use AdrienDupuis\EzPlatformAdminBundle\Service\ContentUsageService;
+use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute;
 use EzSystems\EzPlatformAdminUiBundle\Controller\Controller;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,5 +51,11 @@ class IdentificationController extends Controller
                 'content_type_field_list' => $this->contentUsageService->findContentTypeField($identifier),
             ],
         ]);
+    }
+
+    public function performAccessCheck()
+    {
+        parent::performAccessCheck();
+        $this->denyAccessUnlessGranted(new Attribute('ad_admin', 'identification'));
     }
 }

@@ -7,6 +7,7 @@ use eZ\Publish\API\Repository\ContentTypeService;
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use eZ\Publish\API\Repository\Values\ContentType\ContentType;
 use eZ\Publish\API\Repository\Values\ContentType\FieldDefinition;
+use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute;
 use EzSystems\EzPlatformAdminUiBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,6 +39,12 @@ class ContentUsageController extends Controller
     public function mainAction(): Response
     {
         return $this->render('@ezdesign/content_usage/main.html.twig');
+    }
+
+    public function performAccessCheck()
+    {
+        parent::performAccessCheck();
+        $this->denyAccessUnlessGranted(new Attribute('ad_admin', 'content_usage'));
     }
 
     /**
