@@ -12,3 +12,4 @@ services:
         tags: [controller.service_arguments]
         calls:
             - [setContainer, ['@service_container']]
+            - [performAccessCheck, []]
