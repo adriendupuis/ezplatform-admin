@@ -20,3 +20,8 @@ ad_admin.identification:
     path: /identification
     defaults:
         _controller: AdrienDupuis\EzPlatformAdminBundle\Controller\IdentificationController::identificationAction
+
+ad_admin.monitor:
+    path: /monitor
+    defaults:
+        _controller: AdrienDupuis\EzPlatformAdminBundle\Controller\MonitorController::mainAction

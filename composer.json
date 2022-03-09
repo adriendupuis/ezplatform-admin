@@ -8,6 +8,7 @@
     }
   },
   "require": {
+    "ext-json": "*",
     "ezsystems/ezplatform-admin-ui": "^2.0.0"
   }
 }

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="not.available">
+    <header>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
+    </header>
+    <body>
+      <trans-unit id="19d7d896ec933e337e6eae5cfa5821a7634e2d98" resname="free_physical_memory">
+        <source>Free</source>
+        <target>Free</target>
+        <note>key: free_physical_memory</note>
+      </trans-unit>
+      <trans-unit id="0cd8cc77c1111ad285aec3d95cf54a171ad911f1" resname="free_swap_space">
+        <source>Free</source>
+        <target>Free</target>
+        <note>key: free_swap_space</note>
+      </trans-unit>
+      <trans-unit id="8825877d6954e801a74e92e3f6ec6f2c1d64c859" resname="main__admin__monitor">
+        <source>Monitor</source>
+        <target>Monitor</target>
+        <note>key: main__admin__monitor</note>
+      </trans-unit>
+      <trans-unit id="9796809f7dae482d3123c16585f2b60f97407796" resname="monitor">
+        <source>Monitor</source>
+        <target>Monitor</target>
+        <note>key: monitor</note>
+      </trans-unit>
+      <trans-unit id="88d28dbec0e37fd6742aa8e3488457fe8f1daed2" resname="monitor.cache_pool.evictions">
+        <source>Evictions</source>
+        <target>Evictions</target>
+        <note>key: monitor.cache_pool.evictions</note>
+      </trans-unit>
+      <trans-unit id="1e3d45cbb5c8df1e46a3106258a4cf3c536d5179" resname="monitor.cache_pool.hit_ratio">
+        <source>Hit Ratio</source>
+        <target>Hit Ratio</target>
+        <note>key: monitor.cache_pool.hit_ratio</note>
+      </trans-unit>
+      <trans-unit id="662848c8202a69d23422e5cd805e0f839c8c8249" resname="monitor.cache_pool.no_ping">
+        <source>Cache pool does not respond</source>
+        <target>Cache pool does not respond</target>
+        <note>key: monitor.cache_pool.no_ping</note>
+      </trans-unit>
+      <trans-unit id="cd68c9926340d3cd09a8f348fb1c0a3705727a68" resname="monitor.current_host">
+        <source>Current Host Monitor</source>
+        <target>Current Host Monitor</target>
+        <note>key: monitor.current_host</note>
+      </trans-unit>
+      <trans-unit id="95f76fb4ad55daa146926d645a86790f0336891e" resname="monitor.not_monitored">
+        <source>(Not monitored)</source>
+        <target>(Not monitored)</target>
+        <note>key: monitor.not_monitored</note>
+      </trans-unit>
+      <trans-unit id="8ee99864e4e7153db7da79e7b516b5da719690a7" resname="monitor.redis.maxmemory_policy">
+        <source>Eviction Policy</source>
+        <target state="new">Eviction Policy</target>
+        <note>key: monitor.redis.maxmemory_policy</note>
+      </trans-unit>
+      <trans-unit id="55ab3aebe30f0c583b64bf0bd74642a84a96996b" resname="monitor.redis.mem_fragmentation_ratio">
+        <source>Memory Fragmentation Ratio</source>
+        <target state="new">Memory Fragmentation Ratio</target>
+        <note>key: monitor.redis.mem_fragmentation_ratio</note>
+      </trans-unit>
+      <trans-unit id="11afccda017133fb3ae583e64944251e992e527a" resname="monitor.redis.mem_fragmentation_ratio.less_than_1">
+        <source>server is swapping</source>
+        <target>server is swapping</target>
+        <note>key: monitor.redis.mem_fragmentation_ratio.less_than_1</note>
+      </trans-unit>
+      <trans-unit id="ec70281d52d6070c0fd81005b9a939e0300252f5" resname="monitor.redis.mem_fragmentation_ratio.more_than_1.5">
+        <source>memory is too fragmented</source>
+        <target>memory is too fragmented</target>
+        <note>key: monitor.redis.mem_fragmentation_ratio.more_than_1.5</note>
+      </trans-unit>
+      <trans-unit id="d88996d39c37a6a6c46ee29a79522f4bf7169fb3" resname="monitor.search_engine.no_ping">
+        <source>Search engine does not respond</source>
+        <target>Search engine does not respond</target>
+        <note>key: monitor.search_engine.no_ping</note>
+      </trans-unit>
+      <trans-unit id="7c134d36ac04d67e19455a41b5aea0285dc927b1" resname="monitor.tab_name">
+        <source>%service_name% Monitor</source>
+        <target>%service_name% Monitor</target>
+        <note>key: monitor.tab_name</note>
+      </trans-unit>
+      <trans-unit id="487b94edfbcb49dd8d8741483b69d81abb55c413" resname="physical_memory">
+        <source>Physical Memory</source>
+        <target>Physical Memory</target>
+        <note>key: physical_memory</note>
+      </trans-unit>
+      <trans-unit id="77eb0b8664cedd2ca5cb4d8be38efc6567a5eac0" resname="swap_space">
+        <source>Swap Space</source>
+        <target>Swap Space</target>
+        <note>key: swap_space</note>
+      </trans-unit>
+      <trans-unit id="63df899ddd006f60746f4fbd75408644c2ca49a1" resname="total_physical_memory">
+        <source>Total</source>
+        <target>Total</target>
+        <note>key: total_physical_memory</note>
+      </trans-unit>
+      <trans-unit id="0c1f7aafa7b74ea5694e48fbe4ad147ffa652df8" resname="total_swap_space">
+        <source>Total</source>
+        <target>Total</target>
+        <note>key: total_swap_space</note>
+      </trans-unit>
+      <trans-unit id="91f2d9b1d10220c18d50d2ac1bb1d84f5a280050" resname="used_physical_memory">
+        <source>Used</source>
+        <target>Used</target>
+        <note>key: used_physical_memory</note>
+      </trans-unit>
+      <trans-unit id="da6c0593bc39627e3306603b1ae650956dd20e81" resname="used_swap_space">
+        <source>Used</source>
+        <target>Used</target>
+        <note>key: used_swap_space</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,70 @@
+parameters:
+    cache_dsn: '%env(CACHE_DSN)%'
+
+services:
+
+    adriendupuis.ezplatform.admin.monitor.tab_groups:
+        parent: EzSystems\EzPlatformAdminUi\Component\TabsComponent
+        autowire: true
+        autoconfigure: false
+        public: false
+        arguments:
+            $template: '@@ezdesign/ui/tab/system_info.html.twig'
+            #$template: '@@ezdesign/ui/tab/default.html.twig'
+            $groupIdentifier: 'ad-admin-monitor'
+        tags:
+            - { name: ezplatform.admin_ui.component, group: ad-admin-monitor-tab-groups }
+
+    AdrienDupuis\EzPlatformAdminBundle\Tab\Monitor\CurrentHostMonitor:
+        parent: EzSystems\EzPlatformAdminUi\Tab\AbstractTab
+        autowire: true
+        autoconfigure: false
+        public: false
+        arguments:
+            $hostMonitorService: '@AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\HostMonitorService'
+        tags:
+            - { name: ezplatform.tab, group: ad-admin-monitor }
+
+    AdrienDupuis\EzPlatformAdminBundle\Tab\Monitor\CachePoolMonitor:
+        parent: EzSystems\EzPlatformAdminUi\Tab\AbstractTab
+        autowire: true
+        autoconfigure: false
+        public: false
+        arguments:
+            $cachePool: '%cache_pool%'
+            $redisMonitorService: '@AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\RedisMonitorService'
+            $memcachedMonitorService: '@AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\MemcachedMonitorService'
+        tags:
+            - { name: ezplatform.tab, group: ad-admin-monitor }
+
+    AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\RedisMonitorService:
+        arguments:
+            $cachePool: '%cache_pool%'
+            $cacheDsn: '%cache_dsn%'
+
+    AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\MemcachedMonitorService:
+        arguments:
+            $cachePool: '%cache_pool%'
+            $cacheDsn: '%cache_dsn%'
+
+    AdrienDupuis\EzPlatformAdminBundle\Tab\Monitor\SearchEngineMonitor:
+        parent: EzSystems\EzPlatformAdminUi\Tab\AbstractTab
+        autowire: true
+        autoconfigure: false
+        public: false
+        arguments:
+            $searchEngine: '%search_engine%'
+            $solrMonitorService: '@AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\SolrMonitorService'
+            $elasticsearchMonitorService: '@AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\ElasticsearchMonitorService'
+        tags:
+            - { name: ezplatform.tab, group: ad-admin-monitor }
+
+    AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\SolrMonitorService:
+        arguments:
+            $solrEndpointResolver: '@ez_search_engine_solr.connection.default.endpoint_resolver_id'
+            $solrEndpointRegistry: '@ezpublish.search.solr.gateway.endpoint_registry'
+            $solrHttpClient: '@ezpublish.search.solr.gateway.client.http.stream'
+
+    AdrienDupuis\EzPlatformAdminBundle\Service\Monitor\ElasticsearchMonitorService:
+        arguments:
+            $elasticSearchClientFactory: '@Ibexa\Platform\ElasticSearchEngine\ElasticSearch\Client\ClientFactoryInterface'
